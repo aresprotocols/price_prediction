@@ -5,3 +5,10 @@ html {
 html body #root .App {
   min-width: 100vh;
 }
+
+.content {
+  width: 100%;
+  min-height: 55vh;
+  padding: 30px 150px;
+  background-color: #e7ebff;
+}

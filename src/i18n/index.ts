@@ -1,17 +1,22 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 
-import zhCNCommon from "i18n/zh/common"
-import enCommon from "./en/common";
+import zhCommon from "i18n/zh_cn/common"
+import enCommon from "i18n/en/common";
+import enFooter from "i18n/en/footer";
+import zhFooter from "./zh_cn/footer";
 
 const resources = {
     zh_CN: {
         common: {
-            ...zhCNCommon
+            ...zhCommon
         },
         menu: {
 
         },
+        footer: {
+            ...zhFooter
+        }
     },
     en: {
         common: {
@@ -19,6 +24,9 @@ const resources = {
         },
         menu: {
         },
+        footer: {
+            ...enFooter
+        }
     },
 };
 
