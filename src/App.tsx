@@ -20,6 +20,7 @@ function App() {
               <Route path="/" element={<Join />}/>
               <Route path="/home" element={<Home />}/>
               <Route path="/ongoing" element={<Ongoing />}/>
+              <Route path="/completed" element={<Completed />}/>
             </Routes>
           </div>
           <Footer />

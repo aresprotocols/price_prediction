@@ -1,7 +1,7 @@
 import Message, {MessageType} from "components/message";
 import bitcoin from "assets/images/bitcoin.svg";
 import user from "assets/images/user.svg";
-import aresrewards from "assets/images/aresrewards.svg";
+import aresWards from "assets/images/aresrewards.svg";
 import timeIcon from "assets/images/time.svg";
 
 import { Content, OngoingWrapper, OngoingContentCard } from "./style";
@@ -14,7 +14,8 @@ const Ongoing = () => {
                 Price Function
             </header>
             <Content>
-                <Message type={MessageType.SUCCESS} message={"You have successfully participated in the prediction below, good luck!"}/>
+                <Message type={MessageType.SUCCESS}
+                         message={"You have successfully participated in the prediction below, good luck!"}/>
                 <OngoingContentCard>
                     <div className="time">
                         20/11/2021 12:00 UTC
@@ -29,7 +30,7 @@ const Ongoing = () => {
                                 <p>5,000 persons participated</p>
                             </div>
                             <div className="cardLeftItem">
-                                <img src={aresrewards} alt="" width={25} height={25}/>
+                                <img src={aresWards} alt="" width={25} height={25}/>
                                 <div>
                                     <div>Total Rewards</div>
                                     <div>5000 ARES</div>

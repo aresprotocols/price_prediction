@@ -52,13 +52,13 @@ const Message = (config: MessageProps) => {
                 {content}
             </SuccessMessageWrapper>
         } else if (config.type === MessageType.WARNING) {
-            return <WarningMesageWrapper>
+            return <WarningMessageWrapper>
                 {content}
-            </WarningMesageWrapper>
+            </WarningMessageWrapper>
         } else {
-            return <ErrorMesageWrapper>
+            return <ErrorMessageWrapper>
                 {content}
-            </ErrorMesageWrapper>
+            </ErrorMessageWrapper>
         }
     }
     return (
@@ -78,7 +78,7 @@ const SuccessMessageWrapper = styled.div`
     }
 `;
 
-const WarningMesageWrapper = styled.div`
+const WarningMessageWrapper = styled.div`
     background-color: #F2E5D2;
     color: #F8A849;
     border-radius: 10px;
@@ -91,7 +91,7 @@ const WarningMesageWrapper = styled.div`
 `;
 
 
-const ErrorMesageWrapper = styled.div`
+const ErrorMessageWrapper = styled.div`
     background-color: #FFD9D8;
     box-shadow: 10px 10px 10px rgba(46, 71, 101, 0.08);
     color: #F34944;
