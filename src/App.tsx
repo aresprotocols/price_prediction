@@ -8,24 +8,29 @@ import Join from "./pages/Join";
 import Home from "pages/home";
 import Ongoing from "pages/ongoing";
 import Completed from "pages/completed";
+import GoingList from "./pages/ongoing/going_list";
+import GoJoin from "pages/ongoing/join";
 
 function App() {
   return (
     <>
-      <BrowserRouter>
-        <Suspense fallback={<div>loading...</div>}>
-          <Header />
+      <Suspense fallback={<div>loading...</div>}>
+        <Header />
+        <BrowserRouter>
           <div className="content">
             <Routes>
               <Route path="/" element={<Join />}/>
-              <Route path="/home" element={<Home />}/>
-              <Route path="/ongoing" element={<Ongoing />}/>
-              <Route path="/completed" element={<Completed />}/>
+              <Route path="home" element={<Home />}/>
+              <Route path="ongoing" element={<Ongoing />}>
+                <Route path="" element={<GoingList />} />
+                <Route path="join" element={<GoJoin />} />
+              </Route>
+              <Route path="completed" element={<Completed />}/>
             </Routes>
           </div>
-          <Footer />
-        </Suspense>
-      </BrowserRouter>
+        </BrowserRouter>
+        <Footer />
+      </Suspense>
     </>
   );
 }

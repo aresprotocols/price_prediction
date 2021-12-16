@@ -21,7 +21,7 @@ const Header = () => {
                 <nav>
                     <Menu mode="horizontal" className="menu">
                         <Menu.Item key="Home">
-                            Home
+                           Home
                         </Menu.Item>
                         <Menu.Item key="Ongoing">
                             Ongoing
@@ -35,7 +35,7 @@ const Header = () => {
                     </Menu>
                     <LanguageMenuWrapper>
                         <Dropdown overlay={languageMenu}>
-                            <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
+                            <a href="/" className="ant-dropdown-link" onClick={e => e.preventDefault()}>
                                 EN <CaretDownOutlined />
                             </a>
                         </Dropdown>
