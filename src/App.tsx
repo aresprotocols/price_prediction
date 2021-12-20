@@ -10,6 +10,7 @@ import Ongoing from "pages/ongoing";
 import Completed from "pages/completed";
 import GoingList from "./pages/ongoing/going_list";
 import GoJoin from "pages/ongoing/join";
+import Winner from "./pages/completed/winner";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
                 <Route path="join" element={<GoJoin />} />
               </Route>
               <Route path="completed" element={<Completed />}/>
+              <Route path="completed/winner" element={<Winner />}/>
             </Routes>
           </div>
         </BrowserRouter>

@@ -1,5 +1,6 @@
 import { HomeWrapper, HomeContent } from "./style";
-import Message, {MessageType} from "../../components/message";
+import Message, {MessageType} from "components/message";
+import Rules from "components/rules";
 
 
 
@@ -26,6 +27,8 @@ const Home = () => {
                 </div>
                 <Message type={MessageType.WARNING} message={"Each person can receive 50 ARES per day. Since the test coins only can be used for operation on Ares gladios 1.01, the test coin has no actual token value."}/>
             </HomeContent>
+
+            <Rules />
         </HomeWrapper>
     );
 }
