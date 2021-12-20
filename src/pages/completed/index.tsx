@@ -3,16 +3,18 @@ import Message, {MessageType} from "components/message";
 import bitcoin from "assets/images/bitcoin.svg";
 import {Button, Space} from "antd";
 import CoinCard from "components/coin_card";
+import {useTranslation} from "react-i18next";
 
 const Completed = () => {
+    const { t } = useTranslation(['common']);
     return (
         <CompletedWrapper>
             <header>
-                Price Function
+                {t("Price Function")}
             </header>
             <Content>
                 <Message type={MessageType.ERROR}
-                         message={"No one won in this prediction, and the prize will be accumulated to the next prediction about BTC!"}/>
+                         message={t("No one won in this prediction tips")}/>
 
                 <ContentCard>
                     <div className="time">
@@ -23,19 +25,19 @@ const Completed = () => {
                             <img src={bitcoin} alt="" width={23} height={23}/>&nbsp;<span className="title">BTC</span>
                         </div>
                         <div className="desc">
-                            No one won in this prediction
+                            {t("No one won in this prediction")}
                         </div>
                         <div className="result">
-                            Result: BTC ≤ $63000
+                            {t("Result")}: BTC ≤ $63000
                         </div>
                         <div className="option">
                             <Space size="middle">
                                 <Button
                                     type="primary" style={{width: "90px", background: "#2E4DD4", border: "1px solid #2E4DD4"}}
-                                >OK</Button>
+                                >{t("OK")}</Button>
                                 <Button
                                     style={{width: "90px", border: "2px solid #2E4DD4", color: "#2E4DD4", borderRadius: "5px"}}
-                                >Consult</Button>
+                                >{t("Consult")}</Button>
                             </Space>
                         </div>
                     </div>

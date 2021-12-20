@@ -4,13 +4,14 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import './App.css';
 import Header from "components/header";
 import Footer from "components/footer";
-import Join from "./pages/Join";
+import Join from "pages/Join";
 import Home from "pages/home";
 import Ongoing from "pages/ongoing";
 import Completed from "pages/completed";
-import GoingList from "./pages/ongoing/going_list";
+import GoingList from "pages/ongoing/going_list";
 import GoJoin from "pages/ongoing/join";
-import Winner from "./pages/completed/winner";
+import Winner from "pages/completed/winner";
+import Rules from "./components/rules";
 
 function App() {
   return (
@@ -22,12 +23,14 @@ function App() {
             <Routes>
               <Route path="/" element={<Join />}/>
               <Route path="home" element={<Home />}/>
+              <Route path="rules" element={<Rules />}/>
               <Route path="ongoing" element={<Ongoing />}>
                 <Route path="" element={<GoingList />} />
                 <Route path="join" element={<GoJoin />} />
               </Route>
               <Route path="completed" element={<Completed />}/>
               <Route path="completed/winner" element={<Winner />}/>
+
             </Routes>
           </div>
         </BrowserRouter>

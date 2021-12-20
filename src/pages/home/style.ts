@@ -20,6 +20,7 @@ export const HomeContent = styled.div`
         font-weight: 400;
         font-size: 16px;
         color: #2E4765;
+        text-align: center;
     }
     .imgContainer {
         border-radius: 50%;

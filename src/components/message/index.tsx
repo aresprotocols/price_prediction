@@ -74,7 +74,9 @@ const SuccessMessageWrapper = styled.div`
     .messageContent {
         display: flex;
         align-items: center;
-        column-gap: 10px;    
+        column-gap: 10px;
+        text-align: center;
+        justify-content: center;
     }
 `;
 
@@ -86,7 +88,8 @@ const WarningMessageWrapper = styled.div`
     .messageContent {
         display: flex;
         align-items: center;
-        column-gap: 10px;    
+        column-gap: 10px;
+        justify-content: center;
     }
 `;
 
@@ -100,7 +103,8 @@ const ErrorMessageWrapper = styled.div`
     .messageContent {
         display: flex;
         align-items: center;
-        column-gap: 10px;    
+        column-gap: 10px;
+        justify-content: center;
     }
 `;
 

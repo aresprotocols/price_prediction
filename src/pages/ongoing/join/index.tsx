@@ -1,8 +1,11 @@
 import {GoJoinWrapper, JoinContent, Price, Countdown} from "./style";
 import {Button, Form, Input} from "antd";
 import time from "assets/images/time.svg";
+import {useTranslation} from "react-i18next";
 
 const GoJoin = () => {
+    const { t } = useTranslation(['common']);
+    const priceLabel = t("Price") + "(" + t("The deviation rate is") + "1%)";
     return (
         <GoJoinWrapper>
             <div className="time">
@@ -21,16 +24,16 @@ const GoJoin = () => {
                         </span>
                         &nbsp;&nbsp;
                         <span className="CardStatus">
-                            • Live Time
+                            • {t("Live Time")}
                         </span>
                     </Price>
                 </div>
                 <div className="joinForm">
                     <Form layout="vertical" style={{width: "250px"}}>
-                        <Form.Item label="Price（The deviation rate is 1%）">
+                        <Form.Item label={priceLabel}>
                             <Input prefix="$"></Input>
                         </Form.Item>
-                        <Form.Item label="BSC Address">
+                        <Form.Item label={"BSC " + t("Address")}>
                             <Input></Input>
                         </Form.Item>
                     </Form>
@@ -43,13 +46,13 @@ const GoJoin = () => {
                     </div>
                 </div>
                 <div className="joinMoney">
-                    <Button className={"btn"}>FREE 100</Button>
-                    <Button className={"btn"}>FREE 200</Button>
-                    <Button className={"btn"}>FREE 300</Button>
+                    <Button className={"btn"}>{t("free").toUpperCase()} 100</Button>
+                    <Button className={"btn"}>{t("free").toUpperCase()} 200</Button>
+                    <Button className={"btn"}>{t("free").toUpperCase()} 300</Button>
                 </div>
                 <label style={{fontSize: "12px", color:"#F34944"}}>
-                    * Sorry, your test coins are insufficient to participate! / You have already participated in this prediction,
-                    you cannot participate repeatedly!
+                    * {t("Sorry, your test coins are insufficient to participate!")}
+                    / {t("You have already participated in this prediction, you cannot participate repeatedly!")}
                 </label>
             </JoinContent>
         </GoJoinWrapper>

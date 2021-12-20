@@ -1,8 +1,10 @@
 import { Table } from "antd";
 import styled from "styled-components";
+import {useTranslation} from "react-i18next";
 
 
 const Winner = () => {
+    const { t } = useTranslation(['common']);
     const dataSource = [
         {
             name: "Emily Yang",
@@ -26,17 +28,17 @@ const Winner = () => {
 
     const columns = [
         {
-            title: "name",
+            title: t("winnerName"),
             dataIndex: "name",
             key: "name"
         },
         {
-            title: "prediction",
+            title: t("prediction"),
             dataIndex: "prediction",
             key: "prediction"
         },
         {
-            title: "address",
+            title: t("Address"),
             dataIndex: "address",
             key: "address",
             ellipsis: true

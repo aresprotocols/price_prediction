@@ -1,15 +1,16 @@
 import {Dropdown, Menu } from 'antd';
 import { CaretDownOutlined } from '@ant-design/icons';
 import { HeaderWrapper, LanguageMenuWrapper } from "./style";
+import {useTranslation} from "react-i18next";
 
 const { SubMenu } = Menu;
 
 const Header = () => {
-
+    const {t} = useTranslation(["common"]);
     const languageMenu = (
         <Menu>
-            <Menu.Item key="1">EN</Menu.Item>
-            <Menu.Item key="2">CN</Menu.Item>
+            <Menu.Item key="1">{t("EN")}</Menu.Item>
+            <Menu.Item key="2">{t("CN")}</Menu.Item>
         </Menu>
     );
     return (
@@ -21,16 +22,16 @@ const Header = () => {
                 <nav>
                     <Menu mode="horizontal" className="menu">
                         <Menu.Item key="Home">
-                           Home
+                            {t("Home")}
                         </Menu.Item>
                         <Menu.Item key="Ongoing">
-                            Ongoing
+                            {t("Ongoing")}
                         </Menu.Item>
-                        <SubMenu key="SubMenu" title="Completed" >
+                        <SubMenu key="SubMenu" title= {t("Completed")}>
                             <Menu.Item key="setting:1">Completed 1</Menu.Item>
                         </SubMenu>
                         <Menu.Item key="Upcoming">
-                            Upcoming
+                            {t("Upcoming")}
                         </Menu.Item>
                     </Menu>
                     <LanguageMenuWrapper>

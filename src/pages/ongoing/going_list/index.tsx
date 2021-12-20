@@ -4,13 +4,15 @@ import bitcoin from "assets/images/bitcoin.svg";
 import user from "assets/images/user.svg";
 import aresWards from "assets/images/aresrewards.svg";
 import timeIcon from "assets/images/time.svg";
+import {useTranslation} from "react-i18next";
 
 
 const GoingList = () => {
+    const {t} = useTranslation(["common"]);
     return (
         <Content>
             <Message type={MessageType.SUCCESS}
-                     message={"You have successfully participated in the prediction below, good luck!"}/>
+                     message={t("successfully participated tips")}/>
             <OngoingContentCard>
                 <div className="time">
                     20/11/2021 12:00 UTC
@@ -22,12 +24,12 @@ const GoingList = () => {
                     <div style={{display: "flex", columnGap: "10px"}}>
                         <div className="cardItem">
                             <img src={user} alt="" width={25} height={25}/>
-                            <p>5,000 persons participated</p>
+                            <p>5,000 {t("persons participated")}</p>
                         </div>
                         <div className="cardLeftItem">
                             <img src={aresWards} alt="" width={25} height={25}/>
                             <div>
-                                <div>Total Rewards</div>
+                                <div>{t("Total Rewards")}</div>
                                 <div>5000 ARES</div>
                             </div>
                         </div>
@@ -40,7 +42,7 @@ const GoingList = () => {
                     </div>
                 </div>
             </OngoingContentCard>
-            <Message type={MessageType.WARNING} message={"In order to ensure the fairness and effectiveness of the estimate, the prediction window will be closed one hour before the end of each period of the price estimate. Please participate in time!"}/>
+            <Message type={MessageType.WARNING} message={t("closed one hour before tips")}/>
         </Content>
     );
 }

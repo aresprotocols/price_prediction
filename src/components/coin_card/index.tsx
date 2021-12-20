@@ -4,6 +4,7 @@ import time from "assets/images/time.svg"
 import bitcoin from "assets/images/bitcoin.svg"
 import {Button} from "antd";
 import {CoinCardWrapper, CoinCardContent, CoinCardPrice, CoinCardARES, } from "./style"
+import {useTranslation} from "react-i18next";
 
 
 export enum CoinCardType {
@@ -23,6 +24,7 @@ interface CoinCardProps {
 }
 
 const CoinCard = (config: CoinCardProps) => {
+    const { t } = useTranslation(['common']);
     return (
         <CoinCardWrapper>
             <div className={`time ${config.type === CoinCardType.COMING ? "comingTime" : ""} `}>
@@ -49,7 +51,7 @@ const CoinCard = (config: CoinCardProps) => {
                             config.live ? <Fragment>
                                 &nbsp;&nbsp;
                                 <span className="coinCardStatus">
-                                • Live Time
+                                • {t("Live Time")}
                             </span>
                             </Fragment> : ""
                         }
@@ -58,7 +60,7 @@ const CoinCard = (config: CoinCardProps) => {
                 <div style={{display: "flex"}}>
                     <CoinCardARES>
                         <img src={aresWards} alt=""/>
-                        <p>Total Rewards</p>
+                        <p>{t("Total Rewards")}</p>
                         <p className="price">5000 ARES</p>
                     </CoinCardARES>
                     {
@@ -73,8 +75,8 @@ const CoinCard = (config: CoinCardProps) => {
                 {
                     config.type === "COMMENT" ?
                         <Button className="btn">
-                            WINNER
-                        </Button> : <p className="comming">COMING SOON!</p>
+                            {t("Winner").toUpperCase()}
+                        </Button> : <p className="comming">{t("Coming soon").toUpperCase()}</p>
                 }
             </CoinCardContent>
         </CoinCardWrapper>
