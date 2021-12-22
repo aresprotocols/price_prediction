@@ -22,9 +22,9 @@ export const HeaderWrapper = styled.div`
         padding-bottom: 1px;
         font-size: 1.8rem;
         font-weight: bold;
+
         .menu {
             line-height: 64px;
-            width: 410px;
             background-color: #1295F0;
             color: #e3e3e3 !important;
             border: none;
@@ -32,11 +32,24 @@ export const HeaderWrapper = styled.div`
         .ant-menu-item-selected, .ant-menu-submenu-selected {
             color: #FFF !important;
         }
+
         .ant-menu-item-active {
             color: #FFF !important;
         }
+
         .ant-menu-submenu-title:hover, .ant-menu-submenu-open {
             color: #FFF !important;
+        }
+
+        .connectWallet {
+            background: linear-gradient(166deg, #3075F2 0%, #333FDF 100%);
+            opacity: 1;
+            border-radius: 34px;
+            font-size: 1rem;
+            line-height: 3rem;
+            margin: auto 0;
+            padding: 0.3rem 1.5rem;
+            color: #FFF;
         }
     }
 `;
