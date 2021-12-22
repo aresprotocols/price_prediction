@@ -1,4 +1,4 @@
-import {Dropdown, Menu, Space} from 'antd';
+import {Dropdown, Menu } from 'antd';
 import { CaretDownOutlined } from '@ant-design/icons';
 import { HeaderWrapper, LanguageMenuWrapper } from "./style";
 import {useTranslation} from "react-i18next";
@@ -8,11 +8,15 @@ import fluctuations from "assets/images/fluctuations.svg"
 const { SubMenu } = Menu;
 
 const Header = () => {
-    const {t} = useTranslation(["common"]);
+    const {t, i18n} = useTranslation(["common"]);
     const languageMenu = (
-        <Menu>
-            <Menu.Item key="1">{t("EN")}</Menu.Item>
-            <Menu.Item key="2">{t("CN")}</Menu.Item>
+        <Menu onClick={(info) =>{
+            console.log(info);
+            let targetLanguage = info.key === 'en' ? 'en' : 'cn';
+            i18n.changeLanguage(targetLanguage);
+        }}>
+            <Menu.Item key="en">{t("EN")}</Menu.Item>
+            <Menu.Item key="cn">{t("CN")}</Menu.Item>
         </Menu>
     );
     return (
@@ -27,58 +31,30 @@ const Header = () => {
                             {t("Home")}
                         </Menu.Item>
                         <SubMenu key="Ongoing" title= {t("Ongoing")}>
-                            <Menu.Item key="ongoing_prediction">
-                                <Space>
-                                    <div>
-                                        <img src={myPrediction} alt="" width={15} height={15}/>
-                                    </div>
-                                    {t("Price Prediction")}
-                                </Space>
+                            <Menu.Item key="ongoing_prediction"
+                                       icon={<img src={myPrediction} alt="" width={15} height={15}/>}>
+                                {t("Price Prediction")}
                             </Menu.Item>
-                            <Menu.Item key="ongoing_fluctuations">
-                                <Space>
-                                    <span>
-                                        <img src={fluctuations} alt="" width={15} height={15}/>
-                                    </span>
-                                    {t("Price Fluctuations")}
-                                </Space>
+                            <Menu.Item key="ongoing_fluctuations"
+                                       icon={<img src={fluctuations} alt="" width={15} height={15}/>}>
+                                {t("Price Fluctuations")}
                             </Menu.Item>
                         </SubMenu>
 
                         <SubMenu key="SubMenu" title= {t("Completed")}>
-                            <Menu.Item key="prediction">
-                                <Space>
-                                    <div>
-                                        <img src={myPrediction} alt="" width={15} height={15}/>
-                                    </div>
-                                    {t("Price Prediction")}
-                                </Space>
+                            <Menu.Item key="prediction" icon={<img src={myPrediction} alt="" width={15} height={15}/>}>
+                                {t("Price Prediction")}
                             </Menu.Item>
-                            <Menu.Item key="fluctuations">
-                                <Space>
-                                    <span>
-                                        <img src={fluctuations} alt="" width={15} height={15}/>
-                                    </span>
-                                    {t("Price Fluctuations")}
-                                </Space>
+                            <Menu.Item key="fluctuations" icon={<img src={fluctuations} alt="" width={15} height={15}/>}>
+                                {t("Price Fluctuations")}
                             </Menu.Item>
                         </SubMenu>
                         <SubMenu key="Upcoming" title= {t("Upcoming")}>
-                            <Menu.Item key="upcoming_prediction">
-                                <Space>
-                                    <div>
-                                        <img src={myPrediction} alt="" width={15} height={15}/>
-                                    </div>
-                                    {t("Price Prediction")}
-                                </Space>
+                            <Menu.Item key="upcoming_prediction" icon={<img src={myPrediction} alt="" width={15} height={15}/>}>
+                                {t("Price Prediction")}
                             </Menu.Item>
-                            <Menu.Item key="upcoming_fluctuations">
-                                <Space>
-                                    <span>
-                                        <img src={fluctuations} alt="" width={15} height={15}/>
-                                    </span>
-                                    {t("Price Fluctuations")}
-                                </Space>
+                            <Menu.Item key="upcoming_fluctuations" icon={<img src={fluctuations} alt="" width={15} height={15}/>}>
+                                {t("Price Fluctuations")}
                             </Menu.Item>
                         </SubMenu>
                     </Menu>
@@ -88,7 +64,7 @@ const Header = () => {
                     <LanguageMenuWrapper>
                         <Dropdown overlay={languageMenu}>
                             <a href="/" className="ant-dropdown-link" onClick={e => e.preventDefault()}>
-                                EN <CaretDownOutlined />
+                                {t(i18n.language.toUpperCase())} <CaretDownOutlined />
                             </a>
                         </Dropdown>
                     </LanguageMenuWrapper>
