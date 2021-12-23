@@ -10,6 +10,7 @@ import {useTranslation} from "react-i18next";
 export enum CoinCardType {
     "PRIMARY" = "PRIMARY",
     "COMING" = "COMING",
+    "WINNER" = "WINNER",
     "COMPLETED" = "COMPLETED",
     "JOIN" = "JOIN"
 }
@@ -19,24 +20,54 @@ interface CoinCardProps {
     title: String,
     price: String,
     live: Boolean,
+    icon: Boolean,
+    callBack?: Function,
     option?: ReactNode,
     style?: CSSProperties
 }
 
 const CoinCard = (config: CoinCardProps) => {
     const { t } = useTranslation(['common']);
+    const footer = () => {
+        switch (config.type) {
+            case CoinCardType.JOIN:
+                return (
+                    <Button className="join_btn btn" onClick={ () => {
+                        if (config.callBack) {
+                            config.callBack();
+                        }
+                    }}>
+                        {t("join").toUpperCase()}
+                    </Button>
+                );
+            case CoinCardType.COMING:
+                return <p className="comming">{t("Coming soon").toUpperCase()}</p>
+            case CoinCardType.WINNER:
+                return (
+                    <Button className="btn" onClick={ () => {
+                        if (config.callBack) {
+                            config.callBack();
+                        }
+                    }}>
+                        {t("winner").toUpperCase()}
+                    </Button>
+                );
+            default:
+                return ""
+        }
+    }
     return (
         <CoinCardWrapper>
             <div className={`time ${config.type === CoinCardType.COMING ? "comingTime" : ""} `}>
                 20/11/2021 12:00 UTC
             </div>
             <CoinCardContent>
-                <div className={`${config.type === CoinCardType.COMPLETED ? "contentHeader" : ""}`}>
+                <div className={`${config.icon ? "contentHeader" : ""}`}>
                     <div className="coinName">
                         {
-                            config.type === CoinCardType.COMPLETED ? <Fragment>
-                                        <img src={bitcoin} alt="" width={25} height={25}/>&nbsp;&nbsp;
-                                    </Fragment> : ""
+                            config.icon ? <Fragment>
+                                <img src={bitcoin} alt="" width={25} height={25}/>&nbsp;&nbsp;
+                            </Fragment> : ""
 
                         }
                         <span className="coinCardTitle">
@@ -64,7 +95,7 @@ const CoinCard = (config: CoinCardProps) => {
                         <p className="price">5000 ARES</p>
                     </CoinCardARES>
                     {
-                        config.type === CoinCardType.JOIN ?
+                        config.type === CoinCardType.JOIN || config.type === CoinCardType.COMING ?
                             <CoinCardARES>
                                 <img src={time} alt=""/>
                                 <p>3 Day</p>
@@ -73,10 +104,7 @@ const CoinCard = (config: CoinCardProps) => {
                     }
                 </div>
                 {
-                    config.type === "COMMENT" ?
-                        <Button className="btn">
-                            {t("Winner").toUpperCase()}
-                        </Button> : <p className="comming">{t("Coming soon").toUpperCase()}</p>
+                    footer()
                 }
             </CoinCardContent>
         </CoinCardWrapper>

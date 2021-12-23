@@ -22,7 +22,7 @@ export const OngoingContentCard = styled.div`
     }
     .card {
         width: 378px;
-        height: 312px;
+        height: 25rem;
         background: #FFFFFF;
         box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.08);
         border-radius: 15px;
@@ -40,15 +40,14 @@ export const OngoingContentCard = styled.div`
     }
     .cardItem {
         width: 155px;
-        height: 85px;
         background: #E7EBFF;
         border-radius: 10px;
-        padding: 10px 5px;
+        padding: 20px 5px;
         text-align: center;
     }
     .cardLeftItem {
         width: 155px;
-        height: 85px;
+        height: 75px;
         background: #E7EBFF;
         border-radius: 10px;
         padding: 10px 5px;
@@ -56,4 +55,14 @@ export const OngoingContentCard = styled.div`
         align-items: center;
         justify-content: space-around;
     }
+    .cardLeftContent {
+        display: flex;
+        flex-direction: column;
+        row-gap: 1rem;
+    }
+`;
+
+export const CardContent = styled.div`
+    display: flex;
+    column-gap: 1rem;
 `;

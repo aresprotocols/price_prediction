@@ -42,6 +42,7 @@ const enCommon = {
     "Average": "Average",
     "prediction": "Prediction",
     "winnerName": "Name",
+    "winner": "winner",
     "The deviation rate is": "The deviation rate is",
     "Congratulations tips": "Congratulations on getting the reward for this prediction, the reward is 500 ARES!",
     "Come again tomorrow": "Your test coins have been claimed today. Come again tomorrow!",

@@ -45,6 +45,7 @@ const zhCommon = {
     "per day": "每天",
     "prediction": "竞猜价格",
     "winnerName": "账号",
+    "winner": "获胜者",
     "Congratulations tips": "恭喜您获得本次竞猜奖励， 奖励为500 ARES！",
     "Sorry, your test coins are insufficient to participate!": " 对不起， 您的测试币不足，无法参与！",
     "You have already participated in this prediction, you cannot participate repeatedly!": "您已经参与了本次竞猜， 不能反复参与！",

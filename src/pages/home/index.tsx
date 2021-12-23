@@ -1,12 +1,13 @@
 import { HomeWrapper, HomeContent } from "./style";
 import Message, {MessageType} from "components/message";
-import Rules from "components/rules";
 import {useTranslation} from "react-i18next";
+import {useNavigate} from "react-router";
 
 
 
 const Home = () => {
     const {t} = useTranslation(['common']);
+    const navigate = useNavigate();
     return (
         <HomeWrapper>
             <div className="title">
@@ -22,15 +23,15 @@ const Home = () => {
                     </div>
                     <div>
                         <p>{t("Receive test coins")}</p>
-                        <div className="aresNum">
+                        <div className="aresNum" onClick={() => {
+                            navigate("/home/coins");
+                        }}>
                             50 ARES<span>&nbsp;/{t("per day")}</span>
                         </div>
                     </div>
                 </div>
                 <Message type={MessageType.WARNING} message={t("Receive test coins tips")}/>
             </HomeContent>
-
-            <Rules />
         </HomeWrapper>
     );
 }

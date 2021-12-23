@@ -3,7 +3,6 @@ import styled from "styled-components";
 
 
 export const CoinCardWrapper = styled.div`
-    width: 378px;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
@@ -41,7 +40,7 @@ export const CoinCardPrice = styled.div`
 
 export const CoinCardContent = styled.div`
     width: 378px;
-    height: 312px;
+    min-height: 250px;
     background: #FFFFFF;
     box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.08);
     border-radius: 15px;
@@ -68,6 +67,9 @@ export const CoinCardContent = styled.div`
         height: 40px;
         color: #FFF;
         font-weight: 600;
+    }
+    .join_btn {
+        background: #2E4DD4;;
     }
 `
 
