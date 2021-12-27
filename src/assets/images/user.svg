@@ -1,13 +1,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="87.161" height="87.161" viewBox="0 0 87.161 87.161">
   <g id="User" transform="translate(-366.644 -473.864)">
     <g id="Grupo_2101" data-name="Grupo 2101" transform="translate(366.644 473.864)">
-      <g id="Elipse_279" data-name="Elipse 279" fill="none" stroke="#2e4765" stroke-width="5">
+      <g id="Elipse_279" data-name="Elipse 279" fill="none" stroke="#FFF" stroke-width="5">
         <circle cx="43.58" cy="43.58" r="43.58" stroke="none"/>
         <circle cx="43.58" cy="43.58" r="41.08" fill="none"/>
       </g>
       <g id="Icon_feather-user" data-name="Icon feather-user" transform="translate(28.802 24.473)">
-        <path id="Trazado_334" data-name="Trazado 334" d="M38.413,34.655V30.6a8.1,8.1,0,0,0-8.1-8.1H14.1A8.1,8.1,0,0,0,6,30.6v4.052" transform="translate(-6 1.809)" fill="none" stroke="#2e4765" stroke-linecap="round" stroke-linejoin="round" stroke-width="5.8"/>
-        <path id="Trazado_335" data-name="Trazado 335" d="M28.206,12.6a8.1,8.1,0,1,1-8.1-8.1A8.1,8.1,0,0,1,28.206,12.6Z" transform="translate(-3.897 -4.5)" fill="none" stroke="#2e4765" stroke-linecap="round" stroke-linejoin="round" stroke-width="5.8"/>
+        <path id="Trazado_334" data-name="Trazado 334" d="M38.413,34.655V30.6a8.1,8.1,0,0,0-8.1-8.1H14.1A8.1,8.1,0,0,0,6,30.6v4.052" transform="translate(-6 1.809)" fill="none" stroke="#FFF" stroke-linecap="round" stroke-linejoin="round" stroke-width="5.8"/>
+        <path id="Trazado_335" data-name="Trazado 335" d="M28.206,12.6a8.1,8.1,0,1,1-8.1-8.1A8.1,8.1,0,0,1,28.206,12.6Z" transform="translate(-3.897 -4.5)" fill="none" stroke="#FFF" stroke-linecap="round" stroke-linejoin="round" stroke-width="5.8"/>
       </g>
     </g>
   </g>

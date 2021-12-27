@@ -29,6 +29,7 @@ export const HeaderWrapper = styled.div`
             color: #e3e3e3 !important;
             border: none;
         }
+
         .ant-menu-item-selected, .ant-menu-submenu-selected {
             color: #FFF !important;
         }
@@ -41,8 +42,31 @@ export const HeaderWrapper = styled.div`
             color: #FFF !important;
         }
 
+        .account {
+            display: flex;
+            align-items: center;
+            column-gap: 1rem;
+            color: #FFF;
+            font-weight: 400;
+
+            img {
+                color: #FFF;
+                width: 2.5rem;
+                height: 2.5rem;
+            }
+        }
+
+        .dropdownAccount {
+            color: #2E4765;
+        }
+        .headerAccountAddress {
+            line-height: 1.3rem;
+            font-size: 1rem;
+        }
+        
         .connectWallet {
             background: linear-gradient(166deg, #3075F2 0%, #333FDF 100%);
+            min-width: 124px;
             opacity: 1;
             border-radius: 34px;
             font-size: 1rem;
@@ -50,6 +74,7 @@ export const HeaderWrapper = styled.div`
             margin: auto 0;
             padding: 0.3rem 1.5rem;
             color: #FFF;
+            cursor: pointer;
         }
     }
 `;
@@ -58,6 +83,7 @@ export const HeaderWrapper = styled.div`
 export const LanguageMenuWrapper = styled.div`
     line-height: 64px;
     font-size: 1.5rem;
+    min-width: 40px;
     a {
         color: #e3e3e3;
     }

@@ -14,6 +14,7 @@ export const FooterWrapper = styled.div`
 
 export const FooterContainer = styled.div`
     display: flex;
+    flex-wrap: wrap;
     max-width: 1920px;
     margin: 0 auto;
     column-gap: 150px;
