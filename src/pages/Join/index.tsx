@@ -7,8 +7,8 @@ const Join = () => {
     const { t } = useTranslation(['common']);
     const navigate = useNavigate();
     return (
-        <JoinWrapper style={{border: "1pxs solid red"}}>
-            <WebDesc>
+        <JoinWrapper hidden={true}>
+            <WebDesc hidden={true}>
                 <p className="title">{t("Price Prediction")}</p>
                 <p className="desc">
                     {t("site desc")}

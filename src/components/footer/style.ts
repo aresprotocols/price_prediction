@@ -10,6 +10,9 @@ export const FooterWrapper = styled.div`
     p {
         color: rgba(255, 255, 255, 0.6)
     }
+    @media screen and (max-width: 750px) {
+        padding: 30px;
+    }
 `;
 
 export const FooterContainer = styled.div`
@@ -19,16 +22,26 @@ export const FooterContainer = styled.div`
     margin: 0 auto;
     column-gap: 150px;
     row-gap: 30px;
+
     .about {
         flex: auto;
-        min-width: 300px;
+        max-width: 300px;
     }
+
     .media {
         display: flex;
         flex-wrap: wrap;
         column-gap: 30px;
         row-gap: 10px;
         width: 250px;
+    }
+
+    @media screen and (max-width: 750px) {
+        .media {
+            justify-content: space-around;
+            width: 100%;
+            padding: 0 20px;
+        }
     }
 `;
 
@@ -54,6 +67,11 @@ export const FooterItem = styled.div`
 
     a:hover {
         color: white
+    }
+
+    @media screen and (max-width: 750px) {
+        width: 100%;
+        text-align: center;
     }
 `;
 
