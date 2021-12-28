@@ -4,6 +4,7 @@ html {
 
 html body #root .App {
   min-width: 100vh;
+  height: 100%;
 }
 
 .content {
@@ -11,4 +12,10 @@ html body #root .App {
   min-height: 55vh;
   padding: 30px 150px;
   background-color: #e7ebff;
+}
+
+@media screen and (max-width: 750px) {
+  .content {
+    padding: 0;
+  }
 }

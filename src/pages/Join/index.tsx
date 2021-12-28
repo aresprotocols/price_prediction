@@ -7,8 +7,8 @@ const Join = () => {
     const { t } = useTranslation(['common']);
     const navigate = useNavigate();
     return (
-        <JoinWrapper hidden={true}>
-            <WebDesc hidden={true}>
+        <JoinWrapper>
+            <WebDesc>
                 <p className="title">{t("Price Prediction")}</p>
                 <p className="desc">
                     {t("site desc")}
@@ -19,6 +19,7 @@ const Join = () => {
                     {t("join").toUpperCase()}
                 </Button>
             </WebDesc>
+            <img src="/images/home.png" alt=""/>
         </JoinWrapper>
     );
 }

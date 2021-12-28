@@ -12,9 +12,12 @@ export const HeaderWrapper = styled.div`
         justify-content: space-between;
         padding: 0 140px;
     }
-
+    
     .logo {
         line-height: 64px;
+        img {
+            height: 42px;
+        }
     }
 
     nav {
@@ -23,12 +26,14 @@ export const HeaderWrapper = styled.div`
         padding-bottom: 1px;
         font-size: 1.8rem;
         font-weight: bold;
+        position: relative;
 
-        .menu {
+        .pcMenu {
             line-height: 64px;
             background-color: #1295F0;
             color: #e3e3e3 !important;
             border: none;
+            display: block;
         }
 
         .ant-menu-item-selected, .ant-menu-submenu-selected {
@@ -78,6 +83,26 @@ export const HeaderWrapper = styled.div`
             cursor: pointer;
         }
     }
+    @media screen and (max-width: 750px) {
+        header {
+            padding: 0 10px; 
+        }
+        
+        .logo {
+            img {
+                height: 30px;
+            }
+        }
+        
+        nav {
+            .pcMenu {
+                //display: none;
+                position: absolute;
+                left:-99999px;
+                top:-90999px;
+            }
+        }
+    }
 `;
 
 
@@ -85,10 +110,49 @@ export const LanguageMenuWrapper = styled.div`
     line-height: 64px;
     font-size: 1.5rem;
     min-width: 40px;
+
     a {
         color: #e3e3e3;
     }
+
     a:hover {
         color: #FFF;
+    }
+
+    @media screen and (max-width: 750px) {
+        display: none;
+    }
+`;
+
+
+export const MenuButton = styled.div`
+    line-height: 64px;
+    padding: 0 5px;
+    display: none;
+    @media screen and (max-width: 750px) {
+        display: block;
+    }
+`;
+
+
+export const PhoneMenu = styled.div`
+    position: absolute;
+    top: 64px;
+    left: -30px;
+    right: 0;
+    background-color: #FFF;
+    z-index: 100;
+    width: 108vw;
+    display: none;
+    @media screen and (max-width: 750px) {
+        display: block;
+    }
+    .menu {
+        padding: 0 21px;
+    }
+
+    .ant-menu-inline {
+        border-right: 0;
+        width: 102vw;
     }
 `;

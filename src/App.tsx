@@ -26,7 +26,7 @@ function App() {
     <>
       <Suspense fallback={<div>loading...</div>}>
         <BrowserRouter>
-          {/*<Header />*/}
+          <Header />
           <div className="content">
             <Routes>
               <Route path="/" element={<Join />} />

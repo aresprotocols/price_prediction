@@ -16,7 +16,7 @@ const Rules = () => {
             <RulesWrapper>
                 {
                     new Array(7).fill(1).map((val, index) => {
-                        return <RulesItem>
+                        return <RulesItem key={index}>
                             <div>
                                 <RulesNum>{index + 1}</RulesNum>
                             </div>

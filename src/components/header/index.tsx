@@ -1,6 +1,6 @@
 import {Dropdown, Menu } from 'antd';
-import { CaretDownOutlined } from '@ant-design/icons';
-import { HeaderWrapper, LanguageMenuWrapper } from "./style";
+import { CaretDownOutlined, MenuOutlined } from '@ant-design/icons';
+import {HeaderWrapper, LanguageMenuWrapper, MenuButton, PhoneMenu} from "./style";
 import {useTranslation} from "react-i18next";
 import myPrediction from "assets/images/myprediction.svg"
 import fluctuations from "assets/images/fluctuations.svg"
@@ -17,6 +17,7 @@ const { SubMenu } = Menu;
 const Header = () => {
     const {t, i18n} = useTranslation(["common"]);
     const navigate = useNavigate();
+    const [showPhoneMenu, setShowPhoneMenu] = useState(false);
     const [accounts, setAccounts] = useState([]);
 
     const languageMenu = (
@@ -57,6 +58,41 @@ const Header = () => {
         </Menu>
     );
 
+    const ongoingMenu = (
+        <SubMenu key="Ongoing" title= {t("Ongoing")}>
+            <Menu.Item key="/ongoing/prediction"
+                       icon={<img src={myPrediction} alt="" width={15} height={15}/>}>
+                {t("Price Prediction")}
+            </Menu.Item>
+            <Menu.Item key="/ongoing/fluctuations"
+                       icon={<img src={fluctuations} alt="" width={15} height={15}/>}>
+                {t("Price Fluctuations")}
+            </Menu.Item>
+        </SubMenu>
+    );
+
+    const completedMenu = (
+        <SubMenu key="SubMenu" title= {t("Completed")}>
+            <Menu.Item key="/completed/prediction" icon={<img src={myPrediction} alt="" width={15} height={15}/>}>
+                {t("Price Prediction")}
+            </Menu.Item>
+            <Menu.Item key="/completed/fluctuations" icon={<img src={fluctuations} alt="" width={15} height={15}/>}>
+                {t("Price Fluctuations")}
+            </Menu.Item>
+        </SubMenu>
+    );
+
+    const upcomingMenu = (
+        <SubMenu key="Upcoming" title= {t("Upcoming")}>
+            <Menu.Item key="/upcoming/prediction" icon={<img src={myPrediction} alt="" width={15} height={15}/>}>
+                {t("Price Prediction")}
+            </Menu.Item>
+            <Menu.Item key="/upcoming/fluctuations" icon={<img src={fluctuations} alt="" width={15} height={15}/>}>
+                {t("Price Fluctuations")}
+            </Menu.Item>
+        </SubMenu>
+    );
+
     const connectWallet = async () => {
         await web3Enable("price prediction").then(async res => {
             if (res.length === 0) {
@@ -69,48 +105,67 @@ const Header = () => {
             });
         });
     }
-    // @ts-ignore
-    // @ts-ignore
+
+
     return (
         <HeaderWrapper>
             <header>
                 <div className="logo">
-                    <img src="/images/logo.png" alt="price prediction logo" height={42}/>
+                    <img src="/images/logo.png" alt="price prediction logo"/>
                 </div>
+                <PhoneMenu>
+                    {
+                        showPhoneMenu ? <div className="menu">
+                            <Menu mode="inline" className="pcMenu" onClick={(info) => {
+                                const key = info.key;
+                                if (key === "en" || key === "cn") {
+                                    let targetLanguage = info.key === 'en' ? 'en' : 'cn';
+                                    i18n.changeLanguage(targetLanguage).then(r =>
+                                        console.log('language changed')
+                                    );
+                                } else {
+                                    navigate(key);
+                                }
+                                setShowPhoneMenu(!showPhoneMenu);
+                            }}>
+                                <Menu.Item key="/Home">
+                                    {t("Home")}
+                                </Menu.Item>
+                                {
+                                    ongoingMenu
+                                }
+                                {
+                                    completedMenu
+                                }
+                                {
+                                    upcomingMenu
+                                }
+                                {
+                                    <SubMenu key="language" title={t(i18n.language.toUpperCase())}>
+                                        <Menu.Item key="en">{t("EN")}</Menu.Item>
+                                        <Menu.Item key="cn">{t("CN")}</Menu.Item>
+                                    </SubMenu>
+                                }
+                            </Menu>
+                        </div> : ""
+                    }
+                </PhoneMenu>
                 <nav>
-                    <Menu mode="horizontal" className="menu" onClick={(info) => {
+                    <Menu mode="horizontal" className="pcMenu" onClick={(info) => {
                         navigate(info.key);
                     }}>
                         <Menu.Item key="/Home">
                             {t("Home")}
                         </Menu.Item>
-                        <SubMenu key="Ongoing" title= {t("Ongoing")}>
-                            <Menu.Item key="/ongoing/prediction"
-                                       icon={<img src={myPrediction} alt="" width={15} height={15}/>}>
-                                {t("Price Prediction")}
-                            </Menu.Item>
-                            <Menu.Item key="/ongoing/fluctuations"
-                                       icon={<img src={fluctuations} alt="" width={15} height={15}/>}>
-                                {t("Price Fluctuations")}
-                            </Menu.Item>
-                        </SubMenu>
-
-                        <SubMenu key="SubMenu" title= {t("Completed")}>
-                            <Menu.Item key="/completed/prediction" icon={<img src={myPrediction} alt="" width={15} height={15}/>}>
-                                {t("Price Prediction")}
-                            </Menu.Item>
-                            <Menu.Item key="/completed/fluctuations" icon={<img src={fluctuations} alt="" width={15} height={15}/>}>
-                                {t("Price Fluctuations")}
-                            </Menu.Item>
-                        </SubMenu>
-                        <SubMenu key="Upcoming" title= {t("Upcoming")}>
-                            <Menu.Item key="/upcoming/prediction" icon={<img src={myPrediction} alt="" width={15} height={15}/>}>
-                                {t("Price Prediction")}
-                            </Menu.Item>
-                            <Menu.Item key="/upcoming/fluctuations" icon={<img src={fluctuations} alt="" width={15} height={15}/>}>
-                                {t("Price Fluctuations")}
-                            </Menu.Item>
-                        </SubMenu>
+                        {
+                            ongoingMenu
+                        }
+                        {
+                            completedMenu
+                        }
+                        {
+                            upcomingMenu
+                        }
                     </Menu>
                     {
                         accounts.length > 0 ?<div className="account">
@@ -120,13 +175,18 @@ const Header = () => {
                             <div>
                                 <div>account</div>
                                 <div className="headerAccountAddress">
-                                    GU21c2Q***xjUcqELtUS
+                                    GU21***LtUS
                                 </div>
                             </div>
                         </div> : <div className="connectWallet" onClick={connectWallet}>
                             Connect Wallet
                         </div>
                     }
+                    <MenuButton onClick={() => {
+                        setShowPhoneMenu(!showPhoneMenu);
+                    }}>
+                        <MenuOutlined style={{color: "#FFF"}}/>
+                    </MenuButton>
                     <LanguageMenuWrapper>
                         <Dropdown overlay={languageMenu} >
                             <a href="/" className="ant-dropdown-link" onClick={e => e.preventDefault()}>
