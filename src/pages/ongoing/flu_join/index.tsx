@@ -14,7 +14,7 @@ const FluctuationsJoin = () => {
             <JoinContent>
                 <div className="contentHeader">
                     <div>
-                        <img src={bitcoin} alt=""/>
+                        <img src={bitcoin} alt=""/>&nbsp;&nbsp;
                         <span className="CardTitle">
                             BTC
                         </span>
@@ -25,7 +25,7 @@ const FluctuationsJoin = () => {
                         </span>
                     </Price>
                 </div>
-                <div>
+                <div className="checkbox">
                     <Checkbox>BTC &ge; 68000</Checkbox>
                     <Checkbox>68000 &lt; BTC &lt; 70000 </Checkbox>
                     <Checkbox>BTC &le; 78000</Checkbox>
@@ -34,7 +34,7 @@ const FluctuationsJoin = () => {
                     <div>
                         <Form layout="vertical">
                             <Form.Item label={"BSC " + t("Address")}>
-                                <Input></Input>
+                                <Input />
                             </Form.Item>
                         </Form>
                         <div className="joinMoney">
@@ -52,6 +52,13 @@ const FluctuationsJoin = () => {
                             <p>20 Hours Left</p>
                         </Countdown>
                     </div>
+                </div>
+                <div className="BottomJoinMoney">
+                    <Button className={"btn"} onClick={() => {
+                        // setJoined(true);
+                    }}>{t("free").toUpperCase()} 100</Button>
+                    <Button className={"btn"}>{t("free").toUpperCase()} 200</Button>
+                    <Button className={"btn"}>{t("free").toUpperCase()} 300</Button>
                 </div>
                 <label style={{fontSize: "12px", color:"#F34944"}}>
                     * {t("Sorry, your test coins are insufficient to participate!")}

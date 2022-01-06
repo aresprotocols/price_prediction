@@ -1,4 +1,4 @@
-import {Button, Checkbox} from "antd";
+import {Button, Checkbox, Space} from "antd";
 import styled from "styled-components";
 import {useTranslation} from "react-i18next";
 import {Fragment} from "react";
@@ -30,7 +30,7 @@ const Rules = () => {
                         {t("read rules")}
                     </span>
                     </Checkbox>
-                    <div>
+                    <Space>
                         <Button className="submitButton" onClick={() => {
                             navigate("/home")
                         }}>
@@ -39,7 +39,7 @@ const Rules = () => {
                         <Button className="cancelButton">
                             {t("Cancel", { ns: 'common' })}
                         </Button>
-                    </div>
+                    </Space>
                 </div>
             </RulesWrapper>
         </Fragment>
@@ -53,7 +53,7 @@ const RuleTitle = styled.div`
     font-size: 2.5rem;
     font-weight: 600;
     color: #2E4765;
-    padding: 0.5rem 0 1rem 0;
+    padding: 2rem 0 2rem 0;
 `;
 
 const RulesWrapper = styled.div`
@@ -70,7 +70,7 @@ const RulesWrapper = styled.div`
             border: 1px solid #2E4DD4;
             border-radius: 12px;
             width: 11rem;
-            margin-right: 2rem;
+            //margin-right: 2rem;
             font-weight: 600;
         }
     }
@@ -81,6 +81,15 @@ const RulesWrapper = styled.div`
     .cancelButton {
         color: #2E4DD4;
     }
+    @media screen and (max-width: 750px ) {
+        width: 80%;
+        padding: 3.5rem 1.5rem;
+        border-radius: 10px;
+        .footer {
+            flex-direction: column;
+            row-gap: 1rem;
+        }
+    }
 `;
 
 const RulesNum = styled.div`
@@ -89,6 +98,7 @@ const RulesNum = styled.div`
     background: #E7EBFF;
     border-radius: 1.3rem;
     text-align: center;
+    margin-top: 3px;
 `;
 
 

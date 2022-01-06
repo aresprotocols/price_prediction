@@ -34,6 +34,7 @@ export const HeaderWrapper = styled.div`
             color: #e3e3e3 !important;
             border: none;
             display: block;
+            min-width: 400px;
         }
 
         .ant-menu-item-selected, .ant-menu-submenu-selected {
@@ -83,7 +84,7 @@ export const HeaderWrapper = styled.div`
             cursor: pointer;
         }
     }
-    @media screen and (max-width: 750px) {
+    @media only screen and (max-width: 750px) {
         header {
             padding: 0 10px; 
         }
@@ -129,7 +130,7 @@ export const MenuButton = styled.div`
     line-height: 64px;
     padding: 0 5px;
     display: none;
-    @media screen and (max-width: 750px) {
+    @media only screen and (max-width: 750px) {
         display: block;
     }
 `;
@@ -144,7 +145,7 @@ export const PhoneMenu = styled.div`
     z-index: 100;
     width: 108vw;
     display: none;
-    @media screen and (max-width: 750px) {
+    @media only screen and (max-width: 750px) {
         display: block;
     }
     .menu {

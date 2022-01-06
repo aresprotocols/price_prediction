@@ -9,7 +9,7 @@ const OwnerTestCoin = () => {
     return (
         <OwnerTestCoinWrapper>
            <MyTestCoin>
-               <Space direction="vertical">
+               <Space direction="vertical" >
                    <div className="title">{t("Your test coins")}</div>
                    <div className="ares">100,000 ARES</div>
                    <div>
@@ -46,6 +46,7 @@ const OwnerTestCoin = () => {
 
 const OwnerTestCoinWrapper = styled.div`
     width: 100%;
+    overflow: hidden;
     img {
        width: 15rem; 
     }
@@ -70,6 +71,21 @@ const OwnerTestCoinWrapper = styled.div`
         border-radius: 12px;
         color: #2E4DD4;
     }
+    @media only screen and (max-width: 750px) {
+        .title {
+            
+        }
+        .ares {
+            height: 4rem;
+            line-height: 4rem;
+            padding: 0 2rem;
+            font-size: 1.2rem;
+
+        }
+        Button {
+            width: 120px;
+        }
+    }
 `;
 
 const MyTestCoin = styled.div`
@@ -78,6 +94,9 @@ const MyTestCoin = styled.div`
     justify-content: center;
     column-gap: 10rem;
     padding: 3rem 0;
+    @media only screen and (max-width: 750px) {
+        column-gap: 3rem;
+    }
 `;
 
 const ReceiveTestCoins = styled.div`
@@ -87,6 +106,9 @@ const ReceiveTestCoins = styled.div`
     justify-content: center;
     column-gap: 10rem;
     padding: 3rem 0;
+    @media only screen and (max-width: 750px) {
+        column-gap: 3rem;
+    }
 `;
 
 

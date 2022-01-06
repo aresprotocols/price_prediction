@@ -14,12 +14,16 @@ export const GoJoinWrapper = styled.div`
         line-height: 35px;
         text-align: center;
     }
+    @media only screen and (max-width: 750px) {
+        width: 90%;
+        padding-bottom: 20px;
+    }
 `;
 
 
 export const JoinContent = styled.div`
     width: 100%;
-    height: 352px;
+    min-height: 352px;
     background: #FFFFFF;
     box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.08);
     border-radius: 15px;
@@ -70,10 +74,53 @@ export const JoinContent = styled.div`
             font-weight: 600;
         }
     }
+    .BottomJoinMoney {
+        display: none;
+        padding: 20px 0;
+        column-gap: 20px;
+        justify-content: center;
+        .btn {
+            background: #2E4DD4;
+            border: 1px solid #2E4DD4;
+            border-radius: 5px;
+            width: 100px;
+            height: 40px;
+            color: #FFF;
+            font-weight: 600;
+        }
+    }
+    @media only screen and (max-width: 750px) {
+        padding: 40px 15px;
+        .checkbox {
+            transform: scale(0.8)
+        }
+        .joinMoney {
+            display: none;
+        }
+        .joinForm {
+            align-items: center;
+        }
+        .BottomJoinMoney {
+            display: flex;
+            padding: 20px 20px;
+            .btn {
+                width: 90px;
+            }
+        }
+    }
+    @media only screen and (min-width: 751px) {
+        joinMoney {
+            display: flex;
+        }
+        .BottomJoinMoney {
+            display: none;
+        }
+    }
 `;
 
 
 export const Price = styled.div`
+    font-size: 1.7rem;
 `;
 
 
@@ -93,5 +140,10 @@ export const Countdown = styled.div`
     }
     .price {
         font-weight: 600;
+    }
+    @media only screen and (max-width: 750px) {
+        width: 100px;
+        transform: scale(0.8);
+        padding: 15px 5px;
     }
 `;

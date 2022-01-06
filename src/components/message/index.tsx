@@ -85,6 +85,8 @@ const WarningMessageWrapper = styled.div`
     color: #F8A849;
     border-radius: 10px;
     padding: 10px 20px;
+    width: 96%;
+    margin: 10px auto;
     .messageContent {
         display: flex;
         align-items: center;

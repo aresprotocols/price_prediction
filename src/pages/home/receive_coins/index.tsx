@@ -43,6 +43,10 @@ const ReceiveTestCoinsWrapper = styled.div`
         color: #2E4765;
         text-align: center;
     }
+    @media only screen and (max-width: 750px) {
+        width: 100%;
+        padding: 2rem 1rem;
+    }
 `
 
 
@@ -67,6 +71,10 @@ const TestCoinsCard = styled.div`
         background: #2E4DD4;
         font-weight: 600;
         margin-top: 2rem;
+    }
+    @media only screen and (max-width: 750px) {
+        width: 100%;
+        padding: 2rem;
     }
 `;
 

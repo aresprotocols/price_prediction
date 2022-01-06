@@ -41,7 +41,7 @@ const CoinCard = (config: CoinCardProps) => {
                     </Button>
                 );
             case CoinCardType.COMING:
-                return <p className="comming">{t("Coming soon").toUpperCase()}</p>
+                return <p className="coming">{t("Coming soon").toUpperCase()}</p>
             case CoinCardType.WINNER:
                 return (
                     <Button className="btn" onClick={ () => {
@@ -88,7 +88,7 @@ const CoinCard = (config: CoinCardProps) => {
                         }
                     </CoinCardPrice>
                 </div>
-                <div style={{display: "flex"}}>
+                <div style={{display: "flex", columnGap: "10px"}}>
                     <CoinCardARES>
                         <img src={aresWards} alt=""/>
                         <p>{t("Total Rewards")}</p>

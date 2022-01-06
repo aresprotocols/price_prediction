@@ -7,6 +7,7 @@ export const CoinCardWrapper = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+
     .time {
         width: 206px;
         height: 35px;
@@ -15,13 +16,19 @@ export const CoinCardWrapper = styled.div`
         line-height: 35px;
         text-align: center;
     }
+
     .comingTime {
         background: #D0D7FA;
     }
-    .comming {
+
+    .coming {
         font-weight: 600;
         color: #2E4DD4;
         font-size: 16px;
+    }
+
+    @media only screen and (max-width: 750px) {
+        width: 280px;
     }
 `;
 
@@ -71,6 +78,9 @@ export const CoinCardContent = styled.div`
     .join_btn {
         background: #2E4DD4;;
     }
+    @media only screen and (max-width: 750px) {
+        width: 280px;
+    }
 `
 
 
@@ -81,15 +91,27 @@ export const CoinCardARES = styled.div`
     height: 130px;
     margin: 20px auto;
     padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
     img {
         width: 33px;
         height: 33px;
         margin-bottom: 18px;
     }
+
     p {
         line-height: 10px;
     }
+
     .price {
         font-weight: 600;
+    }
+
+    @media only screen and (max-width: 750px) {
+        padding: 10px;
+        text-align: center;
     }
 `;

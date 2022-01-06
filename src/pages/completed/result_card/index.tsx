@@ -52,7 +52,7 @@ const ResultCard = ({okCallBack, consultCallback, winnerCallback}: ResultCardPro
                         <div className="result">
                             {t("Result")}: BTC ≤ $63000
                         </div>
-                        <Button type="primary" className="btn" onClick={winner}>{t("winner")}</Button>
+                        <Button type="primary" className="btn winnerBtn" onClick={winner}>{t("winner")}</Button>
                         <div className="option">
                             <Space size="middle">
                                 <Button type="primary" className="btn" onClick={ok}>{t("OK")}</Button>

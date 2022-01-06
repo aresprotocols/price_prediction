@@ -7,6 +7,12 @@ export const HomeWrapper = styled.div`
         font-size: 18px;
         color: #2E4765;
     }
+    @media only screen and (max-width: 750px) {
+        .title {
+            text-align: center;
+            padding: 20px;
+        }
+    }
 `;
 
 
@@ -52,6 +58,22 @@ export const HomeContent = styled.div`
         span {
             font-size: 1.2rem;
             font-weight: 300;
+        }
+    }
+    @media only screen and (max-width: 750px) {
+        width: 100%;
+        .desc {
+            text-align: center;
+            padding: 20px;
+        }
+        .imgContainer {
+            border: 1px solid red;
+            width: 150px;
+            height: 150px;
+            img {
+                width: 150px;
+                height: 150px;
+            }
         }
     }
 `;

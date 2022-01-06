@@ -65,6 +65,11 @@ const WinnerWrapper = styled.div`
     .ant-table {
         color: #2E4765;    
     }
+    @media only screen and (max-width: 750px) {
+        width: 90%;
+        margin: 0 auto;
+        padding: 3rem 1rem;
+    }
 `;
 
 export default Winner;

@@ -14,12 +14,16 @@ export const GoJoinWrapper = styled.div`
         line-height: 35px;
         text-align: center;
     }
+    @media only screen and (max-width: 750px) { 
+        width: 90%;
+        padding-bottom: 20px;
+    }
 `;
 
 
 export const JoinContent = styled.div`
     width: 100%;
-    height: 352px;
+    min-height: 352px;
     background: #FFFFFF;
     box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.08);
     border-radius: 15px;
@@ -65,6 +69,15 @@ export const JoinContent = styled.div`
             font-weight: 600;
         }
     }
+    @media only screen and (max-width: 750px) {
+        padding: 40px 15px;
+        .joinMoney {
+            padding: 20px 20px;
+            .btn {
+                width: 90px;
+            }
+        }
+    }
 `;
 
 
@@ -98,5 +111,10 @@ export const Countdown = styled.div`
     }
     .price {
         font-weight: 600;
+    }
+    @media only screen and (max-width: 750px) {
+        width: 120px;
+        padding: 20px 10px;
+        margin-left: 10px;
     }
 `;

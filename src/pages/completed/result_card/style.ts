@@ -6,6 +6,9 @@ export const ResultCardWrapper = styled.div`
         background: #2E4DD4;
         border: 1px solid #2E4DD4;
     }
+    .winnerBtn {
+        width: 195px;
+    }
 `;
 
 export const Content = styled.div`
@@ -30,7 +33,7 @@ export const ContentCard = styled.div`
     }
     .card {
         width: 378px;
-        height: 312px;
+        min-height: 312px;
         background: #FFFFFF;
         box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.08);
         border-radius: 15px;
@@ -63,6 +66,12 @@ export const ContentCard = styled.div`
         margin-top: 10px;
         span {
             font-weight: 600;
+        }
+    }
+    @media only screen and (max-width: 750px) {
+        .card {
+            width: 315px;
+            padding-bottom: 30px;
         }
     }
 `;

@@ -6,6 +6,10 @@ export const Content = styled.div`
     row-gap: 30px;
     width: 700px;
     margin: 0 auto;
+    @media only screen and (max-width: 750px) {
+        width: 100%;
+        padding: 0 20px;
+    }
 `;
 
 export const OngoingContentCard = styled.div`
@@ -58,7 +62,12 @@ export const OngoingContentCard = styled.div`
     .cardLeftContent {
         display: flex;
         flex-direction: column;
-        row-gap: 1rem;
+        justify-content: space-around;
+    }
+    @media only screen and (max-width: 750px) {
+        .card {
+            width: 335px;
+        }
     }
 `;
 
