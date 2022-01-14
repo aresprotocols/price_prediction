@@ -1,9 +1,12 @@
 import { Table } from "antd";
 import styled from "styled-components";
 import {useTranslation} from "react-i18next";
+import {useContext, useEffect} from "react";
+import {ApiContext} from "../../../App";
 
 
 const Winner = () => {
+    const context = useContext(ApiContext);
     const { t } = useTranslation(['common']);
     const dataSource = [
         {
@@ -44,6 +47,26 @@ const Winner = () => {
             ellipsis: true
         }
     ]
+
+    const getWinner = async() => {
+        if (context.api) {
+            console.log(`======价格竞猜${"eth"} 中奖人======`);
+            let keys = await context.api.query.estimates.winners.keys("eth-usdt");
+            for(let i=0; i< keys.length;i++){
+                let args = keys[i].args;
+                console.log(`${args[0].toHuman()}  ${args[1].toHuman()}`)
+                let a = await context.api.query.estimates.winners(args[0], args[1])
+                console.log(JSON.stringify(a.toHuman()))
+            }
+            console.log(`========================`);
+        }
+    }
+
+    useEffect(() => {
+        getWinner();
+    }, []);
+
+
     return (
         <WinnerWrapper>
             <Table columns={columns} dataSource={dataSource}/>

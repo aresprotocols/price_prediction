@@ -14,12 +14,13 @@ import {useState} from "react";
 
 const { SubMenu } = Menu;
 
-const Header = () => {
+const Header = (props: any) => {
     const {t, i18n} = useTranslation(["common"]);
     const navigate = useNavigate();
     const [showPhoneMenu, setShowPhoneMenu] = useState(false);
     const [accounts, setAccounts] = useState([]);
 
+    console.log(props);
     const languageMenu = (
         <Menu onClick={(info) =>{
             let targetLanguage = info.key === 'en' ? 'en' : 'cn';
@@ -98,10 +99,11 @@ const Header = () => {
             if (res.length === 0) {
                 console.log("浏览器没有安装 扩展");
             }
-            await web3Accounts({ ss58Format: 2 }).then(res => {
-                console.log(res);
+            await web3Accounts({ accountType: ["sr25519"], ss58Format: 2 }).then(res => {
+                console.log("获取的地址", res);
                 // @ts-ignore
                 setAccounts(res);
+                props.updateAccount(res[0]);
             });
         });
     }

@@ -1,12 +1,16 @@
 import { Outlet } from 'react-router-dom';
-import { OngoingWrapper } from "./style";
+import { OngoingWrapper, Header } from "./style";
 import {useTranslation} from "react-i18next";
+import HeaderSearch from "components/search";
 
 const Ongoing = () => {
     const {t} = useTranslation(["common"]);
     return (
         <OngoingWrapper>
-            <header>{t("Price Fluctuations")}</header>
+            <Header>
+                <header>{t("Price Prediction")}</header>
+                <HeaderSearch />
+            </Header>
             <Outlet />
         </OngoingWrapper>
     );

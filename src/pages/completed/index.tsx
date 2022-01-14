@@ -1,14 +1,18 @@
 import { CompletedWrapper } from "./style";
-import CoinCard from "components/coin_card";
+import {Header} from "../ongoing/style";
+import HeaderSearch from "components/search";
+import {Outlet} from "react-router-dom";
+import {useTranslation} from "react-i18next";
 
 const Completed = () => {
+    const {t} = useTranslation(["common"]);
     return (
         <CompletedWrapper>
-            <CoinCard title="BBB" type="COMING" price="5800" live={true} icon={false}/>
-            {/*<CoinCard title="BTC-USD" type="PRIMARY" price="5800" live={false} icon={false}/>*/}
-            {/*<CoinCard title="BTC" type="COMPLETED" price="5800" live={true} icon={false}/>*/}
-            {/*<CoinCard title="BTC" type="COMPLETED" price="5800" live={false} icon={false}/>*/}
-            {/*<CoinCard title="BTC" type="JOIN" price="5800" live={true} icon={false}/>*/}
+            <Header>
+                <header>{t("Price Prediction")}</header>
+                <HeaderSearch />
+            </Header>
+            <Outlet />
         </CompletedWrapper>
     );
 }

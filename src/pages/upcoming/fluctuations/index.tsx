@@ -1,20 +1,32 @@
-import styled from "styled-components";
+import {Fragment} from "react";
 import CoinCard from "components/coin_card";
 import {LeftOutlined, RightOutlined} from "@ant-design/icons";
 import {Carousel} from "antd";
+import styled from "styled-components";
 
 
 const UpcomingFluctuations = () => {
     return (
-        <FluctuationsWrapper>
-            <LeftOutlined style={{fontWeight: 600, color: "#2E4765", fontSize: "18px"}}/>
-            <Carousel className="swiper" arrows={true} slidesToShow={1}>
-                <CoinCard title="BTC" type="COMING" price="5800" live={true} icon={false} />
-                <CoinCard title="BTC" type="COMING" price="5800" live={true} icon={false} />
-                <CoinCard title="BTC" type="COMING" price="5800" live={false} icon={false} />
-            </Carousel>
-            <RightOutlined style={{fontWeight: 600, color: "#2E4765", fontSize: "18px"}}/>
-        </FluctuationsWrapper>
+        <Fragment>
+            <div className="phone">
+                <FluctuationsWrapper>
+                    <LeftOutlined style={{fontWeight: 600, color: "#2E4765", fontSize: "18px"}}/>
+                    <Carousel className="swiper" arrows={true} slidesToShow={1}>
+                        <CoinCard title="BTC" type="COMING" price="5800" live={true} icon={false} endBlock={0}/>
+                        <CoinCard title="BTC" type="COMING" price="5800" live={true} icon={false} endBlock={0}/>
+                        <CoinCard title="BTC" type="COMING" price="5800" live={false} icon={false} endBlock={0}/>
+                    </Carousel>
+                    <RightOutlined style={{fontWeight: 600, color: "#2E4765", fontSize: "18px"}}/>
+                </FluctuationsWrapper>
+            </div>
+            <div className="pc">
+                <FluctuationsWrapper>
+                    <CoinCard title="BTC" type="COMING" price="5800" live={true} icon={false} endBlock={0}/>
+                    <CoinCard title="BTC" type="COMING" price="5800" live={true} icon={false} endBlock={0}/>
+                    <CoinCard title="BTC" type="COMING" price="5800" live={false} icon={false} endBlock={0}/>
+                </FluctuationsWrapper>
+            </div>
+        </Fragment>
 
     );
 }

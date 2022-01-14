@@ -1,10 +1,11 @@
-import {CSSProperties, Fragment, ReactNode} from "react";
+import {CSSProperties, Fragment, ReactNode, useContext, useEffect, useState} from "react";
 import aresWards from "assets/images/aresrewards.svg"
-import time from "assets/images/time.svg"
+import timeImg from "assets/images/time.svg"
 import bitcoin from "assets/images/bitcoin.svg"
 import {Button} from "antd";
 import {CoinCardWrapper, CoinCardContent, CoinCardPrice, CoinCardARES, } from "./style"
 import {useTranslation} from "react-i18next";
+import {ApiContext} from "App";
 
 
 export enum CoinCardType {
@@ -17,17 +18,89 @@ export enum CoinCardType {
 
 interface CoinCardProps {
     type: CoinCardType | String,
-    title: String,
-    price: String,
-    live: Boolean,
-    icon: Boolean,
+    title: string,
+    price: string,
+    live: boolean,
+    icon: boolean,
+    endBlock: number,
+    total?: string,
     callBack?: Function,
     option?: ReactNode,
     style?: CSSProperties
+    key?: string | number
+}
+
+interface timeDiffRes {
+    day: number,
+    hour: number,
+    minute: number
 }
 
 const CoinCard = (config: CoinCardProps) => {
+    const context = useContext(ApiContext);
     const { t } = useTranslation(['common']);
+    const [symbolPrice, setSymbolPrice] = useState(0);
+    const [time, setTime] = useState("");
+    const [timeDiff, setTimDiff] = useState<timeDiffRes>({day:0, hour: 0, minute: 0});
+
+    function formatFloat(src: number, pos: number){
+        return Math.round(src*Math.pow(10, pos))/Math.pow(10, pos);
+    }
+
+    function timeDif(start: Date, end: Date): timeDiffRes {
+        const diffMs = end.getTime() - start.getTime();
+        const diffDay = Math.floor(diffMs / (24 * 3600 * 1000));
+        const l1 = diffMs % (24*3600*1000);
+        const diffHours = Math.floor(l1 /(3600*1000));
+        //计算相差分钟数
+        const leave2 = l1 % (3600 * 1000);
+        const diffMinutes = Math.floor(leave2 / (60 * 1000));
+        return {
+            day: diffDay,
+            hour: diffHours,
+            minute: diffMinutes
+        }
+    }
+
+    const getStartTime = async () => {
+        const lastHeader = await context.api?.rpc.chain.getHeader();
+        const lastBlockNumber = Number.parseInt(lastHeader?.number.toHuman()+"");
+        console.log(lastHeader);
+        console.log("lastHeader:", lastBlockNumber, config.endBlock);
+        const diff = (config.endBlock - lastBlockNumber) * 6 * 1000;
+        const endTime = Date.parse(new Date() + "") + diff;
+        console.log("cur:", new Date(endTime).toLocaleString());
+        const diffTime = timeDif(new Date(), new Date(endTime));
+        setTimDiff(diffTime);
+        setTime(new Date(endTime).toLocaleString());
+    }
+
+    const getPrice = async () => {
+        fetch( "https://api.aresprotocol.io/api/getPartyPrice/"
+            + config.title.replace("-", ""),
+            {
+                method: "GET",
+                mode: "cors",
+                headers: {
+                    source: "datafeed",
+                },
+            }
+        ).then(async (res) => {
+            if (res.ok) {
+                const result = await res.json();
+                console.log(result);
+                setSymbolPrice(formatFloat(result.data.price, 5));
+            }
+        });
+    }
+
+    useEffect(() => {
+        getPrice();
+        getStartTime();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+
     const footer = () => {
         switch (config.type) {
             case CoinCardType.JOIN:
@@ -59,7 +132,7 @@ const CoinCard = (config: CoinCardProps) => {
     return (
         <CoinCardWrapper>
             <div className={`time ${config.type === CoinCardType.COMING ? "comingTime" : ""} `}>
-                20/11/2021 12:00 UTC
+                {time}
             </div>
             <CoinCardContent>
                 <div className={`${config.icon ? "contentHeader" : ""}`}>
@@ -70,13 +143,13 @@ const CoinCard = (config: CoinCardProps) => {
                             </Fragment> : ""
 
                         }
-                        <span className="coinCardTitle">
+                        <span className="coinCardTitle upperCase">
                             {config.title}
                         </span>
                     </div>
                     <CoinCardPrice>
                         <span className="coinCardTitle">
-                            $65827.53
+                            ${symbolPrice}
                         </span>
                         {
                             config.live ? <Fragment>
@@ -92,14 +165,18 @@ const CoinCard = (config: CoinCardProps) => {
                     <CoinCardARES>
                         <img src={aresWards} alt=""/>
                         <p>{t("Total Rewards")}</p>
-                        <p className="price">5000 ARES</p>
+                        <p className="price">{config.total}</p>
                     </CoinCardARES>
                     {
                         config.type === CoinCardType.JOIN || config.type === CoinCardType.COMING ?
                             <CoinCardARES>
-                                <img src={time} alt=""/>
-                                <p>3 Day</p>
-                                <p>20 Hours Left</p>
+                                <img src={timeImg} alt=""/>
+                                {
+                                    timeDiff.day > 0 ? <p>{timeDiff.day} Day</p> : ""
+                                }
+                                {
+                                    timeDiff.hour > 0 ?  <p>{timeDiff.hour} Hours Left</p> : ""
+                                }
                             </CoinCardARES> : ""
                     }
                 </div>

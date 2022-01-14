@@ -1,32 +1,61 @@
-import {Fragment} from "react";
+import {Fragment, useContext, useEffect, useState} from "react";
 import styled from "styled-components";
 import CoinCard from "components/coin_card";
 import {LeftOutlined, RightOutlined} from "@ant-design/icons";
 import {Carousel} from "antd";
+import {ApiContext, Prediction} from "App";
 
 
 const UpcomingPrediction = () => {
+    const context = useContext(ApiContext);
+    const [upcoming, setUpcoming] = useState<Prediction[]>();
+
+    const getUpcoming = async () => {
+        if (context.api) {
+            const predictions = await context.api.query.estimates.preparedEstimates("eth-usdt");
+            let pre = predictions.toHuman();
+            console.log("upcoming:", pre)
+            if (pre !== null) {
+                // @ts-ignore
+                setUpcoming([pre]);
+            }
+        }
+    };
+
+
+    useEffect(() => {
+        getUpcoming();
+    },[]);
+
+    const aa = () => {
+        return upcoming?.map(item => {
+            return <CoinCard key={item.symbol.concat(item.id.toString())}
+                             title={item.symbol} type="COMING" price="5800"
+                             endBlock={Number.parseInt(item.end)}
+                             total={item.total_reward} live={true} icon={false}/>
+        })
+    }
 
     return (
         <Fragment>
-            <Phone>
+            <div className="phone">
                 <FluctuationsWrapper>
                     <LeftOutlined style={{fontWeight: 600, color: "#2E4765", fontSize: "18px"}}/>
                     <Carousel className="swiper" arrows={true} slidesToShow={1}>
-                        <CoinCard title="BTC" type="COMING" price="5800" live={true} icon={true}/>
-                        <CoinCard title="BTC" type="COMING" price="5800" live={true} icon={true}/>
-                        <CoinCard title="BTC" type="COMING" price="5800" live={false} icon={true}/>
+                        {
+                            aa()
+                        }
                     </Carousel>
                     <RightOutlined style={{fontWeight: 600, color: "#2E4765", fontSize: "18px"}}/>
                 </FluctuationsWrapper>
-            </Phone>
-            <PC>
+            </div>
+            <div className="pc">
                 <FluctuationsWrapper>
-                    <CoinCard title="BTC" type="COMING" price="5800" live={true} icon={true}/>
-                    <CoinCard title="BTC" type="COMING" price="5800" live={true} icon={true}/>
-                    <CoinCard title="BTC" type="COMING" price="5800" live={false} icon={true}/>
+                    {
+                        aa()
+                    }
                 </FluctuationsWrapper>
-            </PC>
+            </div>
         </Fragment>
     );
 }
@@ -51,19 +80,6 @@ const FluctuationsWrapper = styled.div`
         .slick-dots li {
             background-color: #227ADF;
         }
-    }
-`;
-
-const Phone = styled.div`
-    display: none;
-    @media only screen and (max-width: 750px) {
-        display: block;
-    }
-`;
-
-const PC = styled.div`
-    @media only screen and (max-width: 750px) {
-        display: none;
     }
 `;
 

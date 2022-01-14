@@ -2,6 +2,8 @@ import {ResultCardWrapper, ContentCard, Content} from "./style";
 import bitcoin from "assets/images/bitcoin.svg";
 import {Button, Space} from "antd";
 import {useTranslation} from "react-i18next";
+import {useContext, useEffect} from "react";
+import {ApiContext} from "../../../App";
 
 interface ResultCardProps {
     okCallBack?: Function,
@@ -11,6 +13,7 @@ interface ResultCardProps {
 
 
 const ResultCard = ({okCallBack, consultCallback, winnerCallback}: ResultCardProps) => {
+    const context = useContext(ApiContext);
     const { t } = useTranslation(['common']);
     const ok = () => {
         if (okCallBack) {
@@ -30,6 +33,23 @@ const ResultCard = ({okCallBack, consultCallback, winnerCallback}: ResultCardPro
             winnerCallback();
         }
     }
+
+    const getParticipant = async () => {
+        if(context.api) {
+            let keys = await context.api.query.estimates.participants.keys("eth-usdt");
+            console.log(`======价格竞猜${"eth-usdt"} 参与者======`);
+            for(let i=0; i< keys.length;i++){
+                let args = keys[i].args;
+                console.log(`${args[0].toHuman()}  ${args[1].toHuman()}`)
+                let a = await context.api.query.estimates.participants(args[0], args[1])
+                console.log(JSON.stringify(a.toHuman()))
+            }
+        }
+    }
+
+    useEffect(() => {
+        getParticipant();
+    }, [])
 
 
     return (

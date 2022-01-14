@@ -15,3 +15,13 @@ export const OngoingWrapper = styled.div`
         }
     }
 `;
+
+
+
+export const Header = styled.div`
+    display: flex;
+    justify-content: space-between;
+    @media screen and (max-width: 750px) {
+        flex-direction: column-reverse;
+    }
+`;

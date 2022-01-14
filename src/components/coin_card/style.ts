@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 
 export const CoinCardWrapper = styled.div`
-    margin: 0 auto;
+    //margin: 0 auto;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -25,6 +25,9 @@ export const CoinCardWrapper = styled.div`
         font-weight: 600;
         color: #2E4DD4;
         font-size: 16px;
+    }
+    .upperCase {
+        text-transform: uppercase;
     }
 
     @media only screen and (max-width: 750px) {
