@@ -5,7 +5,7 @@ export const Content = styled.div`
     flex-direction: column;
     row-gap: 30px;
     width: 700px;
-    margin: 0 auto;
+    margin: 30px auto;
     @media only screen and (max-width: 750px) {
         width: 100%;
         padding: 0 20px;
@@ -26,7 +26,7 @@ export const OngoingContentCard = styled.div`
     }
     .card {
         width: 378px;
-        height: 25rem;
+        min-height: 25rem;
         background: #FFFFFF;
         box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.08);
         border-radius: 15px;
@@ -36,6 +36,8 @@ export const OngoingContentCard = styled.div`
         display: flex;
         align-items: center;
         justify-content: center;
+        padding-bottom: 10px;
+        text-transform: uppercase;
     }
     .title {
         color: #2E4765;
@@ -63,6 +65,7 @@ export const OngoingContentCard = styled.div`
         display: flex;
         flex-direction: column;
         justify-content: space-around;
+        row-gap: 10px;
     }
     @media only screen and (max-width: 750px) {
         .card {

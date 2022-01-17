@@ -114,7 +114,7 @@ function App() {
   }
 
   useEffect(() => {
-    create();
+    // create();
   }, [defaultAccount]);
 
   const updateDefaultAccount = async (account: InjectedAccountWithMeta) => {

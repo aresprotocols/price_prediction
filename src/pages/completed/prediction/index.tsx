@@ -53,7 +53,7 @@ const CompletedPrediction = () => {
                                             return <CoinCard key={item.symbol.concat(item.id.toString())}
                                                              title={item.symbol} type="WINNER" price="580"
                                                              total={item.total_reward}
-                                                             endBlock={Number.parseInt(item.end)}
+                                                             endBlock={Number.parseInt(item.end.replace(",", ""))}
                                                              live={true} icon={false} callBack={toResult}/>
                                         })
                                     }
@@ -73,7 +73,7 @@ const CompletedPrediction = () => {
                                     completedPrediction?.map(item => {
                                         return <CoinCard key={item.symbol.concat(item.id.toString())} title={item.symbol}
                                                          type="WINNER" price="580" total={item.total_reward}
-                                                         endBlock={Number.parseInt(item.end)}
+                                                         endBlock={Number.parseInt(item.end.replace(",", ""))}
                                                          live={true} icon={false} callBack={toResult}/>
                                     })
                                 }

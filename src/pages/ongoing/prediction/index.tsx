@@ -47,7 +47,7 @@ const GoingPrediction = () => {
                                 return <CoinCard key={item.symbol.concat(item.id.toString())}
                                                  title={item.symbol} type="JOIN" price="580"
                                                  total={item.total_reward}
-                                                 endBlock={Number.parseInt(item.end)}
+                                                 endBlock={Number.parseInt(item.end.replace(",", ""))}
                                                  live={true} icon={false} callBack={toJoin}/>
                             })
                         }

@@ -7,7 +7,7 @@ import timeIcon from "assets/images/time.svg";
 import {useTranslation} from "react-i18next";
 
 
-const Joined = () => {
+const Joined = (props: any) => {
     const {t} = useTranslation(["common"]);
     return (
         <Content>
@@ -15,11 +15,13 @@ const Joined = () => {
                      message={t("successfully participated tips")}/>
             <OngoingContentCard>
                 <div className="time">
-                    20/11/2021 12:00 UTC
+                    {props.time}
                 </div>
                 <div className="card">
                     <div className="header">
-                        <img src={bitcoin} alt="" width={23} height={23}/>&nbsp;<span className="title">BTC</span>
+                        <img src={bitcoin} alt="" width={23} height={23}/>&nbsp;<span className="title">
+                        {props.title}
+                    </span>
                     </div>
                     <CardContent>
                         <div className="cardItem">
@@ -45,8 +47,12 @@ const Joined = () => {
                             <div className="cardLeftItem">
                                 <img src={timeIcon} alt="" width={25} height={25}/>
                                 <div>
-                                    <div>3 Day</div>
-                                    <div> 20 Hours Left</div>
+                                    {
+                                        props.timeDiff.day > 0 ? <div>{props.timeDiff.day} Day</div> : ""
+                                    }
+                                    {
+                                        props.timeDiff.hour > 0 ?  <div>{props.timeDiff.hour} Hours Left</div> : ""
+                                    }
                                     {/*<div>还剩3天20小时</div>*/}
                                 </div>
                             </div>
