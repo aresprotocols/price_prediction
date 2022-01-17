@@ -4,13 +4,18 @@ import {Button, Form, Input} from "antd";
 import time from "assets/images/time.svg";
 import {useTranslation} from "react-i18next";
 import Joined from "../pre_joined";
-import {ApiContext} from "../../../App";
+import {ApiContext} from "App";
+import {useParams} from "react-router";
 
 const PredictionJoin = () => {
     const context = useContext(ApiContext);
+    const params = useParams();
     const [joined, setJoined] = useState(false);
     const { t } = useTranslation(['common']);
     const priceLabel = t("Price") + "(" + t("The deviation rate is") + "1%)";
+
+
+
 
     const join = async () => {
         console.log("join");
@@ -52,7 +57,7 @@ const PredictionJoin = () => {
                     <div className="contentHeader">
                         <div>
                         <span className="CardTitle">
-                            BTC-USDT
+                            {params.symbol}
                         </span>
                         </div>
                         <Price>
@@ -68,10 +73,10 @@ const PredictionJoin = () => {
                     <div className="joinForm">
                         <Form layout="vertical" style={{width: "250px"}}>
                             <Form.Item label={priceLabel}>
-                                <Input prefix="$"></Input>
+                                <Input prefix="$" />
                             </Form.Item>
                             <Form.Item label={"BSC " + t("Address")}>
-                                <Input></Input>
+                                <Input />
                             </Form.Item>
                         </Form>
                         <div>

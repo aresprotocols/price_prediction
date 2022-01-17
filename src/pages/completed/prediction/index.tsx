@@ -65,7 +65,7 @@ const CompletedPrediction = () => {
                 </PredictionWrapper>
             </div>
             <div className="pc">
-                <PredictionWrapper>
+                <PredictionWrapper style={{ justifyContent: completedPrediction && completedPrediction?.length < 4 ? "space-around" : "flex-start"}}>
                     {
                         !winner ?
                             <Fragment>
@@ -92,7 +92,9 @@ const PredictionWrapper = styled.div`
     display: flex;
     padding-top: 3rem;
     justify-content: center;
-    align-items: center;
+    flex-wrap: wrap;
+    row-gap: 30px;
+    column-gap: 120px;
     .swiper {
         width: 83vw;
         padding: 10px 0 50px 0;

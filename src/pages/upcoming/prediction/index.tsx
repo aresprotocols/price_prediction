@@ -12,29 +12,29 @@ const UpcomingPrediction = () => {
 
     const getUpcoming = async () => {
         if (context.api) {
-            const predictions = await context.api.query.estimates.preparedEstimates("eth-usdt");
-            let pre = predictions.toHuman();
-            console.log("upcoming:", pre)
-            if (pre !== null) {
+            const res = await context.api.query.estimates.preparedEstimates.entries();
+            const pres: Prediction[] = [];
+            res.forEach(([args, value]) => {
+                console.log(`${args}`);
+                console.log(value.toHuman())
                 // @ts-ignore
-                setUpcoming([pre]);
-            }
+                pres.push(value.toHuman());
+            });
+            setUpcoming(pres);
         }
     };
 
 
     useEffect(() => {
         getUpcoming();
-    },[]);
+    },[context]);
 
-    const aa = () => {
-        return upcoming?.map(item => {
+    const upcomingItems = upcoming?.map(item => {
             return <CoinCard key={item.symbol.concat(item.id.toString())}
                              title={item.symbol} type="COMING" price="5800"
-                             endBlock={Number.parseInt(item.end)}
+                             endBlock={Number.parseInt(item.start.replace(",", ""))}
                              total={item.total_reward} live={true} icon={false}/>
         })
-    }
 
     return (
         <Fragment>
@@ -42,18 +42,14 @@ const UpcomingPrediction = () => {
                 <FluctuationsWrapper>
                     <LeftOutlined style={{fontWeight: 600, color: "#2E4765", fontSize: "18px"}}/>
                     <Carousel className="swiper" arrows={true} slidesToShow={1}>
-                        {
-                            aa()
-                        }
+                        {upcomingItems}
                     </Carousel>
                     <RightOutlined style={{fontWeight: 600, color: "#2E4765", fontSize: "18px"}}/>
                 </FluctuationsWrapper>
             </div>
             <div className="pc">
-                <FluctuationsWrapper>
-                    {
-                        aa()
-                    }
+                <FluctuationsWrapper style={{ justifyContent: upcoming && upcoming?.length < 4 ? "space-around" : "flex-start"}}>
+                    {upcomingItems}
                 </FluctuationsWrapper>
             </div>
         </Fragment>
@@ -65,9 +61,9 @@ const FluctuationsWrapper = styled.div`
     width: 100%;
     display: flex;
     margin-top: 3rem;
-    justify-content: center;
-    align-items: center;
-    column-gap: 20px;
+    flex-wrap: wrap;
+    row-gap: 30px;
+    column-gap: 120px;
     .swiper {
         width: 83vw;
         padding: 10px 0 50px 0;

@@ -38,6 +38,7 @@ export const JoinContent = styled.div`
     .cardTitle {
         font-size: 16px;
         font-weight: 600;
+        text-transform: uppercase;
     }
     .joinForm {
         margin-top: 15px;

@@ -6,6 +6,8 @@ import {Button} from "antd";
 import {CoinCardWrapper, CoinCardContent, CoinCardPrice, CoinCardARES, } from "./style"
 import {useTranslation} from "react-i18next";
 import {ApiContext} from "App";
+import {clacStartTime, formatFloat, timeDiffRes} from "utils/format";
+import {getSymbolPrice} from "../../utils/symbol-price";
 
 
 export enum CoinCardType {
@@ -30,12 +32,6 @@ interface CoinCardProps {
     key?: string | number
 }
 
-interface timeDiffRes {
-    day: number,
-    hour: number,
-    minute: number
-}
-
 const CoinCard = (config: CoinCardProps) => {
     const context = useContext(ApiContext);
     const { t } = useTranslation(['common']);
@@ -43,62 +39,31 @@ const CoinCard = (config: CoinCardProps) => {
     const [time, setTime] = useState("");
     const [timeDiff, setTimDiff] = useState<timeDiffRes>({day:0, hour: 0, minute: 0});
 
-    function formatFloat(src: number, pos: number){
-        return Math.round(src*Math.pow(10, pos))/Math.pow(10, pos);
-    }
 
-    function timeDif(start: Date, end: Date): timeDiffRes {
-        const diffMs = end.getTime() - start.getTime();
-        const diffDay = Math.floor(diffMs / (24 * 3600 * 1000));
-        const l1 = diffMs % (24*3600*1000);
-        const diffHours = Math.floor(l1 /(3600*1000));
-        //计算相差分钟数
-        const leave2 = l1 % (3600 * 1000);
-        const diffMinutes = Math.floor(leave2 / (60 * 1000));
-        return {
-            day: diffDay,
-            hour: diffHours,
-            minute: diffMinutes
+    const getStartTime = () => {
+        if (context.api) {
+            clacStartTime(context.api, config.endBlock)
+                .then(res => {
+                    setTimDiff(res[0]);
+                    setTime(res[1]);
+                })
         }
     }
-
-    const getStartTime = async () => {
-        const lastHeader = await context.api?.rpc.chain.getHeader();
-        const lastBlockNumber = Number.parseInt(lastHeader?.number.toHuman()+"");
-        console.log(lastHeader);
-        console.log("lastHeader:", lastBlockNumber, config.endBlock);
-        const diff = (config.endBlock - lastBlockNumber) * 6 * 1000;
-        const endTime = Date.parse(new Date() + "") + diff;
-        console.log("cur:", new Date(endTime).toLocaleString());
-        const diffTime = timeDif(new Date(), new Date(endTime));
-        setTimDiff(diffTime);
-        setTime(new Date(endTime).toLocaleString());
-    }
-
-    const getPrice = async () => {
-        fetch( "https://api.aresprotocol.io/api/getPartyPrice/"
-            + config.title.replace("-", ""),
-            {
-                method: "GET",
-                mode: "cors",
-                headers: {
-                    source: "datafeed",
-                },
-            }
-        ).then(async (res) => {
-            if (res.ok) {
-                const result = await res.json();
-                console.log(result);
-                setSymbolPrice(formatFloat(result.data.price, 5));
-            }
-        });
+    const getPrice = () => {
+        getSymbolPrice(config.title).then(res => {
+            setSymbolPrice(res);
+        })
     }
 
     useEffect(() => {
-        getPrice();
         getStartTime();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [context]);
+
+    useEffect(() => {
+        getPrice();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
 
 
     const footer = () => {
@@ -107,7 +72,7 @@ const CoinCard = (config: CoinCardProps) => {
                 return (
                     <Button className="join_btn btn" onClick={ () => {
                         if (config.callBack) {
-                            config.callBack();
+                            config.callBack(config.title);
                         }
                     }}>
                         {t("join").toUpperCase()}

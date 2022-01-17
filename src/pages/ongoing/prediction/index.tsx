@@ -10,20 +10,15 @@ const GoingPrediction = () => {
     const context = useContext(ApiContext);
     const [predictions, setPredictions] = useState<Prediction[]>();
     const navigate = useNavigate();
-    const toJoin = async () => {
-        navigate("/ongoing/prediction/join");
+
+    const toJoin = async (symbol: string) => {
+        navigate("/ongoing/prediction/join/" + symbol);
     }
 
     const getPredictions = async () => {
         console.log("Initializing api:", context.api);
         if (context.api) {
             const res = await context.api.query.estimates.activeEstimates.entries();
-            // let pre = res.toHuman();
-            // console.log("ongoing:", pre)
-            // if (pre !== null) {
-            //     // @ts-ignore
-            //     setPredictions([pre]);
-            // }
             const pres: Prediction[] = [];
             res.forEach(([args, value]) => {
                 console.log(`${args}`);
@@ -37,7 +32,8 @@ const GoingPrediction = () => {
 
     useEffect(() => {
         getPredictions();
-    }, []);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [context]);
 
 
     return (
