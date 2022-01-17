@@ -26,7 +26,7 @@ const GoingPrediction = () => {
                 // @ts-ignore
                 pres.push(value.toHuman());
             });
-            setPredictions(pres);
+            setPredictions(pres.filter(item => item.estimates_type === "DEVIATION"));
         }
     }
 

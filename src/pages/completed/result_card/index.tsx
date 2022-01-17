@@ -2,24 +2,29 @@ import {ResultCardWrapper, ContentCard, Content} from "./style";
 import bitcoin from "assets/images/bitcoin.svg";
 import {Button, Space} from "antd";
 import {useTranslation} from "react-i18next";
-import {useContext, useEffect} from "react";
-import {ApiContext} from "../../../App";
+import {useContext, useEffect, useState} from "react";
+import {ApiContext, Prediction} from "App";
+import {clacStartTime} from "utils/format";
 
 interface ResultCardProps {
+    prediction: Prediction | undefined
     okCallBack?: Function,
     consultCallback?: Function
     winnerCallback?: Function
 }
 
 
-const ResultCard = ({okCallBack, consultCallback, winnerCallback}: ResultCardProps) => {
-    const context = useContext(ApiContext);
+const ResultCard = ({okCallBack, consultCallback, winnerCallback, prediction}: ResultCardProps) => {
     const { t } = useTranslation(['common']);
+    const context = useContext(ApiContext);
+    const [time, setTime] = useState("");
     const ok = () => {
         if (okCallBack) {
             okCallBack();
         }
     }
+
+    console.log(prediction);
 
     const consult = () => {
         if (consultCallback) {
@@ -29,26 +34,23 @@ const ResultCard = ({okCallBack, consultCallback, winnerCallback}: ResultCardPro
 
 
     const winner = () => {
-        if (winnerCallback) {
-            winnerCallback();
+        if (winnerCallback && prediction) {
+            winnerCallback(prediction.symbol, prediction.id);
         }
     }
 
-    const getParticipant = async () => {
-        if(context.api) {
-            let keys = await context.api.query.estimates.participants.keys("eth-usdt");
-            console.log(`======价格竞猜${"eth-usdt"} 参与者======`);
-            for(let i=0; i< keys.length;i++){
-                let args = keys[i].args;
-                console.log(`${args[0].toHuman()}  ${args[1].toHuman()}`)
-                let a = await context.api.query.estimates.participants(args[0], args[1])
-                console.log(JSON.stringify(a.toHuman()))
-            }
+
+    const getStartTime = () => {
+        if (context.api && prediction) {
+            clacStartTime(context.api, Number.parseInt(prediction.end.replace(",", "")))
+                .then(res => {
+                    setTime(res[1]);
+                })
         }
     }
 
     useEffect(() => {
-        getParticipant();
+        getStartTime();
     }, [])
 
 
@@ -57,11 +59,12 @@ const ResultCard = ({okCallBack, consultCallback, winnerCallback}: ResultCardPro
             <Content>
                 <ContentCard>
                     <div className="time">
-                        20/11/2021 12:00 UTC
+                        {time}
                     </div>
                     <div className="card">
                         <div className="header">
-                            <img src={bitcoin} alt="" width={23} height={23}/>&nbsp;<span className="title">BTC</span>
+                            <img src={"/symbol/" + prediction?.symbol.split("-")[0] + ".svg"} alt="" width={23} height={23}/>
+                            &nbsp;<span className="title">BTC</span>
                         </div>
                         {/*<div className="desc">*/}
                         {/*    {t("No one won in this prediction")}*/}
@@ -70,7 +73,7 @@ const ResultCard = ({okCallBack, consultCallback, winnerCallback}: ResultCardPro
                             {t("Result")}: 1000
                         </div>
                         <div className="result">
-                            {t("Result")}: BTC ≤ $63000
+                            {t("Result")}: {prediction?.symbol_completed_price}
                         </div>
                         <Button type="primary" className="btn winnerBtn" onClick={winner}>{t("winner")}</Button>
                         <div className="option">

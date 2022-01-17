@@ -1,13 +1,12 @@
 import {CSSProperties, Fragment, ReactNode, useContext, useEffect, useState} from "react";
 import aresWards from "assets/images/aresrewards.svg"
 import timeImg from "assets/images/time.svg"
-import bitcoin from "assets/images/bitcoin.svg"
 import {Button} from "antd";
 import {CoinCardWrapper, CoinCardContent, CoinCardPrice, CoinCardARES, } from "./style"
 import {useTranslation} from "react-i18next";
-import {ApiContext} from "App";
-import {clacStartTime, formatFloat, timeDiffRes} from "utils/format";
-import {getSymbolPrice} from "../../utils/symbol-price";
+import {ApiContext, Prediction} from "App";
+import {clacStartTime, timeDiffRes} from "utils/format";
+import {getSymbolPrice} from "utils/symbol-price";
 
 
 export enum CoinCardType {
@@ -29,7 +28,8 @@ interface CoinCardProps {
     callBack?: Function,
     option?: ReactNode,
     style?: CSSProperties
-    key?: string | number
+    key?: string | number,
+    prediction?: Prediction
 }
 
 const CoinCard = (config: CoinCardProps) => {
@@ -84,7 +84,7 @@ const CoinCard = (config: CoinCardProps) => {
                 return (
                     <Button className="btn" onClick={ () => {
                         if (config.callBack) {
-                            config.callBack();
+                            config.callBack(config.prediction);
                         }
                     }}>
                         {t("winner").toUpperCase()}
@@ -104,7 +104,7 @@ const CoinCard = (config: CoinCardProps) => {
                     <div className="coinName">
                         {
                             config.icon ? <Fragment>
-                                <img src={bitcoin} alt="" width={25} height={25}/>&nbsp;&nbsp;
+                                <img src={"/symbol/" + config.title.split("-")[0] +  ".svg"} alt="" width={25} height={25}/>&nbsp;&nbsp;
                             </Fragment> : ""
 
                         }
@@ -141,6 +141,10 @@ const CoinCard = (config: CoinCardProps) => {
                                 }
                                 {
                                     timeDiff.hour > 0 ?  <p>{timeDiff.hour} Hours Left</p> : ""
+                                }
+                                {
+
+                                    timeDiff.minute > 0 ?  <p>{timeDiff.minute} Minute Left</p> : ""
                                 }
                             </CoinCardARES> : ""
                     }

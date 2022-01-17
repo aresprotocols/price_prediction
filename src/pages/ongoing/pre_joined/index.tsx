@@ -1,6 +1,5 @@
 import Message, {MessageType} from "components/message";
 import {CardContent, Content, OngoingContentCard} from "./style";
-import bitcoin from "assets/images/bitcoin.svg";
 import user from "assets/images/user.svg";
 import aresWards from "assets/images/aresrewards.svg";
 import timeIcon from "assets/images/time.svg";
@@ -19,9 +18,10 @@ const Joined = (props: any) => {
                 </div>
                 <div className="card">
                     <div className="header">
-                        <img src={bitcoin} alt="" width={23} height={23}/>&nbsp;<span className="title">
-                        {props.title}
-                    </span>
+                        <img src={props.title.split("-")[0] + ".svg"} alt="" width={23} height={23}/>&nbsp;
+                        <span className="title">
+                            {props.title}
+                        </span>
                     </div>
                     <CardContent>
                         <div className="cardItem">
@@ -41,18 +41,14 @@ const Joined = (props: any) => {
                                 <img src={aresWards} alt="" width={25} height={25}/>
                                 <div>
                                     <div>{t("Total Rewards")}</div>
-                                    <div>5000 ARES</div>
+                                    <div>{props.rewards} ARES</div>
                                 </div>
                             </div>
                             <div className="cardLeftItem">
                                 <img src={timeIcon} alt="" width={25} height={25}/>
                                 <div>
-                                    {
-                                        props.timeDiff.day > 0 ? <div>{props.timeDiff.day} Day</div> : ""
-                                    }
-                                    {
-                                        props.timeDiff.hour > 0 ?  <div>{props.timeDiff.hour} Hours Left</div> : ""
-                                    }
+                                    {props.timeDiff.day > 0 ? <div>{props.timeDiff.day} Day</div> : ""}
+                                    {props.timeDiff.hour > 0 ?  <div>{props.timeDiff.hour} Hours Left</div> : ""}
                                     {/*<div>还剩3天20小时</div>*/}
                                 </div>
                             </div>

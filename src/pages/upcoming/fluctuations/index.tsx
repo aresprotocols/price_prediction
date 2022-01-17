@@ -1,29 +1,54 @@
-import {Fragment} from "react";
+import {Fragment, useContext, useEffect, useState} from "react";
 import CoinCard from "components/coin_card";
 import {LeftOutlined, RightOutlined} from "@ant-design/icons";
 import {Carousel} from "antd";
 import styled from "styled-components";
+import {ApiContext, Prediction} from "App";
 
 
 const UpcomingFluctuations = () => {
+    const context = useContext(ApiContext);
+    const [upcoming, setUpcoming] = useState<Prediction[]>();
+
+    const getUpcoming = async () => {
+        if (context.api) {
+            const res = await context.api.query.estimates.preparedEstimates.entries();
+            const pres: Prediction[] = [];
+            res.forEach(([args, value]) => {
+                // @ts-ignore
+                pres.push(value.toHuman());
+            });
+            setUpcoming(pres.filter(item => item.estimates_type === "RANGE"));
+        }
+    };
+
+
+    useEffect(() => {
+        getUpcoming();
+    },[context]);
+
+    const upcomingItems = upcoming?.map(item => {
+        return <CoinCard key={item.symbol.concat(item.id.toString())}
+                         title={item.symbol} type="COMING" price="5800"
+                         endBlock={Number.parseInt(item.start.replace(",", ""))}
+                         total={item.total_reward} live={true} icon={false}/>
+    })
+
+
     return (
         <Fragment>
             <div className="phone">
                 <FluctuationsWrapper>
                     <LeftOutlined style={{fontWeight: 600, color: "#2E4765", fontSize: "18px"}}/>
                     <Carousel className="swiper" arrows={true} slidesToShow={1}>
-                        <CoinCard title="BTC" type="COMING" price="5800" live={true} icon={false} endBlock={0}/>
-                        <CoinCard title="BTC" type="COMING" price="5800" live={true} icon={false} endBlock={0}/>
-                        <CoinCard title="BTC" type="COMING" price="5800" live={false} icon={false} endBlock={0}/>
+                        {upcomingItems}
                     </Carousel>
                     <RightOutlined style={{fontWeight: 600, color: "#2E4765", fontSize: "18px"}}/>
                 </FluctuationsWrapper>
             </div>
             <div className="pc">
-                <FluctuationsWrapper>
-                    <CoinCard title="BTC" type="COMING" price="5800" live={true} icon={false} endBlock={0}/>
-                    <CoinCard title="BTC" type="COMING" price="5800" live={true} icon={false} endBlock={0}/>
-                    <CoinCard title="BTC" type="COMING" price="5800" live={false} icon={false} endBlock={0}/>
+                <FluctuationsWrapper style={{ justifyContent: upcoming && upcoming?.length < 4 ? "space-around" : "flex-start"}}>
+                    {upcomingItems}
                 </FluctuationsWrapper>
             </div>
         </Fragment>
@@ -37,7 +62,9 @@ const FluctuationsWrapper = styled.div`
     display: flex;
     margin-top: 3rem;
     justify-content: center;
-    align-items: center;
+    flex-wrap: wrap;
+    row-gap: 30px;
+    column-gap: 120px;
     .swiper {
         width: 83vw;
         padding: 10px 0 50px 0;

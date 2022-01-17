@@ -88,7 +88,7 @@ function App() {
   const create = async () => {
     try {
       if (defaultAccount && polkaAPI) {
-        const unsub = await polkaAPI.tx.estimates.newEstimates("btc-usdt", 246955, 254765, 254865, "DEVIATION", 500000, undefined, 100)
+        const unsub = await polkaAPI.tx.estimates.newEstimates("sol-usdt", 251980, 252280, 252380, "RANGE", undefined, [143, 145, 150, 155], 100)
             .signAndSend(defaultAccount.address, {}, ({status, events, dispatchError}) => {
               if (dispatchError) {
                 if (dispatchError.isModule) {
@@ -114,7 +114,7 @@ function App() {
   }
 
   useEffect(() => {
-    // create();
+    create();
   }, [defaultAccount]);
 
   const updateDefaultAccount = async (account: InjectedAccountWithMeta) => {
@@ -140,12 +140,12 @@ function App() {
                   <Route path="prediction" element={<GoingPrediction />} />
                   <Route path="fluctuations" element={<Fluctuations />} />
                   <Route path="prediction/join/:symbol" element={<PredictionJoin />} />
-                  <Route path="fluctuations/join" element={<FluctuationsJoin />} />
+                  <Route path="fluctuations/join/:symbol" element={<FluctuationsJoin />} />
                 </Route>
                 <Route path="completed" element={<Completed />}>
                   <Route path="prediction" element={<CompletedPrediction />}/>
                   <Route path="fluctuations" element={<CompletedFluctuations />}/>
-                  <Route path="winner" element={<Winner />}/>
+                  <Route path="winner/:symbol/:id" element={<Winner />}/>
                 </Route>
                 <Route path="upcoming" element={<Upcoming />}>
                   <Route path="prediction" element={<UpcomingPrediction />}/>

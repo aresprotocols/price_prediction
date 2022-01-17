@@ -12,7 +12,7 @@ import {getSymbolPrice} from "utils/symbol-price";
 const PredictionJoin = () => {
     const context = useContext(ApiContext);
     const params = useParams();
-    const [joined, setJoined] = useState(true);
+    const [joined, setJoined] = useState(false);
     const [predictionInfo, setPredictionInfo] = useState<Prediction>();
     const [symbolPrice, setSymbolPrice] = useState(0);
     const [time, setTime] = useState("");

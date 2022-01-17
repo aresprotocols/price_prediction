@@ -20,7 +20,7 @@ const UpcomingPrediction = () => {
                 // @ts-ignore
                 pres.push(value.toHuman());
             });
-            setUpcoming(pres);
+            setUpcoming(pres.filter(item => item.estimates_type === "DEVIATION"));
         }
     };
 

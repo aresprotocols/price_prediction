@@ -1,33 +1,26 @@
 import { Table } from "antd";
 import styled from "styled-components";
 import {useTranslation} from "react-i18next";
-import {useContext, useEffect} from "react";
-import {ApiContext} from "../../../App";
+import {useContext, useEffect, useState} from "react";
+import {ApiContext} from "App";
+import {useParams} from "react-router";
 
+
+interface winner {
+    account: string,
+    end: string,
+    estimates: string,
+    range_index: string,
+    eth_address: string
+    multiplier: string,
+    reward: string
+}
 
 const Winner = () => {
-    const context = useContext(ApiContext);
     const { t } = useTranslation(['common']);
-    const dataSource = [
-        {
-            name: "Emily Yang",
-            prediction: "$5000",
-            address: "0xA86ed7899330DF48316E2A2842D5aD13F031Ab11",
-            key: "0xA86ed7899330DF48316E2A2842D5aD13F031Ab11",
-        },
-        {
-            name: "Emily Yang",
-            prediction: "$560000",
-            address: "0xA86ed7899330DF48316E2A2842D5aD13F031Ab22",
-            key: "0xA86ed7899330DF48316E2A2842D5aD13F031Ab22"
-        },
-        {
-            name: "Emily Yang",
-            prediction: "$4800",
-            address: "0xA86ed7899330DF48316E2A2842D5aD13F031Ab33",
-            key: "0xA86ed7899330DF48316E2A2842D5aD13F031Ab33"
-        },
-    ]
+    const context = useContext(ApiContext);
+    const params = useParams();
+    const [winners, setWinners] = useState<winner[]>();
 
     const columns = [
         {
@@ -37,13 +30,13 @@ const Winner = () => {
         },
         {
             title: t("prediction"),
-            dataIndex: "prediction",
-            key: "prediction"
+            dataIndex: "estimates",
+            key: "estimates"
         },
         {
             title: t("Address"),
-            dataIndex: "address",
-            key: "address",
+            dataIndex: "account",
+            key: "account",
             ellipsis: true
         }
     ]
@@ -51,13 +44,11 @@ const Winner = () => {
     const getWinner = async() => {
         if (context.api) {
             console.log(`======价格竞猜${"eth"} 中奖人======`);
-            let keys = await context.api.query.estimates.winners.keys("eth-usdt");
-            for(let i=0; i< keys.length;i++){
-                let args = keys[i].args;
-                console.log(`${args[0].toHuman()}  ${args[1].toHuman()}`)
-                let a = await context.api.query.estimates.winners(args[0], args[1])
-                console.log(JSON.stringify(a.toHuman()))
-            }
+            console.log(params.symbol, params.id);
+            const res = await context.api.query.estimates.winners(params.symbol, params.id);
+            console.log(JSON.stringify(res.toHuman()))
+            // @ts-ignore
+            setWinners(res.toHuman());
             console.log(`========================`);
         }
     }
@@ -69,7 +60,7 @@ const Winner = () => {
 
     return (
         <WinnerWrapper>
-            <Table columns={columns} dataSource={dataSource}/>
+            <Table columns={columns} dataSource={winners}/>
         </WinnerWrapper>
     );
 }
@@ -80,6 +71,7 @@ const WinnerWrapper = styled.div`
     background: #FFF;
     box-shadow: 20px 20px 20px rgba(0, 0, 0, 0.08);
     border-radius: 30px;
+    margin-top: 20px;
     .ant-table-thead {
         th {
             background: #E7EBFF;

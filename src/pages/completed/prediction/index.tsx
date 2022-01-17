@@ -12,9 +12,11 @@ const CompletedPrediction = () => {
     const context = useContext(ApiContext);
     const navigate = useNavigate();
     const [completedPrediction, setCompletedPrediction] = useState<Prediction[]>();
+    const [selectPrediction, setSelectPrediction] = useState<Prediction>();
     const [winner, setWinner] = useState(false);
 
-    const toResult = () => {
+    const toResult = (item: Prediction) => {
+        setSelectPrediction(item);
         setWinner(true);
     }
 
@@ -22,22 +24,34 @@ const CompletedPrediction = () => {
         navigate("/completed/winner")
     }
 
+    const toWinner = (symbol: string, id: string) => {
+        console.log("to winner", symbol, id)
+        navigate("/completed/winner/" + symbol + "/" + id)
+    }
+
+    const consult = () => {
+        setWinner(false);
+    }
+
     const getCompletedPredict = async () => {
         if (context.api) {
-            const predictions = await context.api.query.estimates.completedEstimates("eth-usdt");
-            let pre = predictions.toHuman();
-            console.log(pre)
-            if (pre !== null) {
+            const res = await context.api.query.estimates.completedEstimates.entries();
+            let pres: Prediction[] = [];
+            res.forEach(([args, value]) => {
+                console.log(`${args}`);
+                console.log(value.toHuman())
                 // @ts-ignore
-                setCompletedPrediction(pre);
-            }
+                pres = pres.concat(value.toHuman());
+            });
+            setCompletedPrediction(pres.filter(item => item.estimates_type === "DEVIATION"));
         }
     };
 
 
     useEffect(() => {
         getCompletedPredict();
-    },[]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[context]);
 
     return (
         <Fragment>
@@ -60,27 +74,33 @@ const CompletedPrediction = () => {
                                 </Carousel>
                                 <RightOutlined style={{fontWeight: 600, color: "#2E4765", fontSize: "18px"}}/>
                             </Fragment> :
-                            <ResultCard okCallBack={ok} consultCallback={ok} winnerCallback={ok}/>
+                            <ResultCard prediction={selectPrediction} okCallBack={ok} consultCallback={ok} winnerCallback={ok}/>
                     }
                 </PredictionWrapper>
             </div>
             <div className="pc">
-                <PredictionWrapper style={{ justifyContent: completedPrediction && completedPrediction?.length < 4 ? "space-around" : "flex-start"}}>
-                    {
-                        !winner ?
-                            <Fragment>
-                                {
-                                    completedPrediction?.map(item => {
-                                        return <CoinCard key={item.symbol.concat(item.id.toString())} title={item.symbol}
-                                                         type="WINNER" price="580" total={item.total_reward}
-                                                         endBlock={Number.parseInt(item.end.replace(",", ""))}
-                                                         live={true} icon={false} callBack={toResult}/>
-                                    })
-                                }
-                            </Fragment> :
-                            <ResultCard okCallBack={ok} consultCallback={ok} winnerCallback={ok}/>
-                    }
-                </PredictionWrapper>
+                {
+                    !winner ?
+                        <PredictionWrapper
+                            style={{ justifyContent: completedPrediction && completedPrediction?.length < 4 ? "space-around" : "flex-start"}}>
+                            {
+                                completedPrediction?.map(item => {
+                                    return <CoinCard key={item.symbol.concat(item.id.toString())} title={item.symbol}
+                                                     type="WINNER" price="580" total={item.total_reward}
+                                                     prediction={item}
+                                                     endBlock={Number.parseInt(item.end.replace(",", ""))}
+                                                     live={true} icon={false} callBack={toResult}/>
+                                })
+                            }
+                        </PredictionWrapper> :
+                        <PredictionWrapper>
+                            <ResultCard
+                                prediction={selectPrediction}
+                                okCallBack={ok}
+                                consultCallback={consult}
+                                winnerCallback={toWinner}/>
+                        </PredictionWrapper>
+                }
             </div>
         </Fragment>
     );

@@ -1,16 +1,48 @@
-import {Fragment} from "react";
+import {Fragment, useContext, useEffect, useState} from "react";
 import CoinCard from "components/coin_card";
 import {useNavigate} from "react-router";
 import {LeftOutlined, RightOutlined} from "@ant-design/icons";
 import {Carousel} from "antd";
 import styled from "styled-components";
+import {ApiContext, Prediction} from "App";
 
 
 const Fluctuations = () => {
+    const context = useContext(ApiContext);
+    const [predictions, setPredictions] = useState<Prediction[]>();
     const navigate = useNavigate();
-    const toJoin = () => {
-        navigate("/ongoing/fluctuations/join");
+
+    const toJoin = (symbol: string) => {
+        navigate("/ongoing/fluctuations/join/" + symbol);
     }
+
+    const getPredictions = async () => {
+        if (context.api) {
+            const res = await context.api.query.estimates.activeEstimates.entries();
+            const pres: Prediction[] = [];
+            res.forEach(([args, value]) => {
+                console.log(`${args}`);
+                console.log(value.toHuman())
+                // @ts-ignore
+                pres.push(value.toHuman());
+            });
+            setPredictions(pres.filter(item => item.estimates_type === "RANGE"));
+        }
+    }
+
+    const pres = predictions?.map(item => {
+            return <CoinCard key={item.symbol.concat(item.id.toString())}
+                             title={item.symbol} type="JOIN" price="580"
+                             total={item.total_reward}
+                             endBlock={Number.parseInt(item.end.replace(",", ""))}
+                             live={true} icon={false} callBack={toJoin}/>
+        })
+
+
+    useEffect(() => {
+        getPredictions();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [context]);
 
     return (
         <Fragment>
@@ -18,16 +50,14 @@ const Fluctuations = () => {
                 <FluctuationsWrapper>
                     <LeftOutlined style={{fontWeight: 600, color: "#2E4765", fontSize: "18px"}}/>
                     <Carousel className="swiper" arrows={true} slidesToShow={1}>
-                        <CoinCard title="BTC" type="JOIN" price="5800" live={true} callBack={toJoin} icon={true} endBlock={0}/>
-                        <CoinCard title="ETH" type="JOIN" price="4800" live={false} callBack={toJoin} icon={true} endBlock={0}/>
+                        {pres}
                     </Carousel>
                     <RightOutlined style={{fontWeight: 600, color: "#2E4765", fontSize: "18px"}}/>
                 </FluctuationsWrapper>
             </div>
             <div className="pc">
-                <FluctuationsWrapper>
-                    <CoinCard title="BTC" type="JOIN" price="5800" live={true} callBack={toJoin} icon={true} endBlock={0}/>
-                    <CoinCard title="ETH" type="JOIN" price="4800" live={false} callBack={toJoin} icon={true} endBlock={0}/>
+                <FluctuationsWrapper style={{ justifyContent: predictions && predictions?.length < 4 ? "space-around" : "flex-start"}}>
+                    {pres}
                 </FluctuationsWrapper>
             </div>
         </Fragment>
