@@ -37,10 +37,7 @@ const CompletedPrediction = () => {
             const res = await context.api.query.estimates.completedEstimates.entries();
             let pres: Prediction[] = [];
             res.forEach(([args, value]) => {
-                console.log(`${args}`);
-                console.log(value.toHuman())
-                // @ts-ignore
-                pres = pres.concat(value.toHuman());
+                pres = pres.concat(value.toHuman() as unknown as Prediction);
             });
             setCompletedPrediction(pres.filter(item => item.estimates_type === "DEVIATION"));
         }

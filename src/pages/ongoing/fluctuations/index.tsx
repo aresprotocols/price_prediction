@@ -25,12 +25,9 @@ const Fluctuations = () => {
             const res = await context.api.query.estimates.activeEstimates.entries();
             const pres: Prediction[] = [];
             res.forEach(([args, value]) => {
-                console.log(`${args}`);
-                console.log(value.toHuman())
                 pres.push(value.toHuman() as unknown as Prediction);
             });
             setPredictions(pres.filter(item => item.estimates_type === "RANGE"));
-            console.log(pres.filter(item => item.estimates_type === "RANGE"))
         }
     }
 
@@ -97,6 +94,9 @@ const FluctuationsWrapper = styled.div`
     }
     @media only screen and (max-width: 750px) {
         padding: 0 15px;
+        align-items: center;
+        flex-wrap: nowrap;
+        column-gap: 0;
         .slick-dots li.slick-active button {
             background-color: #2E4DD4;
         }

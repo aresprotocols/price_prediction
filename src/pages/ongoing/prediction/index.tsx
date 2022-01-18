@@ -20,15 +20,11 @@ const GoingPrediction = () => {
     }
 
     const getPredictions = async () => {
-        console.log("Initializing api:", context.api);
         if (context.api) {
             const res = await context.api.query.estimates.activeEstimates.entries();
             const pres: Prediction[] = [];
             res.forEach(([args, value]) => {
-                console.log(`${args}`);
-                console.log(value.toHuman())
-                // @ts-ignore
-                pres.push(value.toHuman());
+                pres.push(value.toHuman() as unknown as Prediction);
             });
             setPredictions(pres.filter(item => item.estimates_type === "DEVIATION"));
         }

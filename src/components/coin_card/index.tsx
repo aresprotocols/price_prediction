@@ -38,6 +38,7 @@ const CoinCard = (config: CoinCardProps) => {
     const [symbolPrice, setSymbolPrice] = useState(0);
     const [time, setTime] = useState("");
     const [timeDiff, setTimDiff] = useState<timeDiffRes>({day:0, hour: 0, minute: 0});
+    const [isUnmounted, setIsUnmounted] = useState(false);
 
 
     const getStartTime = () => {
@@ -51,7 +52,9 @@ const CoinCard = (config: CoinCardProps) => {
     }
     const getPrice = () => {
         getSymbolPrice(config.title).then(res => {
-            setSymbolPrice(res);
+            if(!isUnmounted) {
+                setSymbolPrice(res);
+            }
         })
     }
 
@@ -62,6 +65,9 @@ const CoinCard = (config: CoinCardProps) => {
 
     useEffect(() => {
         getPrice();
+        return () => {
+            setIsUnmounted(true);
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 

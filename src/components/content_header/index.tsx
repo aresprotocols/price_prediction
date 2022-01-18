@@ -52,6 +52,8 @@ export const ContentHeaderWrapper = styled.div`
     @media only screen and (max-width: 750px) {
         header {
             text-align: center;
+            display: flex;
+            justify-content: center;
             padding: 1.5rem 0;
         }
     }
