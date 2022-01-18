@@ -1,16 +1,20 @@
 import {Fragment, useContext, useEffect, useState} from "react";
-import CoinCard from "components/coin_card";
+import styled from "styled-components";
 import {useNavigate} from "react-router";
 import {LeftOutlined, RightOutlined} from "@ant-design/icons";
 import {Carousel} from "antd";
-import styled from "styled-components";
+
+import CoinCard from "components/coin_card";
 import {ApiContext, Prediction} from "App";
+import ContentHeader from "components/content_header";
+import {predictionSort} from "utils/prediction-sort";
 
 
 const Fluctuations = () => {
+    const navigate = useNavigate();
     const context = useContext(ApiContext);
     const [predictions, setPredictions] = useState<Prediction[]>();
-    const navigate = useNavigate();
+    const [searchName, setSearchName,] = useState<string>();
 
     const toJoin = (symbol: string) => {
         navigate("/ongoing/fluctuations/join/" + symbol);
@@ -23,14 +27,19 @@ const Fluctuations = () => {
             res.forEach(([args, value]) => {
                 console.log(`${args}`);
                 console.log(value.toHuman())
-                // @ts-ignore
-                pres.push(value.toHuman());
+                pres.push(value.toHuman() as unknown as Prediction);
             });
             setPredictions(pres.filter(item => item.estimates_type === "RANGE"));
+            console.log(pres.filter(item => item.estimates_type === "RANGE"))
         }
     }
 
-    const pres = predictions?.map(item => {
+    const pres = predictions?.filter(item => {
+        if (searchName && searchName !== "") {
+            return item.symbol.includes(searchName);
+        }
+        return item;
+    }).map(item => {
             return <CoinCard key={item.symbol.concat(item.id.toString())}
                              title={item.symbol} type="JOIN" price="580"
                              total={item.total_reward}
@@ -44,8 +53,17 @@ const Fluctuations = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [context]);
 
+    const onSort = (sortBy: string) => {
+        setPredictions(predictionSort(sortBy, predictions?? []));
+    }
+
+    const onSearch = (searchBy: string) => {
+        setSearchName(searchBy);
+    }
+
     return (
         <Fragment>
+            <ContentHeader title="Price Fluctuations" onSort={onSort} onSearch={onSearch} placeholder={"Search Cryptocurrency"}/>
             <div className="phone">
                 <FluctuationsWrapper>
                     <LeftOutlined style={{fontWeight: 600, color: "#2E4765", fontSize: "18px"}}/>

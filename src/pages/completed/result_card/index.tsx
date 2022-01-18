@@ -40,6 +40,7 @@ const ResultCard = ({okCallBack, winnerCallback, prediction}: ResultCardProps) =
 
     useEffect(() => {
         getStartTime();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
 

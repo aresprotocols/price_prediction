@@ -1,11 +1,14 @@
-import styled from "styled-components";
-import CoinCard from "components/coin_card";
-import ResultCard from "../result_card";
 import {Fragment, useContext, useEffect, useState} from "react";
+import styled from "styled-components";
 import {useNavigate} from "react-router";
 import {LeftOutlined, RightOutlined} from "@ant-design/icons";
 import {Carousel} from "antd";
+
+import CoinCard from "components/coin_card";
+import ResultCard from "../result_card";
 import {ApiContext, Prediction} from "App";
+import {predictionSort} from "utils/prediction-sort";
+import ContentHeader from "components/content_header";
 
 
 const CompletedPrediction = () => {
@@ -14,6 +17,7 @@ const CompletedPrediction = () => {
     const [completedPrediction, setCompletedPrediction] = useState<Prediction[]>();
     const [selectPrediction, setSelectPrediction] = useState<Prediction>();
     const [winner, setWinner] = useState(false);
+    const [searchName, setSearchName,] = useState<string>();
 
     const toResult = (item: Prediction) => {
         setSelectPrediction(item);
@@ -25,7 +29,6 @@ const CompletedPrediction = () => {
     }
 
     const toWinner = (symbol: string, id: string) => {
-        console.log("to winner", symbol, id);
         navigate("/completed/winner/" + symbol + "/" + id);
     }
 
@@ -49,8 +52,30 @@ const CompletedPrediction = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     },[context]);
 
+    const onSort = (sortBy: string) => {
+        setCompletedPrediction(predictionSort(sortBy, completedPrediction?? []));
+    }
+
+    const onSearch = (searchBy: string) => {
+        setSearchName(searchBy);
+    }
+
+    const completed = completedPrediction?.filter(item => {
+        if (searchName && searchName !== "") {
+            return item.symbol.includes(searchName);
+        }
+        return item;
+    }).map(item => {
+        return <CoinCard key={item.symbol.concat(item.id.toString())} title={item.symbol}
+                         type="WINNER" price="580" total={item.total_reward}
+                         prediction={item}
+                         endBlock={Number.parseInt(item.end.replace(",", ""))}
+                         live={true} icon={false} callBack={toResult}/>
+    })
+
     return (
         <Fragment>
+            <ContentHeader title="Price Prediction" onSort={onSort} onSearch={onSearch} placeholder={"Search Cryptocurrency"}/>
             <div className="phone">
                 <PredictionWrapper>
                     {
@@ -58,15 +83,7 @@ const CompletedPrediction = () => {
                             <Fragment>
                                 <LeftOutlined style={{fontWeight: 600, color: "#2E4765", fontSize: "18px"}}/>
                                 <Carousel className="swiper" arrows={true} slidesToShow={1}>
-                                    {
-                                        completedPrediction?.map(item => {
-                                            return <CoinCard key={item.symbol.concat(item.id.toString())}
-                                                             title={item.symbol} type="WINNER" price="580"
-                                                             total={item.total_reward}
-                                                             endBlock={Number.parseInt(item.end.replace(",", ""))}
-                                                             live={true} icon={false} callBack={toResult}/>
-                                        })
-                                    }
+                                    {completed}
                                 </Carousel>
                                 <RightOutlined style={{fontWeight: 600, color: "#2E4765", fontSize: "18px"}}/>
                             </Fragment> :
@@ -79,15 +96,7 @@ const CompletedPrediction = () => {
                     !winner ?
                         <PredictionWrapper
                             style={{ justifyContent: completedPrediction && completedPrediction?.length < 4 ? "space-around" : "flex-start"}}>
-                            {
-                                completedPrediction?.map(item => {
-                                    return <CoinCard key={item.symbol.concat(item.id.toString())} title={item.symbol}
-                                                     type="WINNER" price="580" total={item.total_reward}
-                                                     prediction={item}
-                                                     endBlock={Number.parseInt(item.end.replace(",", ""))}
-                                                     live={true} icon={false} callBack={toResult}/>
-                                })
-                            }
+                            {completed}
                         </PredictionWrapper> :
                         <PredictionWrapper>
                             <ResultCard
@@ -116,6 +125,9 @@ const PredictionWrapper = styled.div`
     }
     @media only screen and (max-width: 750px) {
         padding: 0 15px;
+        align-items: center;
+        flex-wrap: nowrap;
+        column-gap: 0;
         .slick-dots li.slick-active button {
             background-color: #2E4DD4;
         }

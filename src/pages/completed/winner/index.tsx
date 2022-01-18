@@ -1,12 +1,14 @@
-import { Table } from "antd";
+import {Fragment, ReactElement, useContext, useEffect, useState} from "react";
+import {useParams} from "react-router";
 import styled from "styled-components";
 import {useTranslation} from "react-i18next";
-import {Fragment, ReactElement, useContext, useEffect, useState} from "react";
+import { Table } from "antd";
+
 import {ApiContext} from "App";
-import {useParams} from "react-router";
 import firstPlace from "assets/images/first_place.png";
 import secondPlace from "assets/images/second_place.png";
-import thirdlace from "assets/images/third_place.png";
+import thirdPlace from "assets/images/third_place.png";
+import ContentHeader from "components/content_header";
 
 
 interface winner {
@@ -23,7 +25,8 @@ const Winner = () => {
     const { t } = useTranslation(['common']);
     const context = useContext(ApiContext);
     const params = useParams();
-    const [winners, setWinners] = useState<winner[]>();
+    const [winners, setWinners] = useState<Array<winner>>();
+    const [showWinner, setShowWinner] = useState<Array<winner>>();
 
     const columns = [
         {
@@ -37,7 +40,7 @@ const Winner = () => {
                 } else if (index === 1) {
                     label = <img src={secondPlace} alt="ares prediction second place"/>;
                 } else if(index === 2) {
-                    label = <img src={secondPlace} alt="ares prediction second place"/>;
+                    label = <img src={thirdPlace} alt="ares prediction third place"/>;
                 } else if (index >= 9) {
                     label = "";
                 } else {
@@ -57,31 +60,42 @@ const Winner = () => {
             title: t("Address"),
             dataIndex: "eth_address",
             key: "eth_address",
-            ellipsis: true
         }
     ]
 
     const getWinner = async() => {
         if (context.api) {
-            console.log(`======价格竞猜${"eth"} 中奖人======`);
-            console.log(params.symbol, params.id);
             const res = await context.api.query.estimates.winners(params.symbol, params.id);
-            console.log(JSON.stringify(res.toHuman()))
-            // @ts-ignore
-            setWinners(res.toHuman());
-            console.log(`========================`);
+            setWinners(res.toHuman() as unknown as winner[]);
+            setShowWinner(res.toHuman() as unknown as winner[]);
         }
     }
 
     useEffect(() => {
         getWinner();
-    }, []);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [context]);
 
+    const onSearch = (searchBy: string) => {
+        console.log(searchBy);
+        if (searchBy !== "") {
+            const newWin = winners?.filter(item => {
+                return item.account.includes(searchBy);
+            })
+            setShowWinner(newWin);
+        } else {
+            setShowWinner(winners);
+        }
+    }
 
     return (
-        <WinnerWrapper>
-            <Table columns={columns} dataSource={winners}/>
-        </WinnerWrapper>
+        <Fragment>
+            <ContentHeader title="Price Prediction" onSort={() => {}} onSearch={onSearch}
+                           noSort={true} placeholder={"Search Winner"}/>
+            <WinnerWrapper>
+                <Table columns={columns} dataSource={showWinner} rowKey={record => {return record.account;}}/>
+            </WinnerWrapper>
+        </Fragment>
     );
 }
 

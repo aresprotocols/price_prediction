@@ -3,7 +3,6 @@ import styled from "styled-components";
 
 
 export const CoinCardWrapper = styled.div`
-    //margin: 0 auto;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -31,6 +30,7 @@ export const CoinCardWrapper = styled.div`
     }
 
     @media only screen and (max-width: 750px) {
+        margin: 0 auto;
         width: 280px;
     }
 `;

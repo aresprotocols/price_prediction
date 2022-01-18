@@ -1,9 +1,10 @@
 import Message, {MessageType} from "components/message";
+import {useTranslation} from "react-i18next";
+
 import {CardContent, Content, OngoingContentCard} from "./style";
 import user from "assets/images/user.svg";
 import aresWards from "assets/images/aresrewards.svg";
 import timeIcon from "assets/images/time.svg";
-import {useTranslation} from "react-i18next";
 
 
 const Joined = (props: any) => {

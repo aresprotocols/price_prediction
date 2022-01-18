@@ -1,16 +1,19 @@
 import {Fragment, useContext, useEffect, useState} from "react";
-import {GoJoinWrapper, JoinContent, Price, Countdown} from "./style";
-import {Button, Form, Input} from "antd";
-import timeLogo from "assets/images/time.svg";
+import {useParams} from "react-router";
 import {useTranslation} from "react-i18next";
+import {Button, Form, Input} from "antd";
+
+import {GoJoinWrapper, JoinContent, Price, Countdown} from "./style";
+import timeLogo from "assets/images/time.svg";
 import Joined from "../pre_joined";
 import {ApiContext, Prediction} from "App";
-import {useParams} from "react-router";
 import {clacStartTime,timeDiffRes} from "utils/format";
 import {getSymbolPrice} from "utils/symbol-price";
+import ContentHeader from "components/content_header";
 
 const PredictionJoin = () => {
     const context = useContext(ApiContext);
+    const { t } = useTranslation(['common']);
     const params = useParams();
     const [joined, setJoined] = useState(false);
     const [predictionInfo, setPredictionInfo] = useState<Prediction>();
@@ -20,8 +23,8 @@ const PredictionJoin = () => {
     const [guessPrice, setGuessPrice] = useState("");
     const [rewardAddress, setRewardAddress] = useState<string>();
     const [hasBeenInvolvedIn, setHasBeenInvolvedIn] = useState(false);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [notSufficient, setNotSufficient] = useState(false);
-    const { t } = useTranslation(['common']);
     const priceLabel = t("Price") + "(" + t("The deviation rate is") + "1%)";
 
     useEffect(() => {
@@ -37,6 +40,7 @@ const PredictionJoin = () => {
                     setTime(res[1]);
                 });
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [predictionInfo]);
 
     useEffect(() => {
@@ -50,15 +54,11 @@ const PredictionJoin = () => {
     const getPredictionInfo = async () => {
         if (context.api) {
             const res = await context.api.query.estimates.activeEstimates(params.symbol);
-            // @ts-ignore
-            setPredictionInfo(res.toHuman());
-            console.log(res.toHuman());
+            setPredictionInfo(res.toHuman() as unknown as Prediction);
         }
     }
 
     const join = async (multiplier: string) => {
-        console.log("join");
-        console.log(context, guessPrice, multiplier, rewardAddress);
         if (context.api && context.account) {
             const api = context.api;
             const price = Math.floor(Number(guessPrice) * Math.pow(10, 4));
@@ -69,7 +69,6 @@ const PredictionJoin = () => {
                             // for module errors, we have the section indexed, lookup
                             const decoded = api.registry.findMetaError(dispatchError.asModule);
                             const { docs, name, section } = decoded;
-
                             console.log(`${section}.${name}: ${docs.join(' ')}`);
                             if (name === "AccountEstimatesExist") {
                                 setHasBeenInvolvedIn(true);
@@ -91,7 +90,9 @@ const PredictionJoin = () => {
     }
 
     return (
-        <Fragment> {
+        <Fragment>
+            <ContentHeader title="Price Prediction" onSort={() => {}} onSearch={() => {}} placeholder={"Search Cryptocurrency"}/>
+        {
             joined ? <Joined time={time} title={params.symbol} timeDiff={timeDiff}/> :
             <GoJoinWrapper>
                 <div className="time">

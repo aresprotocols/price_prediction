@@ -1,22 +1,25 @@
 import {Fragment, useContext, useEffect, useState} from "react";
-import CoinCard from "components/coin_card";
+import styled from "styled-components";
 import {LeftOutlined, RightOutlined} from "@ant-design/icons";
 import {Carousel} from "antd";
-import styled from "styled-components";
+
+import CoinCard from "components/coin_card";
 import {ApiContext, Prediction} from "App";
+import ContentHeader from "components/content_header";
+import {predictionSort} from "utils/prediction-sort";
 
 
 const UpcomingFluctuations = () => {
     const context = useContext(ApiContext);
     const [upcoming, setUpcoming] = useState<Prediction[]>();
+    const [searchName, setSearchName,] = useState<string>();
 
     const getUpcoming = async () => {
         if (context.api) {
             const res = await context.api.query.estimates.preparedEstimates.entries();
             const pres: Prediction[] = [];
             res.forEach(([args, value]) => {
-                // @ts-ignore
-                pres.push(value.toHuman());
+                pres.push(value.toHuman() as unknown as Prediction);
             });
             setUpcoming(pres.filter(item => item.estimates_type === "RANGE"));
         }
@@ -25,18 +28,32 @@ const UpcomingFluctuations = () => {
 
     useEffect(() => {
         getUpcoming();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     },[context]);
 
-    const upcomingItems = upcoming?.map(item => {
+    const upcomingItems = upcoming?.filter(item => {
+        if (searchName && searchName !== "") {
+            return item.symbol.includes(searchName);
+        }
+        return item;
+    }).map(item => {
         return <CoinCard key={item.symbol.concat(item.id.toString())}
                          title={item.symbol} type="COMING" price="5800"
                          endBlock={Number.parseInt(item.start.replace(",", ""))}
                          total={item.total_reward} live={true} icon={false}/>
     })
 
+    const onSort = (sortBy: string) => {
+        setUpcoming(predictionSort(sortBy, upcoming?? []));
+    }
+
+    const onSearch = (searchBy: string) => {
+        setSearchName(searchBy);
+    }
 
     return (
         <Fragment>
+            <ContentHeader title="Price Fluctuations" onSort={onSort} onSearch={onSearch} placeholder={"Search Cryptocurrency"}/>
             <div className="phone">
                 <FluctuationsWrapper>
                     <LeftOutlined style={{fontWeight: 600, color: "#2E4765", fontSize: "18px"}}/>
@@ -71,6 +88,9 @@ const FluctuationsWrapper = styled.div`
     }
     @media only screen and (max-width: 750px) {
         padding: 0 15px;
+        align-items: center;
+        flex-wrap: nowrap;
+        column-gap: 0;
         .slick-dots li.slick-active button {
             background-color: #2E4DD4;
         }

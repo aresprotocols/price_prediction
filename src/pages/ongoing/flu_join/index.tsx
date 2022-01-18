@@ -1,13 +1,15 @@
-import {useTranslation} from "react-i18next";
-import {Countdown, GoJoinWrapper, JoinContent, Price} from "./style";
-import {Button, Checkbox, Form, Input} from "antd";
-import timeLogo from "assets/images/time.svg";
 import {Fragment, useContext, useEffect, useState} from "react";
-import {ApiContext, Prediction} from "App";
 import {useParams} from "react-router";
+import {useTranslation} from "react-i18next";
+import {Button, Checkbox, Form, Input} from "antd";
+
+import {Countdown, GoJoinWrapper, JoinContent, Price} from "./style";
+import timeLogo from "assets/images/time.svg";
+import {ApiContext, Prediction} from "App";
 import {clacStartTime, timeDiffRes} from "utils/format";
 import {getSymbolPrice} from "utils/symbol-price";
 import Joined from "../pre_joined";
+import ContentHeader from "../../../components/content_header";
 
 const FluctuationsJoin = () => {
     const { t } = useTranslation(['common']);
@@ -21,11 +23,11 @@ const FluctuationsJoin = () => {
     const [selectRangeIndex, setSelectRangeIndex] = useState<string | number>();
     const [rewardAddress, setRewardAddress] = useState<string>();
     const [hasBeenInvolvedIn, setHasBeenInvolvedIn] = useState(false);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [notSufficient, setNotSufficient] = useState(false);
 
-
     useEffect(() => {
-        getPredictionInfo()
+        getFluctuationsInfo()
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [context]);
 
@@ -37,6 +39,7 @@ const FluctuationsJoin = () => {
                     setTime(res[1]);
                 });
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [predictionInfo]);
 
     useEffect(() => {
@@ -47,17 +50,14 @@ const FluctuationsJoin = () => {
     }, [])
 
 
-    const getPredictionInfo = async () => {
+    const getFluctuationsInfo = async () => {
         if (context.api) {
             const res = await context.api.query.estimates.activeEstimates(params.symbol);
-            // @ts-ignore
-            setPredictionInfo(res.toHuman());
-            console.log(res.toHuman());
+            setPredictionInfo(res.toHuman() as unknown as Prediction);
         }
     }
 
     const join = async (multiplier: string) => {
-        console.log("join1111");
         if (context.api && context.account) {
             const api = context.api;
             const unsub = await api.tx.estimates.participateEstimates(params.symbol, null, selectRangeIndex, multiplier, rewardAddress)
@@ -104,7 +104,9 @@ const FluctuationsJoin = () => {
     )
 
     return (
-        <Fragment> {
+        <Fragment>
+            <ContentHeader title="Price Prediction" onSort={() => {}} onSearch={() => {}} placeholder={"Search Cryptocurrency"}/>
+        {
             joined ? <Joined time={time} title={params.symbol} timeDiff={timeDiff}/> :
                 <GoJoinWrapper>
                     <div className="time">

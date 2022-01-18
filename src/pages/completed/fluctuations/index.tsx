@@ -1,11 +1,14 @@
 import {Fragment, useContext, useEffect, useState} from "react";
-import CoinCard from "components/coin_card";
 import {useNavigate} from "react-router";
-import ResultCard from "../result_card";
+import styled from "styled-components";
 import {LeftOutlined, RightOutlined} from "@ant-design/icons";
 import {Carousel} from "antd";
-import styled from "styled-components";
+
+import CoinCard from "components/coin_card";
+import ResultCard from "../result_card";
 import {ApiContext, Prediction} from "App";
+import ContentHeader from "components/content_header";
+import {predictionSort} from "utils/prediction-sort";
 
 
 const CompletedFluctuations = () => {
@@ -14,6 +17,7 @@ const CompletedFluctuations = () => {
     const [completedPredictions, setCompletedPredictions] = useState<Prediction[]>();
     const [selectPrediction, setSelectPrediction] = useState<Prediction>();
     const [winner, setWinner] = useState(false);
+    const [searchName, setSearchName,] = useState<string>();
 
     const toResult = (item: Prediction) => {
         setSelectPrediction(item);
@@ -25,7 +29,6 @@ const CompletedFluctuations = () => {
     }
 
     const toWinner = (symbol: string, id: string) => {
-        console.log("to winner", symbol, id)
         navigate("/completed/winner/" + symbol + "/" + id)
     }
 
@@ -34,10 +37,7 @@ const CompletedFluctuations = () => {
             const res = await context.api.query.estimates.completedEstimates.entries();
             let pres: Prediction[] = [];
             res.forEach(([args, value]) => {
-                console.log(`${args}`);
-                console.log(value.toHuman())
-                // @ts-ignore
-                pres = pres.concat(value.toHuman());
+                pres = pres.concat(value.toHuman() as unknown as Prediction);
             });
             setCompletedPredictions(pres.filter(item => item.estimates_type === "RANGE"));
         }
@@ -49,8 +49,30 @@ const CompletedFluctuations = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     },[context]);
 
+    const onSort = (sortBy: string) => {
+        setCompletedPredictions(predictionSort(sortBy, completedPredictions?? []));
+    }
+
+    const onSearch = (searchBy: string) => {
+        setSearchName(searchBy);
+    }
+
+    const completedFlu = completedPredictions?.filter(item => {
+        if (searchName && searchName !== "") {
+            return item.symbol.includes(searchName);
+        }
+        return item;
+    }).map(item => {
+        return <CoinCard key={item.symbol.concat(item.id.toString())} title={item.symbol}
+                         type="WINNER" price="580" total={item.total_reward}
+                         prediction={item}
+                         endBlock={Number.parseInt(item.end.replace(",", ""))}
+                         live={true} icon={false} callBack={toResult}/>
+    })
+
     return (
         <Fragment>
+            <ContentHeader title="Price Fluctuations" onSort={onSort} onSearch={onSearch} placeholder={"Search Cryptocurrency"}/>
             <div className="phone">
                 <FluctuationsWrapper>
                     {
@@ -58,15 +80,7 @@ const CompletedFluctuations = () => {
                             <Fragment>
                                 <LeftOutlined style={{fontWeight: 600, color: "#2E4765", fontSize: "18px"}}/>
                                 <Carousel className="swiper" arrows={true} slidesToShow={1}>
-                                {
-                                    completedPredictions?.map(item => {
-                                        return <CoinCard key={item.symbol.concat(item.id.toString())} title={item.symbol}
-                                                         type="WINNER" price="580" total={item.total_reward}
-                                                         prediction={item}
-                                                         endBlock={Number.parseInt(item.end.replace(",", ""))}
-                                                         live={true} icon={false} callBack={toResult}/>
-                                    })
-                                }
+                                {completedFlu}
                                 </Carousel>
                                 <RightOutlined style={{fontWeight: 600, color: "#2E4765", fontSize: "18px"}}/>
                             </Fragment> :
@@ -79,15 +93,7 @@ const CompletedFluctuations = () => {
                     !winner ?
                         <FluctuationsWrapper
                             style={{ justifyContent: completedPredictions && completedPredictions?.length < 4 ? "space-around" : "flex-start"}}>
-                            {
-                                completedPredictions?.map(item => {
-                                    return <CoinCard key={item.symbol.concat(item.id.toString())} title={item.symbol}
-                                                     type="WINNER" price="580" total={item.total_reward}
-                                                     prediction={item}
-                                                     endBlock={Number.parseInt(item.end.replace(",", ""))}
-                                                     live={true} icon={false} callBack={toResult}/>
-                                })
-                            }
+                            {completedFlu}
                         </FluctuationsWrapper> :
                         <FluctuationsWrapper>
                             <ResultCard
@@ -107,13 +113,18 @@ const FluctuationsWrapper = styled.div`
     display: flex;
     margin-top: 3rem;
     justify-content: center;
-    align-items: center;
+    flex-wrap: wrap;
+    row-gap: 30px;
+    column-gap: 120px;
     .swiper {
         width: 83vw;
         padding: 10px 0 50px 0;
     }
     @media only screen and (max-width: 750px) {
         padding: 0 15px;
+        align-items: center;
+        flex-wrap: nowrap;
+        column-gap: 0;
         .slick-dots li.slick-active button {
             background-color: #2E4DD4;
         }
