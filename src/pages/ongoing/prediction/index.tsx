@@ -62,7 +62,8 @@ const GoingPrediction = () => {
 
     return (
         <Fragment>
-            <ContentHeader title="Price Prediction" onSort={onSort} onSearch={onSearch} placeholder={"Search Cryptocurrency"}/>
+            <ContentHeader title="Price Prediction" onSort={onSort} onSearch={onSearch}
+                           placeholder={"Search Cryptocurrency"}/>
             <div className="phone">
                 <GoingPredictionWrapper>
                     <LeftOutlined style={{fontWeight: 600, color: "#2E4765", fontSize: "18px"}}/>
@@ -73,7 +74,8 @@ const GoingPrediction = () => {
                 </GoingPredictionWrapper>
             </div>
             <div className="pc">
-                <GoingPredictionWrapper style={{ justifyContent: predictions && predictions?.length < 4 ? "space-around" : "flex-start"}}>
+                <GoingPredictionWrapper
+                    style={{ justifyContent: predictions && predictions?.length < 4 ? "space-around" : "flex-start"}}>
                     {content}
                 </GoingPredictionWrapper>
             </div>

@@ -106,7 +106,6 @@ const CoinCard = (config: CoinCardProps) => {
                             config.icon ? <Fragment>
                                 <img src={"/symbol/" + config.title.split("-")[0] +  ".svg"} alt="" width={25} height={25}/>&nbsp;&nbsp;
                             </Fragment> : ""
-
                         }
                         <span className="coinCardTitle upperCase">
                             {config.title}
@@ -136,22 +135,13 @@ const CoinCard = (config: CoinCardProps) => {
                         config.type === CoinCardType.JOIN || config.type === CoinCardType.COMING ?
                             <CoinCardARES>
                                 <img src={timeImg} alt=""/>
-                                {
-                                    timeDiff.day > 0 ? <p>{timeDiff.day} Day</p> : ""
-                                }
-                                {
-                                    timeDiff.hour > 0 ?  <p>{timeDiff.hour} Hours Left</p> : ""
-                                }
-                                {
-
-                                    timeDiff.minute > 0 ?  <p>{timeDiff.minute} Minute Left</p> : ""
-                                }
+                                {timeDiff.day > 0 ? <p>{timeDiff.day} Day</p> : ""}
+                                {timeDiff.hour > 0 ?  <p>{timeDiff.hour} Hours Left</p> : ""}
+                                {timeDiff.minute > 0 ?  <p>{timeDiff.minute} Minute Left</p> : ""}
                             </CoinCardARES> : ""
                     }
                 </div>
-                {
-                    footer()
-                }
+                {footer()}
             </CoinCardContent>
         </CoinCardWrapper>
     );

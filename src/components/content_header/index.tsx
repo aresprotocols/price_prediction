@@ -1,18 +1,35 @@
 import HeaderSearch, {searchProps} from "../search";
 import styled from "styled-components";
 import {useTranslation} from "react-i18next";
+import {LeftOutlined} from "@ant-design/icons";
 
 export interface contentHeaderProps extends searchProps {
-    title: string
+    title: string,
+    goBackNum?: number,
+    goBackCallback?: Function
 }
 
 
-const ContentHeader = ({title, onSort, onSearch, placeholder, noSort} : contentHeaderProps) => {
+const ContentHeader = ({title, onSort, onSearch, placeholder, noSort, goBackNum, goBackCallback} : contentHeaderProps) => {
     const {t} = useTranslation(["common"]);
     return (
         <ContentHeaderWrapper>
-            <Header>
-                <header>{t(title)}</header>
+            <Header onClick={() => {
+                if (goBackCallback) {
+                    goBackCallback();
+                    return;
+                }
+                if (goBackNum && goBackNum !== 0) {
+                    window.history.go(goBackNum)
+                }
+            }}>
+                <header>
+                    {
+                        goBackNum ?
+                            <LeftOutlined style={{fontSize: "15px"}}/> : ""
+                    }
+                    {t(title)}
+                </header>
                 <HeaderSearch onSearch={onSearch} onSort={onSort} placeholder={placeholder} noSort={noSort}/>
             </Header>
         </ContentHeaderWrapper>
@@ -28,6 +45,9 @@ export const ContentHeaderWrapper = styled.div`
         color: #2E4765;
         font-size: 1.8rem;
         font-weight: 600;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
     }
     @media only screen and (max-width: 750px) {
         header {

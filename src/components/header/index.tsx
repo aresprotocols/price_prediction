@@ -1,26 +1,47 @@
+import {useContext, useEffect, useState} from "react";
+import {useNavigate} from "react-router";
+import {useTranslation} from "react-i18next";
+import {web3Accounts, web3Enable} from "@polkadot/extension-dapp";
 import {Dropdown, Menu } from 'antd';
 import { CaretDownOutlined, MenuOutlined } from '@ant-design/icons';
+import {InjectedAccountWithMeta} from "@polkadot/extension-inject/types";
+
 import {HeaderWrapper, LanguageMenuWrapper, MenuButton, PhoneMenu} from "./style";
-import {useTranslation} from "react-i18next";
 import myPrediction from "assets/images/myprediction.svg"
 import fluctuations from "assets/images/fluctuations.svg"
 import user from "assets/images/user.svg"
 import prediction from "assets/images/prediction.svg"
 import rules from "assets/images/rules.svg"
-import testcoin from "assets/images/testcoin.svg"
-import {useNavigate} from "react-router";
-import {web3Accounts, web3Enable} from "@polkadot/extension-dapp";
-import {useState} from "react";
+import testCoin from "assets/images/testcoin.svg"
+import {ApiContext} from "App";
+import {hideMiddle} from "utils/format";
 
 const { SubMenu } = Menu;
 
 const Header = (props: any) => {
     const {t, i18n} = useTranslation(["common"]);
     const navigate = useNavigate();
+    const context = useContext(ApiContext);
     const [showPhoneMenu, setShowPhoneMenu] = useState(false);
-    const [accounts, setAccounts] = useState([]);
+    const [accounts, setAccounts] = useState<InjectedAccountWithMeta[]>([]);
+    const [balance, setBalance] = useState("");
 
-    console.log(props);
+
+    const query = async () => {
+        if(context.api && accounts.length > 0) {
+            const acct = await context.api.query.system.account(accounts[0].address);
+            // @ts-ignore
+            let freeBalance = acct.data.free.toString();
+            setBalance((parseInt(freeBalance) / 1000000000000).toFixed(4));
+        }
+    }
+
+    useEffect(() => {
+        query();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [context, accounts]);
+
+
     const languageMenu = (
         <Menu onClick={(info) =>{
             let targetLanguage = info.key === 'en' ? 'en' : 'cn';
@@ -38,12 +59,12 @@ const Header = (props: any) => {
         <Menu onClick={(info) =>{
             navigate(info.key);
         }}>
-            <Menu.Item key="testCoin" icon={
-                <img src={testcoin} alt="" width={25} height={25}/>
+            <Menu.Item key="/home/owner"
+                       icon={<img src={testCoin} alt="" width={25} height={25}/>
             }>
                 <div className="accountTestCoin">
                     <div>{t("Test Coins")}</div>
-                    <div>100000000 ARES</div>
+                    <div>{balance} ARES</div>
                 </div>
             </Menu.Item>
             <Menu.Item key="prediction" icon={
@@ -133,15 +154,9 @@ const Header = (props: any) => {
                                 <Menu.Item key="/">
                                     {t("Home")}
                                 </Menu.Item>
-                                {
-                                    ongoingMenu
-                                }
-                                {
-                                    completedMenu
-                                }
-                                {
-                                    upcomingMenu
-                                }
+                                {ongoingMenu}
+                                {completedMenu}
+                                {upcomingMenu}
                                 {
                                     <SubMenu key="language" title={t(i18n.language.toUpperCase())}>
                                         <Menu.Item key="en">{t("EN")}</Menu.Item>
@@ -159,15 +174,9 @@ const Header = (props: any) => {
                         <Menu.Item key="/">
                             {t("Home")}
                         </Menu.Item>
-                        {
-                            ongoingMenu
-                        }
-                        {
-                            completedMenu
-                        }
-                        {
-                            upcomingMenu
-                        }
+                        {ongoingMenu}
+                        {completedMenu}
+                        {upcomingMenu}
                     </Menu>
                     {
                         accounts.length > 0 ?<div className="account">
@@ -177,7 +186,8 @@ const Header = (props: any) => {
                             <div>
                                 <div>account</div>
                                 <div className="headerAccountAddress">
-                                    GU21***LtUS
+                                    {/* @ts-ignore*/}
+                                    {hideMiddle(accounts[0].address, 4, 4)}
                                 </div>
                             </div>
                         </div> : <div className="connectWallet" onClick={connectWallet}>

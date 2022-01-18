@@ -1,6 +1,10 @@
 import React, {Suspense, useEffect, useState} from "react";
-import "i18n"
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { ApiPromise, WsProvider } from "@polkadot/api";
+import {web3FromAddress} from "@polkadot/extension-dapp";
+import {InjectedAccountWithMeta} from "@polkadot/extension-inject/types";
+
+import "i18n"
 import './App.css';
 import Header from "components/header";
 import Footer from "components/footer";
@@ -20,11 +24,8 @@ import CompletedPrediction from "pages/completed/prediction";
 import CompletedFluctuations from "pages/completed/fluctuations";
 import UpcomingPrediction from "pages/upcoming/prediction";
 import UpcomingFluctuations from "pages/upcoming/fluctuations";
-import { ApiPromise, WsProvider } from "@polkadot/api";
+import Upcoming from "pages/upcoming";
 import def from "config/ares-gladios"
-import {web3FromAddress} from "@polkadot/extension-dapp";
-import {InjectedAccountWithMeta} from "@polkadot/extension-inject/types";
-import Upcoming from "./pages/upcoming";
 
 export interface ContextProps {
   api?: ApiPromise,
@@ -56,7 +57,7 @@ function App() {
   const [polkaAPI, setPolkaAPI] = useState<ApiPromise>();
 
   const init = async () => {
-    console.log("init");
+    console.log("api init");
     const provider = new WsProvider("wss://gladios.aresprotocol.io");
     const api: ApiPromise = await ApiPromise.create({ provider,
       rpc: {
@@ -75,7 +76,6 @@ function App() {
       typesBundle: {
         spec: {"ares-gladios": def}
       }});
-    console.log(api);
     return api;
   }
 

@@ -73,9 +73,13 @@ const CompletedPrediction = () => {
                          live={true} icon={false} callBack={toResult}/>
     })
 
+    const goBackCallback = () => {
+        setWinner(false);
+    }
     return (
         <Fragment>
-            <ContentHeader title="Price Prediction" onSort={onSort} onSearch={onSearch} placeholder={"Search Cryptocurrency"}/>
+            <ContentHeader title="Price Prediction" onSort={onSort} onSearch={onSearch} goBackCallback={goBackCallback}
+                           goBackNum={winner ? -1 : 0} placeholder={"Search Cryptocurrency"}/>
             <div className="phone">
                 <PredictionWrapper>
                     {

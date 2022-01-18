@@ -91,9 +91,9 @@ const Winner = () => {
     return (
         <Fragment>
             <ContentHeader title="Price Prediction" onSort={() => {}} onSearch={onSearch}
-                           noSort={true} placeholder={"Search Winner"}/>
+                           noSort={true} goBackNum={-1} placeholder={"Search Winner"}/>
             <WinnerWrapper>
-                <Table columns={columns} dataSource={showWinner} rowKey={record => {return record.account;}}/>
+                <Table columns={columns} dataSource={showWinner} rowKey={record => {return record.account;}} scroll={{x: true}}/>
             </WinnerWrapper>
         </Fragment>
     );
