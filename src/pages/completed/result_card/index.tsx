@@ -1,5 +1,4 @@
 import {ResultCardWrapper, ContentCard, Content} from "./style";
-import bitcoin from "assets/images/bitcoin.svg";
 import {Button, Space} from "antd";
 import {useTranslation} from "react-i18next";
 import {useContext, useEffect, useState} from "react";
@@ -9,12 +8,11 @@ import {clacStartTime} from "utils/format";
 interface ResultCardProps {
     prediction: Prediction | undefined
     okCallBack?: Function,
-    consultCallback?: Function
     winnerCallback?: Function
 }
 
 
-const ResultCard = ({okCallBack, consultCallback, winnerCallback, prediction}: ResultCardProps) => {
+const ResultCard = ({okCallBack, winnerCallback, prediction}: ResultCardProps) => {
     const { t } = useTranslation(['common']);
     const context = useContext(ApiContext);
     const [time, setTime] = useState("");
@@ -23,15 +21,6 @@ const ResultCard = ({okCallBack, consultCallback, winnerCallback, prediction}: R
             okCallBack();
         }
     }
-
-    console.log(prediction);
-
-    const consult = () => {
-        if (consultCallback) {
-            consultCallback();
-        }
-    }
-
 
     const winner = () => {
         if (winnerCallback && prediction) {
@@ -64,7 +53,7 @@ const ResultCard = ({okCallBack, consultCallback, winnerCallback, prediction}: R
                     <div className="card">
                         <div className="header">
                             <img src={"/symbol/" + prediction?.symbol.split("-")[0] + ".svg"} alt="" width={23} height={23}/>
-                            &nbsp;<span className="title">BTC</span>
+                            &nbsp;<span className="title">{prediction?.symbol.split("-")[0]}</span>
                         </div>
                         {/*<div className="desc">*/}
                         {/*    {t("No one won in this prediction")}*/}
@@ -75,16 +64,10 @@ const ResultCard = ({okCallBack, consultCallback, winnerCallback, prediction}: R
                         <div className="result">
                             {t("Result")}: {prediction?.symbol_completed_price}
                         </div>
-                        <Button type="primary" className="btn winnerBtn" onClick={winner}>{t("winner")}</Button>
-                        <div className="option">
-                            <Space size="middle">
-                                <Button type="primary" className="btn" onClick={ok}>{t("OK")}</Button>
-                                <Button
-                                    onClick={consult}
-                                    style={{width: "90px", border: "2px solid #2E4DD4", color: "#2E4DD4", borderRadius: "5px"}}
-                                >{t("Consult")}</Button>
-                            </Space>
-                        </div>
+                        <Space size="middle" direction="vertical">
+                            <Button type="primary" className="btn winnerBtn" onClick={winner}>{t("winner")}</Button>
+                            <Button type="primary" className="btn winnerBtn" onClick={ok}>{t("OK")}</Button>
+                        </Space>
                     </div>
                 </ContentCard>
             </Content>

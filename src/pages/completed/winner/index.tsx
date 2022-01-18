@@ -1,9 +1,12 @@
 import { Table } from "antd";
 import styled from "styled-components";
 import {useTranslation} from "react-i18next";
-import {useContext, useEffect, useState} from "react";
+import {Fragment, ReactElement, useContext, useEffect, useState} from "react";
 import {ApiContext} from "App";
 import {useParams} from "react-router";
+import firstPlace from "assets/images/first_place.png";
+import secondPlace from "assets/images/second_place.png";
+import thirdlace from "assets/images/third_place.png";
 
 
 interface winner {
@@ -25,8 +28,25 @@ const Winner = () => {
     const columns = [
         {
             title: t("winnerName"),
-            dataIndex: "name",
-            key: "name"
+            dataIndex: "account",
+            key: "account",
+            render: (text: string, record: any, index: number) => {
+                let label: ReactElement | string = "";
+                if (index === 0) {
+                    label = <img src={firstPlace} alt="ares prediction first place" width={16}/>;
+                } else if (index === 1) {
+                    label = <img src={secondPlace} alt="ares prediction second place"/>;
+                } else if(index === 2) {
+                    label = <img src={secondPlace} alt="ares prediction second place"/>;
+                } else if (index >= 9) {
+                    label = "";
+                } else {
+                    label = <div className="indexLabel">{index + 1}</div>;
+                }
+                return <div className="tableAccount">
+                    {label} <span>{text}</span>
+                </div>
+            }
         },
         {
             title: t("prediction"),
@@ -35,8 +55,8 @@ const Winner = () => {
         },
         {
             title: t("Address"),
-            dataIndex: "account",
-            key: "account",
+            dataIndex: "eth_address",
+            key: "eth_address",
             ellipsis: true
         }
     ]
@@ -78,8 +98,25 @@ const WinnerWrapper = styled.div`
         }
     }
     .ant-table {
-        color: #2E4765;    
+        color: #2E4765;
     }
+    .tableAccount {
+        display: flex;
+        align-items: center;
+        column-gap: 10px;
+    }
+    .indexLabel {
+        min-width: 20px;
+        height: 20px;
+        padding: 5px 5px;
+        border-radius: 50%;
+        background: #E7EBFF;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #2E4765;
+    }
+
     @media only screen and (max-width: 750px) {
         width: 90%;
         margin: 0 auto;

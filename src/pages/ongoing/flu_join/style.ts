@@ -40,9 +40,16 @@ export const JoinContent = styled.div`
             height: 2.5rem;
         }
     }
+    .checkbox {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+        text-transform: uppercase;
+    }
     .cardTitle {
         font-size: 16px;
         font-weight: 600;
+        text-transform: uppercase;
     }
     .joinForm {
         margin-top: 15px;

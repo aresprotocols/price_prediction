@@ -130,7 +130,7 @@ const Header = (props: any) => {
                                 }
                                 setShowPhoneMenu(!showPhoneMenu);
                             }}>
-                                <Menu.Item key="/Home">
+                                <Menu.Item key="/">
                                     {t("Home")}
                                 </Menu.Item>
                                 {
@@ -156,7 +156,7 @@ const Header = (props: any) => {
                     <Menu mode="horizontal" className="pcMenu" onClick={(info) => {
                         navigate(info.key);
                     }}>
-                        <Menu.Item key="/Home">
+                        <Menu.Item key="/">
                             {t("Home")}
                         </Menu.Item>
                         {

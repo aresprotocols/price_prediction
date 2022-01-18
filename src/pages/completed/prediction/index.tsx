@@ -21,16 +21,12 @@ const CompletedPrediction = () => {
     }
 
     const ok = () => {
-        navigate("/completed/winner")
+        setWinner(false);
     }
 
     const toWinner = (symbol: string, id: string) => {
-        console.log("to winner", symbol, id)
-        navigate("/completed/winner/" + symbol + "/" + id)
-    }
-
-    const consult = () => {
-        setWinner(false);
+        console.log("to winner", symbol, id);
+        navigate("/completed/winner/" + symbol + "/" + id);
     }
 
     const getCompletedPredict = async () => {
@@ -74,7 +70,7 @@ const CompletedPrediction = () => {
                                 </Carousel>
                                 <RightOutlined style={{fontWeight: 600, color: "#2E4765", fontSize: "18px"}}/>
                             </Fragment> :
-                            <ResultCard prediction={selectPrediction} okCallBack={ok} consultCallback={ok} winnerCallback={ok}/>
+                            <ResultCard prediction={selectPrediction} okCallBack={ok} winnerCallback={ok}/>
                     }
                 </PredictionWrapper>
             </div>
@@ -97,7 +93,6 @@ const CompletedPrediction = () => {
                             <ResultCard
                                 prediction={selectPrediction}
                                 okCallBack={ok}
-                                consultCallback={consult}
                                 winnerCallback={toWinner}/>
                         </PredictionWrapper>
                 }

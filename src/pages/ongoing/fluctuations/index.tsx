@@ -70,7 +70,9 @@ const FluctuationsWrapper = styled.div`
     display: flex;
     align-items: center;
     width: 100%;
-    justify-content: space-around;
+    flex-wrap: wrap;
+    row-gap: 30px;
+    column-gap: 120px;
     .swiper {
         width: 83vw;
         padding: 10px 0 50px 0;

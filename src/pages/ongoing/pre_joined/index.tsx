@@ -18,7 +18,7 @@ const Joined = (props: any) => {
                 </div>
                 <div className="card">
                     <div className="header">
-                        <img src={props.title.split("-")[0] + ".svg"} alt="" width={23} height={23}/>&nbsp;
+                        <img src={"/symbol/" + props.title.split("-")[0] + ".svg"} alt="" width={23} height={23}/>&nbsp;
                         <span className="title">
                             {props.title}
                         </span>

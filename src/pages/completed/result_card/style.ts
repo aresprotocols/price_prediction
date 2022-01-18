@@ -45,6 +45,7 @@ export const ContentCard = styled.div`
         display: flex;
         align-items: center;
         justify-content: center;
+        text-transform: uppercase;
     }
     .title {
         font-weight: 600;

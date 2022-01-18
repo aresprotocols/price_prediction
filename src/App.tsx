@@ -42,7 +42,7 @@ export interface Prediction {
   "end": string,
   "distribute": string,
   "deviation": string,
-  "range": string | null,
+  "range": string[] | null,
   "total_reward": string,
   "state": string
 }
@@ -88,7 +88,7 @@ function App() {
   const create = async () => {
     try {
       if (defaultAccount && polkaAPI) {
-        const unsub = await polkaAPI.tx.estimates.newEstimates("sol-usdt", 251980, 252280, 252380, "RANGE", undefined, [143, 145, 150, 155], 100)
+        const unsub = await polkaAPI.tx.estimates.newEstimates("eth-usdt", 262800, 306990, 307990, "DEVIATION", 3300, undefined, 100)
             .signAndSend(defaultAccount.address, {}, ({status, events, dispatchError}) => {
               if (dispatchError) {
                 if (dispatchError.isModule) {
@@ -114,7 +114,7 @@ function App() {
   }
 
   useEffect(() => {
-    create();
+    // create();
   }, [defaultAccount]);
 
   const updateDefaultAccount = async (account: InjectedAccountWithMeta) => {
