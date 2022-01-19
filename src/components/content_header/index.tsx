@@ -1,16 +1,20 @@
-import HeaderSearch, {searchProps} from "../search";
+import {ReactNode} from "react";
 import styled from "styled-components";
-import {useTranslation} from "react-i18next";
 import {LeftOutlined} from "@ant-design/icons";
+import {useTranslation} from "react-i18next";
+
+import HeaderSearch, {searchProps} from "../search";
 
 export interface contentHeaderProps extends searchProps {
     title: string,
     goBackNum?: number,
+    radioNode?: ReactNode,
     goBackCallback?: Function
 }
 
 
-const ContentHeader = ({title, onSort, onSearch, placeholder, noSort, goBackNum, goBackCallback} : contentHeaderProps) => {
+const ContentHeader = ({title, onSort, onSearch, placeholder,
+                           noSort, goBackNum, goBackCallback, radioNode} : contentHeaderProps) => {
     const {t} = useTranslation(["common"]);
     return (
         <ContentHeaderWrapper>
@@ -29,6 +33,7 @@ const ContentHeader = ({title, onSort, onSearch, placeholder, noSort, goBackNum,
                             <LeftOutlined style={{fontSize: "15px"}}/> : ""
                     }
                     {t(title)}
+                    {radioNode}
                 </header>
                 <HeaderSearch onSearch={onSearch} onSort={onSort} placeholder={placeholder} noSort={noSort}/>
             </Header>
@@ -48,6 +53,13 @@ export const ContentHeaderWrapper = styled.div`
         display: flex;
         align-items: center;
         cursor: pointer;
+        .radio {
+            margin-left: 50px;
+            font-size: 18px;
+        }
+        .ant-radio-wrapper {
+            color: #2E4765;
+        }
     }
     @media only screen and (max-width: 750px) {
         header {

@@ -41,7 +41,7 @@ const Fluctuations = () => {
                              title={item.symbol} type="JOIN" price="580"
                              total={item.total_reward}
                              endBlock={Number.parseInt(item.end.replace(",", ""))}
-                             live={true} icon={false} callBack={toJoin}/>
+                             live={true} icon={true} callBack={toJoin}/>
         })
 
 

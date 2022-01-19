@@ -71,15 +71,19 @@ export const CoinCardContent = styled.div`
         justify-content: space-around;
     }
     .btn {
-        background: #00BF78;
+        background: #00BF78 !important;
         border-radius: 5px;
-        width: 130px;
+        min-width: 130px;
         height: 40px;
         color: #FFF;
         font-weight: 600;
     }
     .join_btn {
-        background: #2E4DD4;;
+        background: #2E4DD4;
+    }
+    .joined_btn {
+        background: #2E4DD4 !important;
+        color: #FFF !important;
     }
     @media only screen and (max-width: 750px) {
         width: 280px;

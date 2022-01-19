@@ -8,6 +8,7 @@ const zhCommon = {
     "Price Fluctuations": "价格涨跌",
     "Test Coins": "测试币金额",
     "My Predictions": "我参与的预测",
+    "My Participated Predictions": "我参与的预测",
     "Rules": "规则",
     "EN": "英语",
     "CN": "中文",

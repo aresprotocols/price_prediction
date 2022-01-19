@@ -9,6 +9,7 @@ const enCommon = {
     "Price Fluctuations": "Price Fluctuations",
     "Test Coins": "Test Coins",
     "My Predictions": "My Predictions",
+    "My Participated Predictions": "My Participated Predictions",
     "Rules": "Rules",
     "EN": "EN",
     "CN": "CN",

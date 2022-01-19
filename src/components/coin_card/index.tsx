@@ -14,7 +14,8 @@ export enum CoinCardType {
     "COMING" = "COMING",
     "WINNER" = "WINNER",
     "COMPLETED" = "COMPLETED",
-    "JOIN" = "JOIN"
+    "JOIN" = "JOIN",
+    "JOINED" = "JOINED"
 }
 
 interface CoinCardProps {
@@ -84,6 +85,10 @@ const CoinCard = (config: CoinCardProps) => {
                         {t("join").toUpperCase()}
                     </Button>
                 );
+            case CoinCardType.JOINED:
+                return <Button className="joined_btn btn" onClick={ () => {}}>
+                    {t("joined").toUpperCase()}
+                </Button>
             case CoinCardType.COMING:
                 return <p className="coming">{t("Coming soon").toUpperCase()}</p>
             case CoinCardType.WINNER:

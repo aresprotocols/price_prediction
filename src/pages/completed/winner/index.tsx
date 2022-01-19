@@ -4,22 +4,14 @@ import styled from "styled-components";
 import {useTranslation} from "react-i18next";
 import { Table } from "antd";
 
-import {ApiContext} from "App";
+import {ApiContext, Participant} from "App";
 import firstPlace from "assets/images/first_place.png";
 import secondPlace from "assets/images/second_place.png";
 import thirdPlace from "assets/images/third_place.png";
 import ContentHeader from "components/content_header";
 
 
-interface winner {
-    account: string,
-    end: string,
-    estimates: string,
-    range_index: string,
-    eth_address: string
-    multiplier: string,
-    reward: string
-}
+interface winner extends  Participant{}
 
 const Winner = () => {
     const { t } = useTranslation(['common']);

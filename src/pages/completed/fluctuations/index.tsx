@@ -67,7 +67,7 @@ const CompletedFluctuations = () => {
                          type="WINNER" price="580" total={item.total_reward}
                          prediction={item}
                          endBlock={Number.parseInt(item.end.replace(",", ""))}
-                         live={true} icon={false} callBack={toResult}/>
+                         live={true} icon={true} callBack={toResult}/>
     })
 
     const goBackCallback = () => {

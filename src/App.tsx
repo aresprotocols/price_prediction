@@ -48,6 +48,16 @@ export interface Prediction {
   "state": string
 }
 
+export interface Participant {
+  account: string,
+  end: string,
+  estimates: string,
+  range_index: string,
+  eth_address: string
+  multiplier: string,
+  reward: string
+}
+
 
 export const ApiContext = React.createContext<ContextProps>({});
 

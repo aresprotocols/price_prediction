@@ -25,9 +25,9 @@ const Header = (props: any) => {
     const [showPhoneMenu, setShowPhoneMenu] = useState(false);
     const [accounts, setAccounts] = useState<InjectedAccountWithMeta[]>([]);
     const [balance, setBalance] = useState("");
+    const [selectedKeys, setSelectedKeys] = useState<string[]>();
 
-
-    const query = async () => {
+    const queryBalance = async () => {
         if(context.api && accounts.length > 0) {
             const acct = await context.api.query.system.account(accounts[0].address);
             // @ts-ignore
@@ -37,7 +37,7 @@ const Header = (props: any) => {
     }
 
     useEffect(() => {
-        query();
+        queryBalance();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [context, accounts]);
 
@@ -56,7 +56,8 @@ const Header = (props: any) => {
 
 
     const accountMenu = (
-        <Menu onClick={(info) =>{
+        <Menu selectedKeys={selectedKeys} onClick={(info) =>{
+            setSelectedKeys([info.key]);
             navigate(info.key);
         }}>
             <Menu.Item key="/home/owner"
@@ -67,12 +68,12 @@ const Header = (props: any) => {
                     <div>{balance} ARES</div>
                 </div>
             </Menu.Item>
-            <Menu.Item key="prediction" icon={
+            <Menu.Item key="ongoing" icon={
                 <img src={prediction} alt="" width={22} height={22}/>
             }>
                 <span>{t("My Predictions")}</span>
             </Menu.Item>
-            <Menu.Item key="/rules/" icon={
+            <Menu.Item key="/rules" icon={
                 <img src={rules} alt="" width={22} height={22}/>
             }>
                 <span>{t("Rules")}</span>
@@ -81,7 +82,7 @@ const Header = (props: any) => {
     );
 
     const ongoingMenu = (
-        <SubMenu key="Ongoing" title= {t("Ongoing")}>
+        <SubMenu key="ongoing" title= {t("Ongoing")}>
             <Menu.Item key="/ongoing/prediction"
                        icon={<img src={myPrediction} alt="" width={15} height={15}/>}>
                 {t("Price Prediction")}
@@ -120,9 +121,8 @@ const Header = (props: any) => {
             if (res.length === 0) {
                 console.log("浏览器没有安装 扩展");
             }
-            await web3Accounts({ accountType: ["sr25519"], ss58Format: 2 }).then(res => {
+            await web3Accounts({ accountType: ["sr25519"], ss58Format: 42 }).then(res => {
                 console.log("获取的地址", res);
-                // @ts-ignore
                 setAccounts(res);
                 props.updateAccount(res[0]);
             });
@@ -168,9 +168,13 @@ const Header = (props: any) => {
                     }
                 </PhoneMenu>
                 <nav>
-                    <Menu mode="horizontal" className="pcMenu" onClick={(info) => {
-                        navigate(info.key);
-                    }}>
+                    <Menu mode="horizontal" className="pcMenu" defaultSelectedKeys={["/"]}
+                          selectedKeys={selectedKeys}
+                          onClick={(info) => {
+                              setSelectedKeys([info.key]);
+                              navigate(info.key);
+                          }}
+                    >
                         <Menu.Item key="/">
                             {t("Home")}
                         </Menu.Item>
@@ -181,12 +185,11 @@ const Header = (props: any) => {
                     {
                         accounts.length > 0 ?<div className="account">
                             <Dropdown overlay={accountMenu} overlayClassName="dropdownAccount">
-                                <img src={user} alt=""/>
+                                <img src={user} alt="ares protocol account"/>
                             </Dropdown>
                             <div>
                                 <div>account</div>
                                 <div className="headerAccountAddress">
-                                    {/* @ts-ignore*/}
                                     {hideMiddle(accounts[0].address, 4, 4)}
                                 </div>
                             </div>

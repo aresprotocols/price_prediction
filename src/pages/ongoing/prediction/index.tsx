@@ -23,7 +23,7 @@ const GoingPrediction = () => {
         if (context.api) {
             const res = await context.api.query.estimates.activeEstimates.entries();
             const pres: Prediction[] = [];
-            res.forEach(([args, value]) => {
+            res.forEach(([_, value]) => {
                 pres.push(value.toHuman() as unknown as Prediction);
             });
             setPredictions(pres.filter(item => item.estimates_type === "DEVIATION"));
