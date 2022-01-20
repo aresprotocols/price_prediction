@@ -23,10 +23,11 @@ const Home = () => {
                     </div>
                     <div>
                         <p>{t("Receive test coins")}</p>
-                        <div className="aresNum" onClick={() => {
-                            navigate("/home/coins");
-                        }}>
-                            50 ARES<span>&nbsp;/{t("per day")}</span>
+                        <div className="aresNum">
+                            <a href="https://t.me/AresProtocolBot" target="_blank"
+                               rel="noopener noreferrer" style={{color: "#FFF"}} >
+                                50 ARES<span>&nbsp;/{t("per day")}</span>
+                            </a>
                         </div>
                     </div>
                 </div>
