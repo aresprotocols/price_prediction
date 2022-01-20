@@ -2,7 +2,7 @@ import {Fragment, useContext, useEffect, useState} from "react";
 import styled from "styled-components";
 import {useNavigate} from "react-router";
 import {LeftOutlined, RightOutlined} from "@ant-design/icons";
-import {Carousel} from "antd";
+import {Carousel, Spin} from "antd";
 
 import CoinCard from "components/coin_card";
 import ResultCard from "../result_card";
@@ -18,6 +18,7 @@ const CompletedPrediction = () => {
     const [selectPrediction, setSelectPrediction] = useState<Prediction>();
     const [winner, setWinner] = useState(false);
     const [searchName, setSearchName,] = useState<string>();
+    const [isShowSpin, setIsShowSpin] = useState(false);
 
     const toResult = (item: Prediction) => {
         setSelectPrediction(item);
@@ -34,12 +35,14 @@ const CompletedPrediction = () => {
 
     const getCompletedPredict = async () => {
         if (context.api) {
+            setIsShowSpin(true);
             const res = await context.api.query.estimates.completedEstimates.entries();
             let pres: Prediction[] = [];
             res.forEach(([args, value]) => {
                 pres = pres.concat(value.toHuman() as unknown as Prediction);
             });
             setCompletedPrediction(pres.filter(item => item.estimates_type === "DEVIATION"));
+            setIsShowSpin(false);
         }
     };
 
@@ -93,6 +96,11 @@ const CompletedPrediction = () => {
                 </PredictionWrapper>
             </div>
             <div className="pc">
+                {
+                    isShowSpin ? <div style={{width: "100%", textAlign: "center"}}>
+                        <Spin delay={100}/>
+                    </div> : ""
+                }
                 {
                     !winner ?
                         <PredictionWrapper

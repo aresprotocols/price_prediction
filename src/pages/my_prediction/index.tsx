@@ -1,7 +1,7 @@
 import {Fragment, useContext, useEffect, useState} from "react";
 import {useTranslation} from "react-i18next";
 import styled from "styled-components";
-import {Button, Radio} from "antd";
+import {Button, Radio, Spin} from "antd";
 import {Keyring} from "@polkadot/api";
 
 import ContentHeader from "components/content_header";
@@ -26,9 +26,11 @@ const MyPrediction = () => {
     const [showPrediction, setShowPrediction] = useState<Prediction[]>([]);
     const [searchName, setSearchName,] = useState<string>();
     const [selectedPreAndFlu, setSelectedPreAndFlu] = useState<string[]>(["DEVIATION", "RANGE"]);
+    const [isShowSpin, setIsShowSpin] = useState(false);
 
     const getParticipant = async () => {
         if(context.api && context.account) {
+            setIsShowSpin(true);
             let keys = await context.api.query.estimates.participants.keys();
             const symbols: SymbolAndID[] = [];
             for(let i=0; i< keys.length;i++){
@@ -43,6 +45,7 @@ const MyPrediction = () => {
                 })
             }
             setParticipantsSymbolAndID(symbols);
+            setIsShowSpin(false);
         }
     }
 
@@ -67,6 +70,7 @@ const MyPrediction = () => {
 
     const updateOnGoing = () => {
         const getSymbol: string[] = [];
+        setIsShowSpin(true);
         participantsSymbolAndID?.forEach(  async (item) => {
             if (!getSymbol.includes(item.symbol)) {
                 getSymbol.push(item.symbol);
@@ -74,6 +78,7 @@ const MyPrediction = () => {
                 if (res) {
                     setParticipantsOngoing(prevState => [res, ...prevState]);
                     setShowPrediction(prevState => [res, ...prevState]);
+                    setIsShowSpin(false);
                 }
             }
         });
@@ -176,6 +181,11 @@ const MyPrediction = () => {
                     </Button>
                 </div>
                 <div className="predictions">
+                    {
+                        isShowSpin ? <div style={{width: "100%", textAlign: "center"}}>
+                            <Spin delay={100}/>
+                        </div> : ""
+                    }
                     {
                         showPrediction?.filter(item => {
                             return selectedPreAndFlu.includes(item.estimates_type);
