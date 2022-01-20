@@ -2,11 +2,22 @@ import styled from "styled-components";
 
 
 
+
+
 export const CoinCardWrapper = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-
+    animation: entrance 1s ease;
+    @keyframes entrance {
+        0%{
+            opacity: 0;
+            transform:translateX(-50px);
+        }
+        100%{
+            opacity: 1;
+        }
+    }
     .time {
         width: 206px;
         height: 35px;
