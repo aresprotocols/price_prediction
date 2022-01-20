@@ -1,7 +1,7 @@
 import {Fragment, useContext, useEffect, useState} from "react";
 import {useParams} from "react-router";
 import {useTranslation} from "react-i18next";
-import {Button, Checkbox, Form, Input} from "antd";
+import {Button, Form, Input, Radio} from "antd";
 
 import {Countdown, GoJoinWrapper, JoinContent, Price} from "./style";
 import timeLogo from "assets/images/time.svg";
@@ -9,7 +9,7 @@ import {ApiContext, Prediction} from "App";
 import {clacStartTime, timeDiffRes} from "utils/format";
 import {getSymbolPrice} from "utils/symbol-price";
 import Joined from "../pre_joined";
-import ContentHeader from "../../../components/content_header";
+import ContentHeader from "components/content_header";
 
 const FluctuationsJoin = () => {
     const { t } = useTranslation(['common']);
@@ -128,25 +128,25 @@ const FluctuationsJoin = () => {
                             </Price>
                         </div>
                         <div className="checkbox">
-                            <Checkbox.Group onChange={checkedValue => setSelectRangeIndex(checkedValue[0] as string)}>
-                                <Checkbox value={0}>
+                            <Radio.Group onChange={e => setSelectRangeIndex(e.target.value)}>
+                                <Radio value={0}>
                                     {predictionInfo?.symbol.split("-")[0]}
                                     &nbsp;&ge;&nbsp;
-                                    {predictionInfo?.range ? predictionInfo.range[0] : "0"}
-                                </Checkbox>
-                                <Checkbox value={1}>
-                                    {predictionInfo?.range ? predictionInfo.range[1] : "0"}
+                                    {predictionInfo?.range ? Number.parseInt(predictionInfo.range[0].replace(",", "")) / 10000 : "0"}
+                                </Radio>
+                                <Radio value={1}>
+                                    {predictionInfo?.range ? Number.parseInt(predictionInfo.range[1].replace(",", "")) / 10000 : "0"}
                                     &nbsp;&lt;&nbsp;
                                     {predictionInfo?.symbol.split("-")[0]}
                                     &nbsp;&lt;&nbsp;
-                                    {predictionInfo?.range ? predictionInfo.range[2] : "0"}
-                                </Checkbox>
-                                <Checkbox value={2}>
+                                    {predictionInfo?.range ? Number.parseInt(predictionInfo.range[2].replace(",", "")) / 10000 : "0"}
+                                </Radio>
+                                <Radio value={2}>
                                     {predictionInfo?.symbol.split("-")[0]}
                                     &nbsp;&le;&nbsp;
                                     {predictionInfo?.range ? Number.parseInt(predictionInfo.range[3].replace(",", "")) / 10000 : "0"}
-                                </Checkbox>
-                            </Checkbox.Group>
+                                </Radio>
+                            </Radio.Group>
                         </div>
                         <div className="joinForm">
                             <div>
