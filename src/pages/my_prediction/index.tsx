@@ -16,7 +16,6 @@ interface SymbolAndID {
 }
 
 const MyPrediction = () => {
-    console.log("MyPrediction")
     const context = useContext(ApiContext);
     const {t} = useTranslation(["common"]);
     const keyring = new Keyring({type: "sr25519"});
@@ -33,7 +32,7 @@ const MyPrediction = () => {
             let keys = await context.api.query.estimates.participants.keys();
             const symbols: SymbolAndID[] = [];
             for(let i=0; i< keys.length;i++){
-                let args = keys[i].args;
+                const args = keys[i].args;
                 const participants = await context.api.query.estimates.participants(args[0], args[1])
                 const pres = participants.toHuman() as unknown as Participant[];
                 pres.forEach(item => {
@@ -102,7 +101,6 @@ const MyPrediction = () => {
             setShowPrediction([...participantsOngoing]);
         }
         if (selectedState === "completed" && participantsCompleted.length > 0) {
-            console.log("completed", participantsCompleted);
             setShowPrediction([...participantsCompleted]);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps

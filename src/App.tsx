@@ -1,6 +1,6 @@
 import React, {Suspense, useEffect, useState} from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { ApiPromise, WsProvider } from "@polkadot/api";
+import {BrowserRouter, Route, Routes} from "react-router-dom";
+import {ApiPromise, WsProvider} from "@polkadot/api";
 import {web3FromAddress} from "@polkadot/extension-dapp";
 import {InjectedAccountWithMeta} from "@polkadot/extension-inject/types";
 
@@ -69,7 +69,8 @@ function App() {
   const init = async () => {
     console.log("api init");
     const provider = new WsProvider("wss://gladios.aresprotocol.io");
-    const api: ApiPromise = await ApiPromise.create({ provider,
+    return await ApiPromise.create({
+      provider,
       rpc: {
         system: {
           children: {
@@ -85,8 +86,8 @@ function App() {
       },
       typesBundle: {
         spec: {"ares-gladios": def}
-      }});
-    return api;
+      }
+    });
   }
 
   useEffect(() => {
@@ -95,6 +96,7 @@ function App() {
     });
   }, []);
 
+  // eslint-disable-next-line
   const create = async () => {
     try {
       if (defaultAccount && polkaAPI) {
@@ -140,6 +142,7 @@ function App() {
           <BrowserRouter >
             <Header updateAccount={updateDefaultAccount}/>
             <div className="content">
+
               <Routes>
                 <Route path="/" element={<Join />} />
                 <Route path="home" element={<Home />}/>

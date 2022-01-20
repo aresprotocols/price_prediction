@@ -1,4 +1,4 @@
-import {useContext, useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {useNavigate} from "react-router";
 import {useTranslation} from "react-i18next";
 import {web3Accounts, web3Enable} from "@polkadot/extension-dapp";
@@ -15,6 +15,7 @@ import rules from "assets/images/rules.svg"
 import testCoin from "assets/images/testcoin.svg"
 import {ApiContext} from "App";
 import {hideMiddle} from "utils/format";
+import InstallPolkadotGuide from "components/install_polkadot";
 
 const { SubMenu } = Menu;
 
@@ -26,6 +27,7 @@ const Header = (props: any) => {
     const [accounts, setAccounts] = useState<InjectedAccountWithMeta[]>([]);
     const [balance, setBalance] = useState("");
     const [selectedKeys, setSelectedKeys] = useState<string[]>();
+    const [showInstallPolkadotGuide, setShowInstallPolkadotGuide] = useState(false);
 
     const queryBalance = async () => {
         if(context.api && accounts.length > 0) {
@@ -119,7 +121,9 @@ const Header = (props: any) => {
     const connectWallet = async () => {
         await web3Enable("price prediction").then(async res => {
             if (res.length === 0) {
-                console.log("浏览器没有安装 扩展");
+                console.log("浏览器没有安装 扩展", res);
+                setShowInstallPolkadotGuide(true);
+                return;
             }
             await web3Accounts({ accountType: ["sr25519"], ss58Format: 42 }).then(res => {
                 console.log("获取的地址", res);
@@ -129,9 +133,19 @@ const Header = (props: any) => {
         });
     }
 
+    useEffect(() => {
+        connectWallet();
+        //eslint-disable-next-line  react-hooks/exhaustive-deps
+    }, []);
+
+
 
     return (
         <HeaderWrapper>
+            {showInstallPolkadotGuide ? <InstallPolkadotGuide isShow={showInstallPolkadotGuide}  callBack={
+                () => {
+                    setShowInstallPolkadotGuide(false);}
+            }/> : ""}
             <header>
                 <div className="logo">
                     <img src="/images/logo.png" alt="price prediction logo"/>

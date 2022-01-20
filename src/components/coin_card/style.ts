@@ -75,7 +75,7 @@ export const CoinCardContent = styled.div`
         border-radius: 5px;
         min-width: 130px;
         height: 40px;
-        color: #FFF;
+        color: #FFF !important;
         font-weight: 600;
     }
     .join_btn {
@@ -83,7 +83,6 @@ export const CoinCardContent = styled.div`
     }
     .joined_btn {
         background: #2E4DD4 !important;
-        color: #FFF !important;
     }
     @media only screen and (max-width: 750px) {
         width: 280px;
