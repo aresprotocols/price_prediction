@@ -1,13 +1,12 @@
-import { HomeWrapper, HomeContent } from "./style";
-import Message, {MessageType} from "components/message";
 import {useTranslation} from "react-i18next";
-import {useNavigate} from "react-router";
+
+import Message, {MessageType} from "components/message";
+import { HomeWrapper, HomeContent } from "./style";
 
 
 
 const Home = () => {
     const {t} = useTranslation(['common']);
-    const navigate = useNavigate();
     return (
         <HomeWrapper>
             <div className="title">
