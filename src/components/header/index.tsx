@@ -2,7 +2,7 @@ import React, {useContext, useEffect, useState} from "react";
 import {useNavigate} from "react-router";
 import {useTranslation} from "react-i18next";
 import {web3Accounts, web3Enable} from "@polkadot/extension-dapp";
-import {Dropdown, Menu } from 'antd';
+import {Dropdown, Menu, Select} from 'antd';
 import { CaretDownOutlined, MenuOutlined } from '@ant-design/icons';
 import {InjectedAccountWithMeta} from "@polkadot/extension-inject/types";
 
@@ -125,8 +125,7 @@ const Header = (props: any) => {
                 setShowInstallPolkadotGuide(true);
                 return;
             }
-            await web3Accounts({ accountType: ["sr25519"], ss58Format: 42 }).then(res => {
-                console.log("获取的地址", res);
+            await web3Accounts({ accountType: ["sr25519"], ss58Format: 34 }).then(res => {
                 setAccounts(res);
                 props.updateAccount(res[0]);
             });
@@ -204,7 +203,19 @@ const Header = (props: any) => {
                             <div>
                                 <div>account</div>
                                 <div className="headerAccountAddress">
-                                    {hideMiddle(accounts[0].address, 4, 4)}
+                                    {
+                                        accounts ?
+                                            <Select value={hideMiddle(context.account?.address ? context.account?.address : "", 4, 4)}
+                                                    onChange={val => props.updateAccount(accounts[parseInt(val)])}>
+                                                {
+                                                    accounts.map( (account, index) => {
+                                                        return <Select.Option value={index} key={account.address}>
+                                                            {hideMiddle(account.address, 4, 4)}
+                                                        </Select.Option>
+                                                    })
+                                                }
+                                            </Select> : ""
+                                    }
                                 </div>
                             </div>
                         </div> : <div className="connectWallet" onClick={connectWallet}>
