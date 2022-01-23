@@ -1,5 +1,5 @@
-import React, {Suspense, useEffect, useState} from "react";
-import {BrowserRouter, Route, Routes} from "react-router-dom";
+import React, {PropsWithChildren, Suspense, useEffect, useState} from "react";
+import {BrowserRouter, Navigate, Route, Routes} from "react-router-dom";
 import {ApiPromise, WsProvider} from "@polkadot/api";
 import {web3FromAddress} from "@polkadot/extension-dapp";
 import {InjectedAccountWithMeta} from "@polkadot/extension-inject/types";
@@ -26,6 +26,8 @@ import UpcomingPrediction from "pages/upcoming/prediction";
 import UpcomingFluctuations from "pages/upcoming/fluctuations";
 import Upcoming from "pages/upcoming";
 import def from "config/ares-gladios"
+import Admin from "pages/admin/admin";
+import Login from "pages/admin/login";
 
 export interface ContextProps {
   api?: ApiPromise,
@@ -96,39 +98,6 @@ function App() {
     });
   }, []);
 
-  // eslint-disable-next-line
-  const create = async () => {
-    try {
-      if (defaultAccount && polkaAPI) {
-        const unsub = await polkaAPI.tx.estimates.newEstimates("eth-usdt", 262800, 306990, 307990, "DEVIATION", 3300, undefined, 100)
-            .signAndSend(defaultAccount.address, {}, ({status, events, dispatchError}) => {
-              if (dispatchError) {
-                if (dispatchError.isModule) {
-                  const decoded = polkaAPI.registry.findMetaError(dispatchError.asModule);
-                  const { docs, name, section } = decoded;
-
-                  console.log(`${section}.${name}: ${docs.join(' ')}`);
-                }
-                console.log(`${dispatchError}`);
-              }
-
-              if (status.isInBlock) {
-                console.log(`newEstimates Transaction included at blockHash ${status.asInBlock}`);
-              } else if (status.isFinalized) {
-                console.log(`newEstimates Transaction finalized at blockHash ${status.asFinalized}`);
-                unsub();
-              }
-            });
-      }
-    } catch (e) {
-      console.error(e)
-    }
-  }
-
-  useEffect(() => {
-    // create();
-  }, [defaultAccount]);
-
   const updateDefaultAccount = async (account: InjectedAccountWithMeta) => {
     const injector = await web3FromAddress(account.address);
     polkaAPI?.setSigner(injector.signer);
@@ -142,7 +111,6 @@ function App() {
           <BrowserRouter >
             <Header updateAccount={updateDefaultAccount}/>
             <div className="content">
-
               <Routes>
                 <Route path="/" element={<Join />} />
                 <Route path="home" element={<Home />}/>
@@ -164,6 +132,12 @@ function App() {
                   <Route path="prediction" element={<UpcomingPrediction />}/>
                   <Route path="fluctuations" element={<UpcomingFluctuations />}/>
                 </Route>
+                <Route path="/admin" element={
+                  <RequireAuth>
+                    <Admin />
+                  </RequireAuth>
+                }/>
+                <Route path="/admin/login" element={<Login />}/>
               </Routes>
             </div>
           </BrowserRouter>
@@ -175,3 +149,14 @@ function App() {
 }
 
 export default App;
+
+
+
+const RequireAuth = (props: PropsWithChildren<any>) => {
+  const isLogin = localStorage.getItem("isLogin");
+
+  return (
+      isLogin ? props.children :
+          <Navigate to="/admin/login" replace />
+  );
+}
