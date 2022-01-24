@@ -1,17 +1,41 @@
 import styled from "styled-components";
 import {Button, Space} from "antd";
 import {useTranslation} from "react-i18next";
+import BigNumber from "bignumber.js";
 import {useNavigate} from "react-router";
+
+import {ApiContext} from "App";
+import {useContext, useEffect, useState} from "react";
 
 const OwnerTestCoin = () => {
     const {t} = useTranslation(["common"]);
     const navigate = useNavigate();
+    const context = useContext(ApiContext);
+    const [balance, setBalance] = useState("");
+
+    const queryBalance = async () => {
+        if(context.api && context.account) {
+            const acct = await context.api.query.system.account(context.account.address);
+            // @ts-ignore
+            let freeBalance = acct.data.free.toString();
+            setBalance(new BigNumber(freeBalance).shiftedBy(-12).toFixed(4));
+
+        }
+    }
+
+    useEffect(() => {
+        queryBalance()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [context]);
+
+
+
     return (
         <OwnerTestCoinWrapper>
            <MyTestCoin>
                <Space direction="vertical" >
                    <div className="title">{t("Your test coins")}</div>
-                   <div className="ares">100,000 ARES</div>
+                   <div className="ares">{balance} ARES</div>
                    <div>
                        <Button onClick={() => {
                            navigate("/ongoing/prediction")
@@ -30,14 +54,9 @@ const OwnerTestCoin = () => {
                 </div>
                 <Space direction="vertical">
                     <div className="title">{t("Receive test coins")}</div>
-                    <div className="ares">100,000 ARES</div>
-                    <div>
-                        <Button onClick={() => {
-                            navigate("/ongoing")
-                        }}>
-                            Play Now!
-                        </Button>
-                    </div>
+                    <a href="https://t.me/AresProtocolBot" target="_blank" rel="noopener noreferrer">
+                        <div className="ares">50 ARES</div>
+                    </a>
                 </Space>
             </ReceiveTestCoins>
         </OwnerTestCoinWrapper>

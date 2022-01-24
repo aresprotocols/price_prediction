@@ -1,21 +1,26 @@
 import {ResultCardWrapper, ContentCard, Content} from "./style";
 import {Button, Space} from "antd";
 import {useTranslation} from "react-i18next";
-import {useContext, useEffect, useState} from "react";
+import {Fragment, useContext, useEffect, useState} from "react";
 import {ApiContext, Prediction} from "App";
 import {clacStartTime} from "utils/format";
+import userImg from "assets/images/userB.svg";
 
 interface ResultCardProps {
+    type: "Prediction" | "Fluctuations"
     prediction: Prediction | undefined
     okCallBack?: Function,
     winnerCallback?: Function
 }
 
 
-const ResultCard = ({okCallBack, winnerCallback, prediction}: ResultCardProps) => {
+const ResultCard = ({type, okCallBack, winnerCallback, prediction}: ResultCardProps) => {
     const { t } = useTranslation(['common']);
     const context = useContext(ApiContext);
     const [time, setTime] = useState("");
+    const [winnerNum, setWinnerNum] = useState(0);
+
+
     const ok = () => {
         if (okCallBack) {
             okCallBack();
@@ -38,8 +43,19 @@ const ResultCard = ({okCallBack, winnerCallback, prediction}: ResultCardProps) =
         }
     }
 
+    const queryWinner = async () => {
+        if (context.api && prediction) {
+            const winner = await context.api.query.estimates.winners(prediction.symbol, prediction.id);
+            const winners = winner.toHuman() as [];
+            setWinnerNum(winners.length);
+        }
+    }
+
     useEffect(() => {
         getStartTime();
+        if (type === "Fluctuations") {
+            queryWinner();
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
@@ -59,12 +75,31 @@ const ResultCard = ({okCallBack, winnerCallback, prediction}: ResultCardProps) =
                         {/*<div className="desc">*/}
                         {/*    {t("No one won in this prediction")}*/}
                         {/*</div>*/}
-                        <div className="result">
-                            {t("Result")}: 1000
-                        </div>
-                        <div className="result">
-                            {t("Result")}: {prediction?.symbol_completed_price}
-                        </div>
+                        {
+                            type === "Prediction" ?
+                                <Fragment>
+                                    <div className="result">
+                                        {t("Result")}: 1000
+                                    </div>
+                                    <div className="result">
+                                        {t("Result")}: {prediction?.symbol_completed_price}
+                                    </div>
+                                </Fragment> : <Fragment>
+                                    <div className="result">
+                                        <img src={userImg} alt="Ares Prediction User" width={24} height={24}/>
+                                        &nbsp;&nbsp;<span>{winnerNum} successful</span>
+                                    </div>
+
+                                    <div>Final Price</div>
+                                    <div className="result flcResult">
+                                        $ {
+                                        prediction ?
+                                            (parseInt(prediction.symbol_completed_price.replace(",", "")) / 10000)
+                                            : 0
+                                    }
+                                    </div>
+                                </Fragment>
+                        }
                         <Space size="middle" direction="vertical">
                             <Button type="primary" className="btn winnerBtn" onClick={winner}>{t("winner")}</Button>
                             <Button type="primary" className="btn winnerBtn" onClick={ok}>{t("OK")}</Button>

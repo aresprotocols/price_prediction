@@ -89,7 +89,7 @@ const CompletedFluctuations = () => {
                                 </Carousel>
                                 <RightOutlined style={{fontWeight: 600, color: "#2E4765", fontSize: "18px"}}/>
                             </Fragment> :
-                            <ResultCard prediction={selectPrediction} okCallBack={ok} winnerCallback={ok}/>
+                            <ResultCard type="Fluctuations" prediction={selectPrediction} okCallBack={ok} winnerCallback={ok}/>
                     }
                 </FluctuationsWrapper>
             </div>
@@ -102,6 +102,7 @@ const CompletedFluctuations = () => {
                         </FluctuationsWrapper> :
                         <FluctuationsWrapper>
                             <ResultCard
+                                type="Fluctuations"
                                 prediction={selectPrediction}
                                 okCallBack={ok}
                                 winnerCallback={toWinner}/>

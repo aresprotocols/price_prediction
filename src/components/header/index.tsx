@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useState} from "react";
 import {useNavigate} from "react-router";
 import {useTranslation} from "react-i18next";
-import {web3Accounts, web3Enable} from "@polkadot/extension-dapp";
+import {web3Accounts, web3Enable, web3FromAddress} from "@polkadot/extension-dapp";
 import {Dropdown, Menu, Select} from 'antd';
 import { CaretDownOutlined, MenuOutlined } from '@ant-design/icons';
 import {InjectedAccountWithMeta} from "@polkadot/extension-inject/types";
@@ -16,6 +16,7 @@ import testCoin from "assets/images/testcoin.svg"
 import {ApiContext} from "App";
 import {hideMiddle} from "utils/format";
 import InstallPolkadotGuide from "components/install_polkadot";
+import BigNumber from "bignumber.js";
 
 const { SubMenu } = Menu;
 
@@ -34,7 +35,14 @@ const Header = (props: any) => {
             const acct = await context.api.query.system.account(accounts[0].address);
             // @ts-ignore
             let freeBalance = acct.data.free.toString();
-            setBalance((parseInt(freeBalance) / 1000000000000).toFixed(4));
+            setBalance(new BigNumber(freeBalance).shiftedBy(-12).toFixed(4));
+        }
+    }
+
+    const setSigner = async () => {
+        if(context.account && context.api) {
+            const injector = await web3FromAddress(context.account.address);
+            context.api.setSigner(injector.signer);
         }
     }
 
@@ -42,6 +50,11 @@ const Header = (props: any) => {
         queryBalance();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [context, accounts]);
+
+    useEffect(() => {
+        setSigner();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [context]);
 
 
     const languageMenu = (

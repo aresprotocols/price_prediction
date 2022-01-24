@@ -91,7 +91,7 @@ const CompletedPrediction = () => {
                                 </Carousel>
                                 <RightOutlined style={{fontWeight: 600, color: "#2E4765", fontSize: "18px"}}/>
                             </Fragment> :
-                            <ResultCard prediction={selectPrediction} okCallBack={ok} winnerCallback={ok}/>
+                            <ResultCard type="Prediction" prediction={selectPrediction} okCallBack={ok} winnerCallback={ok}/>
                     }
                 </PredictionWrapper>
             </div>
@@ -109,6 +109,7 @@ const CompletedPrediction = () => {
                         </PredictionWrapper> :
                         <PredictionWrapper>
                             <ResultCard
+                                type="Prediction"
                                 prediction={selectPrediction}
                                 okCallBack={ok}
                                 winnerCallback={toWinner}/>

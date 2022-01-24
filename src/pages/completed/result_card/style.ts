@@ -63,6 +63,11 @@ export const ContentCard = styled.div`
         line-height: 55px;
         margin: 25px 50px 25px;
     }
+    .flcResult {
+        margin-top: 5px;
+        font-weight: 600;
+        font-size: 18px;
+    }
     .option {
         margin-top: 10px;
         span {

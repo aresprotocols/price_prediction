@@ -15,10 +15,10 @@ const ReceiveTestCoins = () => {
             <TestCoinsCard>
                 <Form layout="vertical">
                     <Form.Item label={t("Number")}>
-                        <Input></Input>
+                        <Input />
                     </Form.Item>
                     <Form.Item label={t("Stash Address")}>
-                        <Input></Input>
+                        <Input />
                     </Form.Item>
                     <Message type={MessageType.WARNING} message={t("Come again tomorrow")}/>
                     <Form.Item wrapperCol={{ offset: 9,  }}>

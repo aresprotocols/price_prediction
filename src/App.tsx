@@ -98,6 +98,7 @@ function App() {
     });
   }, []);
 
+
   const updateDefaultAccount = async (account: InjectedAccountWithMeta) => {
     const injector = await web3FromAddress(account.address);
     polkaAPI?.setSigner(injector.signer);

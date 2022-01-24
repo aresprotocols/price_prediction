@@ -1,16 +1,20 @@
 import styled from "styled-components";
-import {Button, Form, Input, Modal, Select} from "antd";
-import {ApiContext} from "../../App";
-import {useContext} from "react";
+import {Button, Form, Input, message, Modal, Select} from "antd";
+import {ApiContext} from "App";
+import {useContext, useState} from "react";
+import BigNumber from "bignumber.js";
 
 const Admin = () => {
     const context = useContext(ApiContext);
+    const [estimatesType, setEstimatesType] = useState("DEVIATION");
+    const [modalVisible, setModalVisible,] = useState(false);
 
     // eslint-disable-next-line
-    const create = async () => {
+    const create = async (symbol: string, start: number, end: number, distribute: number, estimatesType: string,
+                          deviation: number | undefined, range: number[] | undefined, participatePrice: number) => {
         try {
             if (context.api && context.account) {
-                const unsub = await context.api.tx.estimates.newEstimates("eth-usdt", 262800, 306990, 307990, "DEVIATION", 3300, undefined, 100)
+                const unsub = await context.api.tx.estimates.newEstimates(symbol, start, end, distribute, estimatesType, deviation, range, new BigNumber(participatePrice).shiftedBy(12))
                     .signAndSend(context.account.address, {}, ({status, events, dispatchError}) => {
                         if (dispatchError) {
                             if (dispatchError.isModule) {
@@ -18,8 +22,12 @@ const Admin = () => {
                                 // @ts-ignore
                                 const { docs, name, section } = decoded;
                                 console.log(`${section}.${name}: ${docs.join(' ')}`);
+                                message.error(`ERROR: ${name}`);
                             }
                             console.log(`${dispatchError}`);
+                        } else if (status.isFinalized) {
+                            message.success("Add Success")
+                            setModalVisible(!modalVisible);
                         }
 
                         if (status.isInBlock) {
@@ -36,6 +44,15 @@ const Admin = () => {
     }
 
 
+    const createPrediction = (val: any) => {
+        console.log('createPrediction;', val);
+        if (estimatesType === "RANGE") {
+            val.range = val.range.split("|");
+        }
+        console.log(val);
+        create(val.symbol, val.start, val.end, val.distribute, estimatesType, val.deviation, val.range, val.participatePrice)
+    }
+
     const layout = {
         labelCol: { span: 7 },
         wrapperCol: { span: 16 },
@@ -44,13 +61,25 @@ const Admin = () => {
     return (
         <AdminWrapper>
             <div className="addBtn">
-                <Button type="primary">Add Prediction</Button>
-                <Button type="primary">Add fluctuations</Button>
+                <Button type="primary" onClick={() => setModalVisible(!modalVisible)}>Add Prediction</Button>
             </div>
 
-            <Modal visible={true} title="Add Price Prediction" footer={null}>
+            <Modal visible={modalVisible} title="Add Price Prediction" footer={null} destroyOnClose={true}
+                   onCancel={() => {
+                setModalVisible(!modalVisible);
+            }}>
                 <div className="formContent">
-                    <Form {...layout}>
+                    <Form {...layout} onFinish={val => createPrediction(val)} initialValues={{type: estimatesType}}>
+                        <Form.Item
+                            label="Type"
+                            name="type"
+                            rules={[{ required: true, message: 'Please input estimatesType!' }]}
+                        >
+                            <Select value={estimatesType} onChange={val => setEstimatesType(val)}>
+                                <Select.Option value="DEVIATION">DEVIATION</Select.Option>
+                                <Select.Option value="RANGE">RANGE</Select.Option>
+                            </Select>
+                        </Form.Item>
                         <Form.Item
                             label="Symbol"
                             name="symbol"
@@ -67,7 +96,7 @@ const Admin = () => {
                         </Form.Item>
                         <Form.Item
                             label="End"
-                            name="End"
+                            name="end"
                             rules={[{ required: true, message: 'Please input End!' }]}
                         >
                             <Input/>
@@ -79,30 +108,22 @@ const Admin = () => {
                         >
                             <Input/>
                         </Form.Item>
-                        <Form.Item
-                            label="Type"
-                            name="type"
-                            rules={[{ required: true, message: 'Please input estimatesType!' }]}
-                        >
-                            <Select>
-                                <Select.Option value="DEVIATION">DEVIATION</Select.Option>
-                                <Select.Option value="RANGE">RANGE</Select.Option>
-                            </Select>
-                        </Form.Item>
-                        <Form.Item
-                            label="Deviation"
-                            name="deviation"
-                            rules={[{ required: true, message: 'Please input deviation!' }]}
-                        >
-                            <Input/>
-                        </Form.Item>
-                        <Form.Item
-                            label="Range"
-                            name="range"
-                            rules={[{ required: true, message: 'Please input range!' }]}
-                        >
-                            <Input/>
-                        </Form.Item>
+                        {
+                            estimatesType === "DEVIATION" ?
+                                <Form.Item
+                                    label="Deviation"
+                                    name="deviation"
+                                    rules={[{ required: true, message: 'Please input deviation!' }]}
+                                >
+                                    <Input/>
+                                </Form.Item> : <Form.Item
+                                    label="Range"
+                                    name="range"
+                                    rules={[{ required: true, message: 'Please input range!' }]}
+                                >
+                                    <Input/>
+                                </Form.Item>
+                        }
                         <Form.Item
                             label="ParticipatePrice"
                             name="participatePrice"
