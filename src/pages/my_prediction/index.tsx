@@ -2,7 +2,6 @@ import {Fragment, useContext, useEffect, useState} from "react";
 import {useTranslation} from "react-i18next";
 import styled from "styled-components";
 import {Button, Radio, Spin} from "antd";
-import {Keyring} from "@polkadot/api";
 
 import ContentHeader from "components/content_header";
 import {ApiContext, Participant, Prediction} from "App";
@@ -18,7 +17,6 @@ interface SymbolAndID {
 const MyPrediction = () => {
     const context = useContext(ApiContext);
     const {t} = useTranslation(["common"]);
-    const keyring = new Keyring({type: "sr25519"});
     const [participantsSymbolAndID, setParticipantsSymbolAndID] = useState<SymbolAndID[]>();
     const [participantsOngoing, setParticipantsOngoing] = useState<Prediction[]>([]);
     const [participantsCompleted, setParticipantsCompleted] = useState<Prediction[]>([]);
@@ -39,7 +37,7 @@ const MyPrediction = () => {
                 const pres = participants.toHuman() as unknown as Participant[];
                 pres.forEach(item => {
                     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-                    if (keyring.addFromAddress(item.account).address === context.account?.address) {
+                    if (item.account === context.account?.address) {
                         symbols.push({symbol: args[0].toHuman() as string, id: args[1].toHuman() as string});
                     }
                 })
@@ -63,6 +61,9 @@ const MyPrediction = () => {
             completed?.forEach(item => {
                 if (item.id === id) {
                     setParticipantsCompleted(prevState => [item, ...prevState]);
+                    if (!localStorage.getItem("isJoined")) {
+                        localStorage.setItem("isJoined", "true");
+                    }
                 }
             })
         }
@@ -79,6 +80,9 @@ const MyPrediction = () => {
                     setParticipantsOngoing(prevState => [res, ...prevState]);
                     setShowPrediction(prevState => [res, ...prevState]);
                     setIsShowSpin(false);
+                    if (!localStorage.getItem("isJoined")) {
+                        localStorage.setItem("isJoined", "true");
+                    }
                 }
             }
         });

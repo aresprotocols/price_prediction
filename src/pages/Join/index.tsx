@@ -14,7 +14,11 @@ const Join = () => {
                     {t("site desc")}
                 </p>
                 <Button type="primary" style={{width: "94px"}} onClick={() => {
-                    navigate("/rules");
+                    if(localStorage.getItem("isJoined")) {
+                        navigate("/home");
+                    } else {
+                        navigate("/rules");
+                    }
                 }}>
                     {t("join").toUpperCase()}
                 </Button>

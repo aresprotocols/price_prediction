@@ -74,6 +74,7 @@ const FluctuationsJoin = () => {
                         console.log(`${dispatchError}`);
                     } else if (status.isFinalized) {
                         setJoined(true);
+                        localStorage.setItem("isJoined", "true");
                     }
                     console.log(`participateEstimates Current status is ${status}`);
                     if (status.isInBlock) {
