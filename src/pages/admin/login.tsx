@@ -11,7 +11,8 @@ const Login = () => {
         let hash = crypto.createHash('md5');
         const pw = hash.update(values.password).digest('base64');
 
-        if (values.username === "admin" && pw === "PTcMNsZ0M3VCsHoAQ8qtVw==") {
+        // PTcMNsZ0M3VCsHoAQ8qtVw== PricePrediction
+        if (values.username === "admin" && pw === "ccxAyCTa1lHi895IeYJ+Mg==") {
             localStorage.setItem("isLogin", String(true));
             navigate("/admin");
         }

@@ -19,8 +19,9 @@ export const FooterContainer = styled.div`
     display: flex;
     flex-wrap: wrap;
     max-width: 1920px;
+    justify-content: space-around;
     margin: 0 auto;
-    column-gap: 150px;
+    column-gap: 60px;
     row-gap: 30px;
 
     .about {
@@ -41,6 +42,9 @@ export const FooterContainer = styled.div`
             justify-content: space-around;
             width: 100%;
             padding: 0 20px;
+        }
+        .about {
+            max-width: inherit;
         }
     }
 `;

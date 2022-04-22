@@ -17,6 +17,7 @@ const UpcomingPrediction = () => {
     const getUpcomingPre = async () => {
         if (context.api) {
             const res = await context.api.query.estimates.preparedEstimates.entries();
+
             const pres: Prediction[] = [];
             res.forEach(([_, value]) => {
                 pres.push(value.toHuman() as unknown as Prediction);
