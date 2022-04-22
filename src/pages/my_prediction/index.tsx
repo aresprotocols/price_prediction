@@ -192,7 +192,7 @@ const MyPrediction = () => {
                     }
                     {
                         showPrediction?.filter(item => {
-                            return selectedPreAndFlu.includes(item.estimates_type);
+                            return selectedPreAndFlu.includes(item.estimatesType);
                         })
                         .filter(item => {
                             if (searchName && searchName !== "") {
@@ -202,9 +202,9 @@ const MyPrediction = () => {
                         }).map(item => {
                             return <CoinCard key={item.symbol.concat(item.id.toString())}
                                              title={item.symbol} type={`${item.state === "Completed" ? "WINNER" : "JOINED"}`}
-                                             total={item.total_reward}
-                                             endBlock={Number.parseInt(item.end.replace(",", ""))}
-                                             live={true} icon={item.estimates_type === "RANGE"}
+                                             total={item.totalReward}
+                                             endBlock={Number.parseInt(item.end.replaceAll(",", ""))}
+                                             live={true} icon={item.estimatesType === "RANGE"}
                                              callBack={() => {}} price="0"/>
                         })
                     }

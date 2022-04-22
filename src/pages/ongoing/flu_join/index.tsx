@@ -33,7 +33,7 @@ const FluctuationsJoin = () => {
 
     useEffect(() => {
         if (context.api && predictionInfo) {
-            clacStartTime(context.api, Number.parseInt(predictionInfo.end.replace(",", "")))
+            clacStartTime(context.api, Number.parseInt(predictionInfo.end.replaceAll(",", "")))
                 .then(res => {
                     setTimDiff(res[0]);
                     setTime(res[1]);
@@ -91,15 +91,15 @@ const FluctuationsJoin = () => {
         <Fragment>
             <Button className="btn" onClick={() => {join("Base1")}}>
                 {t("free").toUpperCase()}
-                {Number.parseInt(predictionInfo?.ticket_price.split(" ")[0] ?? "")}
+                {Number.parseInt(predictionInfo?.ticketPrice.split(" ")[0] ?? "")}
             </Button>
             <Button className="btn" onClick={() => {join("Base2")}}>
                 {t("free").toUpperCase()}
-                {Number.parseInt(predictionInfo?.ticket_price.split(" ")[0] ?? "") * 2}
+                {Number.parseInt(predictionInfo?.ticketPrice.split(" ")[0] ?? "") * 2}
             </Button>
             <Button className="btn" onClick={() => {join("Base5")}}>
                 {t("free").toUpperCase()}
-                {Number.parseInt(predictionInfo?.ticket_price.split(" ")[0] ?? "") * 5}
+                {Number.parseInt(predictionInfo?.ticketPrice.split(" ")[0] ?? "") * 5}
             </Button>
         </Fragment>
     )
@@ -133,19 +133,19 @@ const FluctuationsJoin = () => {
                                 <Radio value={0}>
                                     {predictionInfo?.symbol.split("-")[0]}
                                     &nbsp;&ge;&nbsp;
-                                    {predictionInfo?.range ? Number.parseInt(predictionInfo.range[0].replace(",", "")) / 10000 : "0"}
+                                    {predictionInfo?.range ? Number.parseInt(predictionInfo.range[0].replaceAll(",", "")) / 10000 : "0"}
                                 </Radio>
                                 <Radio value={1}>
-                                    {predictionInfo?.range ? Number.parseInt(predictionInfo.range[1].replace(",", "")) / 10000 : "0"}
+                                    {predictionInfo?.range ? Number.parseInt(predictionInfo.range[1].replaceAll(",", "")) / 10000 : "0"}
                                     &nbsp;&lt;&nbsp;
                                     {predictionInfo?.symbol.split("-")[0]}
                                     &nbsp;&lt;&nbsp;
-                                    {predictionInfo?.range ? Number.parseInt(predictionInfo.range[2].replace(",", "")) / 10000 : "0"}
+                                    {predictionInfo?.range ? Number.parseInt(predictionInfo.range[2].replaceAll(",", "")) / 10000 : "0"}
                                 </Radio>
                                 <Radio value={2}>
                                     {predictionInfo?.symbol.split("-")[0]}
                                     &nbsp;&le;&nbsp;
-                                    {predictionInfo?.range ? Number.parseInt(predictionInfo.range[3].replace(",", "")) / 10000 : "0"}
+                                    {predictionInfo?.range ? Number.parseInt(predictionInfo.range[3].replaceAll(",", "")) / 10000 : "0"}
                                 </Radio>
                             </Radio.Group>
                         </div>

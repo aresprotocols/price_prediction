@@ -27,7 +27,7 @@ const Fluctuations = () => {
             res.forEach(([args, value]) => {
                 pres.push(value.toHuman() as unknown as Prediction);
             });
-            setPredictions(pres.filter(item => item.estimates_type === "RANGE"));
+            setPredictions(pres.filter(item => item.estimatesType === "RANGE"));
         }
     }
 
@@ -39,8 +39,8 @@ const Fluctuations = () => {
     }).map(item => {
             return <CoinCard key={item.symbol.concat(item.id.toString())}
                              title={item.symbol} type="JOIN" price="580"
-                             total={item.total_reward}
-                             endBlock={Number.parseInt(item.end.replace(",", ""))}
+                             total={item.totalReward}
+                             endBlock={Number.parseInt(item.end.replaceAll(",", ""))}
                              live={true} icon={true} callBack={toJoin}/>
         })
 

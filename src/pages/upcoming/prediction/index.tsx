@@ -22,7 +22,7 @@ const UpcomingPrediction = () => {
             res.forEach(([_, value]) => {
                 pres.push(value.toHuman() as unknown as Prediction);
             });
-            setUpcoming(pres.filter(item => item.estimates_type === "DEVIATION"));
+            setUpcoming(pres.filter(item => item.estimatesType === "DEVIATION"));
         }
     };
 
@@ -38,10 +38,10 @@ const UpcomingPrediction = () => {
         }
         return item;
     }).map(item => {
-            return <CoinCard key={item.symbol.concat(item.id.toString())}
+        return <CoinCard key={item.symbol.concat(item.id.toString())}
                              title={item.symbol} type="COMING" price="5800"
-                             endBlock={Number.parseInt(item.start.replace(",", ""))}
-                             total={item.total_reward} live={true} icon={false}/>
+                             endBlock={Number.parseInt(item.start.replaceAll(",", ""))}
+                             total={item.totalReward} live={true} icon={false}/>
         })
 
     const onSort = (sortBy: string) => {

@@ -10,6 +10,8 @@ html body #root .App {
 .content {
   width: 100vw;
   min-height: 55vh;
+  height: 900px;
+  overflow: auto;
   padding: 30px 150px;
   background-color: #e7ebff;
 }

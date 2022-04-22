@@ -36,7 +36,7 @@ const ResultCard = ({type, okCallBack, winnerCallback, prediction}: ResultCardPr
 
     const getStartTime = () => {
         if (context.api && prediction) {
-            clacStartTime(context.api, Number.parseInt(prediction.end.replace(",", "")))
+            clacStartTime(context.api, Number.parseInt(prediction.end.replaceAll(",", "")))
                 .then(res => {
                     setTime(res[1]);
                 })
@@ -82,7 +82,7 @@ const ResultCard = ({type, okCallBack, winnerCallback, prediction}: ResultCardPr
                                         {t("Result")}: 1000
                                     </div>
                                     <div className="result">
-                                        {t("Result")}: {prediction?.symbol_completed_price}
+                                        {t("Result")}: {prediction?.symbolCompletedPrice}
                                     </div>
                                 </Fragment> : <Fragment>
                                     <div className="result">
@@ -94,7 +94,7 @@ const ResultCard = ({type, okCallBack, winnerCallback, prediction}: ResultCardPr
                                     <div className="result flcResult">
                                         $ {
                                         prediction ?
-                                            (parseInt(prediction.symbol_completed_price.replace(",", "")) / 10000)
+                                            (parseInt(prediction.symbolCompletedPrice.replaceAll(",", "")) / 10000)
                                             : 0
                                     }
                                     </div>

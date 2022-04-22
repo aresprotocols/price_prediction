@@ -34,7 +34,7 @@ const PredictionJoin = () => {
 
     useEffect(() => {
         if (context.api && predictionInfo) {
-            clacStartTime(context.api, Number.parseInt(predictionInfo.end.replace(",", "")))
+            clacStartTime(context.api, Number.parseInt(predictionInfo.end.replaceAll(",", "")))
                 .then(res => {
                     setTimDiff(res[0]);
                     setTime(res[1]);
@@ -141,15 +141,15 @@ const PredictionJoin = () => {
                     <div className="joinMoney">
                         <Button className={"btn"} onClick={() => {join("Base1")}}>
                             {t("free").toUpperCase()}
-                            {Number.parseInt(predictionInfo?.ticket_price.split(" ")[0] ?? "")}
+                            {Number.parseInt(predictionInfo?.ticketPrice.split(" ")[0] ?? "")}
                         </Button>
                         <Button className={"btn"} onClick={() => {join("Base2")}}>
                             {t("free").toUpperCase()}
-                            {Number.parseInt(predictionInfo?.ticket_price.split(" ")[0] ?? "") * 2}
+                            {Number.parseInt(predictionInfo?.ticketPrice.split(" ")[0] ?? "") * 2}
                         </Button>
                         <Button className={"btn"} onClick={() => {join("Base5")}}>
                             {t("free").toUpperCase()}
-                            {Number.parseInt(predictionInfo?.ticket_price.split(" ")[0] ?? "") * 5}
+                            {Number.parseInt(predictionInfo?.ticketPrice.split(" ")[0] ?? "") * 5}
                         </Button>
                     </div>
                     <label style={{fontSize: "12px", color:"#F34944"}}>

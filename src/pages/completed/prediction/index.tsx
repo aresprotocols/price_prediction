@@ -41,7 +41,7 @@ const CompletedPrediction = () => {
             res.forEach(([args, value]) => {
                 pres = pres.concat(value.toHuman() as unknown as Prediction);
             });
-            setCompletedPrediction(pres.filter(item => item.estimates_type === "DEVIATION"));
+            setCompletedPrediction(pres.filter(item => item.estimatesType === "DEVIATION"));
             setIsShowSpin(false);
         }
     };
@@ -67,9 +67,9 @@ const CompletedPrediction = () => {
         return item;
     }).map(item => {
         return <CoinCard key={item.symbol.concat(item.id.toString())} title={item.symbol}
-                         type="WINNER" price="580" total={item.total_reward}
+                         type="WINNER" price="580" total={item.totalReward}
                          prediction={item}
-                         endBlock={Number.parseInt(item.end.replace(",", ""))}
+                         endBlock={Number.parseInt(item.end.replaceAll(",", ""))}
                          live={true} icon={false} callBack={toResult}/>
     })
 

@@ -36,17 +36,17 @@ export interface ContextProps {
 
 export interface Prediction {
   "symbol": string,
-  "estimates_type": string,
+  "estimatesType": string,
   "id": string,
-  "ticket_price": string,
-  "symbol_completed_price": string,
-  "symbol_fraction": string,
+  "ticketPrice": string,
+  "symbolCompletedPrice": string,
+  "symbolFraction": string,
   "start": string,
   "end": string,
   "distribute": string,
   "deviation": string,
   "range": string[] | null,
-  "total_reward": string,
+  "totalReward": string,
   "state": string
 }
 
