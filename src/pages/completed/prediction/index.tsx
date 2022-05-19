@@ -104,7 +104,7 @@ const CompletedPrediction = () => {
                 {
                     !winner ?
                         <PredictionWrapper
-                            style={{ justifyContent: completedPrediction && completedPrediction?.length < 4 ? "space-around" : "flex-start"}}>
+                            style={{ justifyContent: completedPrediction && completedPrediction?.length < 4 ? "space-between" : "flex-start"}}>
                             {completed}
                         </PredictionWrapper> :
                         <PredictionWrapper>

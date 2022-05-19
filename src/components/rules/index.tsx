@@ -32,11 +32,14 @@ const Rules = () => {
                     </Checkbox>
                     <Space>
                         <Button className="submitButton" onClick={() => {
+                            localStorage.setItem("isJoined", "true");
                             navigate("/home")
                         }}>
                             {t("Submit", { ns: 'common' })}
                         </Button >
-                        <Button className="cancelButton">
+                        <Button className="cancelButton" onClick={() => {
+                            navigate("/")
+                        }}>
                             {t("Cancel", { ns: 'common' })}
                         </Button>
                     </Space>

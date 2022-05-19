@@ -2,7 +2,7 @@ import {Fragment, useContext, useEffect, useState} from "react";
 import {useNavigate} from "react-router";
 import styled from "styled-components";
 import {LeftOutlined, RightOutlined} from "@ant-design/icons";
-import {Carousel} from "antd";
+import {Carousel, Spin} from "antd";
 
 import CoinCard from "components/coin_card";
 import ResultCard from "../result_card";
@@ -18,6 +18,7 @@ const CompletedFluctuations = () => {
     const [selectPrediction, setSelectPrediction] = useState<Prediction>();
     const [winner, setWinner] = useState(false);
     const [searchName, setSearchName,] = useState<string>();
+    const [isShowSpin, setIsShowSpin] = useState(false);
 
     const toResult = (item: Prediction) => {
         setSelectPrediction(item);
@@ -34,12 +35,14 @@ const CompletedFluctuations = () => {
 
     const getCompletedPredict = async () => {
         if (context.api) {
+            setIsShowSpin(true);
             const res = await context.api.query.estimates.completedEstimates.entries();
             let pres: Prediction[] = [];
             res.forEach(([args, value]) => {
                 pres = pres.concat(value.toHuman() as unknown as Prediction);
             });
             setCompletedPredictions(pres.filter(item => item.estimatesType === "RANGE"));
+            setIsShowSpin(false);
         }
     };
 
@@ -78,6 +81,11 @@ const CompletedFluctuations = () => {
         <Fragment>
             <ContentHeader title="Price Fluctuations" onSort={onSort} onSearch={onSearch} goBackCallback={goBackCallback}
                            goBackNum={winner ? -1 : 0} placeholder={"Search Cryptocurrency"}/>
+            {
+                isShowSpin ? <div style={{width: "100%", textAlign: "center"}}>
+                    <Spin delay={100}/>
+                </div> : ""
+            }
             <div className="phone">
                 <FluctuationsWrapper>
                     {

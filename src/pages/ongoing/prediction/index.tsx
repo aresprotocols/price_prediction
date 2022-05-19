@@ -1,7 +1,7 @@
 import {Fragment, useContext, useEffect, useState} from "react";
 import styled from "styled-components";
 import { LeftOutlined, RightOutlined } from '@ant-design/icons';
-import {Carousel} from "antd";
+import {Carousel, Spin} from "antd";
 import {useNavigate} from "react-router";
 
 import CoinCard from "components/coin_card";
@@ -14,6 +14,7 @@ const GoingPrediction = () => {
     const context = useContext(ApiContext);
     const [predictions, setPredictions] = useState<Prediction[]>();
     const [searchName, setSearchName,] = useState<string>();
+    const [isShowSpin, setIsShowSpin] = useState(false);
 
     const toJoin = async (symbol: string) => {
         navigate("/ongoing/prediction/join/" + symbol);
@@ -21,12 +22,14 @@ const GoingPrediction = () => {
 
     const getPredictions = async () => {
         if (context.api) {
+            setIsShowSpin(true);
             const res = await context.api.query.estimates.activeEstimates.entries();
             const pres: Prediction[] = [];
             res.forEach(([_, value]) => {
                 pres.push(value.toHuman() as unknown as Prediction);
             });
             setPredictions(pres.filter(item => item.estimatesType === "DEVIATION"));
+            setIsShowSpin(false);
         }
     }
 
@@ -60,6 +63,11 @@ const GoingPrediction = () => {
         <Fragment>
             <ContentHeader title="Price Prediction" onSort={onSort} onSearch={onSearch}
                            placeholder={"Search Cryptocurrency"}/>
+            {
+                isShowSpin ? <div style={{width: "100%", textAlign: "center"}}>
+                    <Spin delay={100}/>
+                </div> : ""
+            }
             <div className="phone">
                 <GoingPredictionWrapper>
                     <LeftOutlined style={{fontWeight: 600, color: "#2E4765", fontSize: "18px"}}/>

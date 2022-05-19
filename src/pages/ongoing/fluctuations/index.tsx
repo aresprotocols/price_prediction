@@ -2,7 +2,7 @@ import {Fragment, useContext, useEffect, useState} from "react";
 import styled from "styled-components";
 import {useNavigate} from "react-router";
 import {LeftOutlined, RightOutlined} from "@ant-design/icons";
-import {Carousel} from "antd";
+import {Carousel, Spin} from "antd";
 
 import CoinCard from "components/coin_card";
 import {ApiContext, Prediction} from "App";
@@ -15,6 +15,7 @@ const Fluctuations = () => {
     const context = useContext(ApiContext);
     const [predictions, setPredictions] = useState<Prediction[]>();
     const [searchName, setSearchName,] = useState<string>();
+    const [isShowSpin, setIsShowSpin] = useState(false);
 
     const toJoin = (symbol: string) => {
         navigate("/ongoing/fluctuations/join/" + symbol);
@@ -22,12 +23,14 @@ const Fluctuations = () => {
 
     const getPredictions = async () => {
         if (context.api) {
+            setIsShowSpin(true);
             const res = await context.api.query.estimates.activeEstimates.entries();
             const pres: Prediction[] = [];
             res.forEach(([args, value]) => {
                 pres.push(value.toHuman() as unknown as Prediction);
             });
             setPredictions(pres.filter(item => item.estimatesType === "RANGE"));
+            setIsShowSpin(false);
         }
     }
 
@@ -61,6 +64,11 @@ const Fluctuations = () => {
     return (
         <Fragment>
             <ContentHeader title="Price Fluctuations" onSort={onSort} onSearch={onSearch} placeholder={"Search Cryptocurrency"}/>
+            {
+                isShowSpin ? <div style={{width: "100%", textAlign: "center"}}>
+                    <Spin delay={100}/>
+                </div> : ""
+            }
             <div className="phone">
                 <FluctuationsWrapper>
                     <LeftOutlined style={{fontWeight: 600, color: "#2E4765", fontSize: "18px"}}/>
