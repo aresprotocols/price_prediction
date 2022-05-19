@@ -3,7 +3,6 @@ import styled from "styled-components";
 
 export const HeaderWrapper = styled.div`
     background-color: #1295F0;
-    width: 100vw;
     
     header {
         width: 100%;

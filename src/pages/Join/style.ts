@@ -2,17 +2,15 @@ import styled from "styled-components";
 
 
 export const JoinWrapper = styled.div`
-    width: 100vw;
     height: 100%;
-    background-image: url("/images/home.png");
-    background-size: 501px 356px;
-    background-repeat: no-repeat;
-    background-position: 80% -50%;
+    display: flex;
+    overflow: hidden;
     img {
-        display: none;
+        width: 450px;
+        margin-top: 60px;
     }
     @media only screen and (max-width: 750px) {
-        background-image: none;
+        flex-direction: column;
         img {
             margin: 0 auto;
             width: 90%;
