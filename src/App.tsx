@@ -29,9 +29,11 @@ import def from "config/ares-gladios"
 import Admin from "pages/admin/admin";
 import Login from "pages/admin/login";
 
+
 export interface ContextProps {
   api?: ApiPromise,
-  account?: InjectedAccountWithMeta
+  account?: InjectedAccountWithMeta,
+  loadDispatch?: React.Dispatch<any>,
 }
 
 export interface Prediction {
@@ -60,9 +62,7 @@ export interface Participant {
   reward: string
 }
 
-
 export const ApiContext = React.createContext<ContextProps>({});
-
 
 function App() {
   const [defaultAccount, setDefaultAccount] = useState<InjectedAccountWithMeta>();

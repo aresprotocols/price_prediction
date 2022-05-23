@@ -56,10 +56,11 @@ export const OngoingContentCard = styled.div`
         height: 75px;
         background: #E7EBFF;
         border-radius: 10px;
-        padding: 10px 5px;
+        padding: 10px 15px;
         display: flex;
         align-items: center;
-        justify-content: space-around;
+        justify-content: start;
+        column-gap: 5px;
     }
     .cardLeftContent {
         display: flex;
@@ -77,4 +78,5 @@ export const OngoingContentCard = styled.div`
 export const CardContent = styled.div`
     display: flex;
     column-gap: 1rem;
+    justify-content: space-between;
 `;

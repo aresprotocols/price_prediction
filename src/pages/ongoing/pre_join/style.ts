@@ -23,6 +23,7 @@ export const GoJoinWrapper = styled.div`
 
 export const JoinContent = styled.div`
     width: 100%;
+    position: relative;
     min-height: 352px;
     background: #FFFFFF;
     box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.08);
@@ -69,6 +70,15 @@ export const JoinContent = styled.div`
             color: #FFF;
             font-weight: 600;
         }
+    }
+    .spinContainer {
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      position: absolute;
+      top: 0;
+      left: 0;
+      background-color: rgba(46, 77, 101, 0.5);
     }
     @media only screen and (max-width: 750px) {
         padding: 40px 15px;
