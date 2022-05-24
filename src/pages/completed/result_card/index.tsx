@@ -20,7 +20,6 @@ const ResultCard = ({type, okCallBack, winnerCallback, prediction}: ResultCardPr
     const [time, setTime] = useState("");
     const [winnerNum, setWinnerNum] = useState(0);
 
-
     const ok = () => {
         if (okCallBack) {
             okCallBack();
@@ -82,7 +81,9 @@ const ResultCard = ({type, okCallBack, winnerCallback, prediction}: ResultCardPr
                                         {t("Result")}: 1000
                                     </div>
                                     <div className="result">
-                                        {t("Result")}: {prediction?.symbolCompletedPrice}
+                                        {t("Result")}:
+                                        {prediction &&
+                                            parseInt(prediction.symbolCompletedPrice.replaceAll(",", "")) / 10000}
                                     </div>
                                 </Fragment> : <Fragment>
                                     <div className="result">

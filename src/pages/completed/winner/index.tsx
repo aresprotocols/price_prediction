@@ -46,12 +46,17 @@ const Winner = () => {
         {
             title: t("prediction"),
             dataIndex: "estimates",
-            key: "estimates"
+            key: "estimates",
+            render: (text: string, record: any, index: number) => {
+                return <span>
+                    {parseInt(text.replaceAll(",", "")) / 10000}
+                </span>
+            }
         },
         {
             title: t("Address"),
-            dataIndex: "eth_address",
-            key: "eth_address",
+            dataIndex: "bscAddress",
+            key: "bscAddress",
         }
     ]
 

@@ -56,8 +56,8 @@ export interface Participant {
   account: string,
   end: string,
   estimates: string,
-  range_index: string,
-  eth_address: string
+  rangeIndex: string,
+  bscAddress: string
   multiplier: string,
   reward: string
 }

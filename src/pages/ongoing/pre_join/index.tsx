@@ -63,13 +63,6 @@ const PredictionJoin = () => {
         if (context.api && context.account) {
             const api = context.api;
             setLoading(true);
-
-            setTimeout(() => {
-                setLoading(false);
-            }, 5000)
-            if (context.api) {
-                return
-            }
             // TODO check input value
             const price = Math.floor(Number(guessPrice) * Math.pow(10, 4));
             const unsub = await api.tx.estimates.participateEstimates(params.symbol, price, null, multiplier, rewardAddress)
@@ -85,6 +78,8 @@ const PredictionJoin = () => {
                             }
                         }
                         console.log(`${dispatchError}`);
+                        setLoading(false);
+                        unsub();
                     } else if (status.isFinalized) {
                         setJoined(true);
                         localStorage.setItem("isJoined", "true");
@@ -94,6 +89,7 @@ const PredictionJoin = () => {
                         console.log(`participateEstimates Transaction included at blockHash ${status.asInBlock}`);
                     } else if (status.isFinalized) {
                         console.log(`participateEstimates Transaction finalized at blockHash ${status.asFinalized}`);
+                        setLoading(false);
                         unsub();
                     }
                 });

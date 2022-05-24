@@ -49,7 +49,8 @@ const Joined = (props: any) => {
                                 <img src={timeIcon} alt="" width={25} height={25}/>
                                 <div>
                                     {props.timeDiff.day > 0 ? <div>{props.timeDiff.day} Day</div> : ""}
-                                    {props.timeDiff.hour > 0 ?  <div>{props.timeDiff.hour} Hours Left</div> : ""}
+                                    {props.timeDiff.hour > 0 ?  <div>{props.timeDiff.hour} Hours</div> : ""}
+                                    {props.timeDiff.minute > 0 ?  <div>{props.timeDiff.minute} Minute Left</div> : ""}
                                     {/*<div>还剩3天20小时</div>*/}
                                 </div>
                             </div>

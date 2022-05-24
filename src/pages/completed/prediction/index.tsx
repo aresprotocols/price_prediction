@@ -80,6 +80,11 @@ const CompletedPrediction = () => {
         <Fragment>
             <ContentHeader title="Price Prediction" onSort={onSort} onSearch={onSearch} goBackCallback={goBackCallback}
                            goBackNum={winner ? -1 : 0} placeholder={"Search Cryptocurrency"}/>
+            {
+                isShowSpin ? <div style={{width: "100%", textAlign: "center"}}>
+                    <Spin delay={100}/>
+                </div> : ""
+            }
             <div className="phone">
                 <PredictionWrapper>
                     {
@@ -96,11 +101,6 @@ const CompletedPrediction = () => {
                 </PredictionWrapper>
             </div>
             <div className="pc">
-                {
-                    isShowSpin ? <div style={{width: "100%", textAlign: "center"}}>
-                        <Spin delay={100}/>
-                    </div> : ""
-                }
                 {
                     !winner ?
                         <PredictionWrapper

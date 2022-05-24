@@ -54,6 +54,7 @@ const FluctuationsJoin = () => {
         if (context.api) {
             const res = await context.api.query.estimates.activeEstimates(params.symbol);
             setPredictionInfo(res.toHuman() as unknown as Prediction);
+            console.log(res.toHuman());
         }
     }
 
