@@ -1,7 +1,7 @@
 import {Fragment, useContext, useEffect, useState} from "react";
 import {useParams} from "react-router";
 import {useTranslation} from "react-i18next";
-import {Button, Form, Input, Radio} from "antd";
+import {Button, Form, Input, Radio, Spin} from "antd";
 
 import {Countdown, GoJoinWrapper, JoinContent, Price} from "./style";
 import timeLogo from "assets/images/time.svg";
@@ -10,6 +10,7 @@ import {clacStartTime, timeDiffRes} from "utils/format";
 import {getSymbolPrice} from "utils/symbol-price";
 import Joined from "../pre_joined";
 import ContentHeader from "components/content_header";
+import BigNumber from "bignumber.js";
 
 const FluctuationsJoin = () => {
     const { t } = useTranslation(['common']);
@@ -25,6 +26,7 @@ const FluctuationsJoin = () => {
     const [hasBeenInvolvedIn, setHasBeenInvolvedIn] = useState(false);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [notSufficient, setNotSufficient] = useState(false);
+    const [isShowSpin, setIsShowSpin] = useState(false);
 
     useEffect(() => {
         getFluctuationsInfo()
@@ -53,13 +55,21 @@ const FluctuationsJoin = () => {
     const getFluctuationsInfo = async () => {
         if (context.api) {
             const res = await context.api.query.estimates.activeEstimates(params.symbol);
-            setPredictionInfo(res.toHuman() as unknown as Prediction);
+            const predictionInfo = res.toHuman() as unknown as Prediction;
+
+            if (predictionInfo.range) {
+                predictionInfo.range = predictionInfo.range.map(item => {
+                    return new BigNumber(item.replaceAll(",", "")).shiftedBy(-4).toString();
+                })
+            }
+            setPredictionInfo(predictionInfo);
             console.log(res.toHuman());
         }
     }
 
     const join = async (multiplier: string) => {
         if (context.api && context.account) {
+            setIsShowSpin(true);
             const api = context.api;
             const unsub = await api.tx.estimates.participateEstimates(params.symbol, null, selectRangeIndex, multiplier, rewardAddress)
                 .signAndSend(context.account.address, ({ status, dispatchError }) => {
@@ -72,7 +82,9 @@ const FluctuationsJoin = () => {
                                 setHasBeenInvolvedIn(true);
                             }
                         }
+                        setIsShowSpin(false);
                         console.log(`${dispatchError}`);
+                        unsub();
                     } else if (status.isFinalized) {
                         setJoined(true);
                         localStorage.setItem("isJoined", "true");
@@ -82,6 +94,7 @@ const FluctuationsJoin = () => {
                         console.log(`participateEstimates Transaction included at blockHash ${status.asInBlock}`);
                     } else if (status.isFinalized) {
                         console.log(`participateEstimates Transaction finalized at blockHash ${status.asFinalized}`);
+                        setIsShowSpin(false);
                         unsub();
                     }
                 });
@@ -107,10 +120,14 @@ const FluctuationsJoin = () => {
 
     return (
         <Fragment>
+            {
+                isShowSpin && <div className="appLoading">
+                    <Spin delay={100} className="spin"/>
+                </div>
+            }
             <ContentHeader title="Price Fluctuations" onSort={() => {}} onSearch={() => {}}
                            goBackNum={-1} placeholder={"Search Cryptocurrency"}/>
-        {
-            joined ? <Joined time={time} title={params.symbol} timeDiff={timeDiff}/> :
+            {joined ? <Joined time={time} title={params.symbol} timeDiff={timeDiff}/> :
                 <GoJoinWrapper>
                     <div className="time">
                         {time}
@@ -133,20 +150,27 @@ const FluctuationsJoin = () => {
                             <Radio.Group onChange={e => setSelectRangeIndex(e.target.value)}>
                                 <Radio value={0}>
                                     {predictionInfo?.symbol.split("-")[0]}
-                                    &nbsp;&ge;&nbsp;
-                                    {predictionInfo?.range ? Number.parseInt(predictionInfo.range[0].replaceAll(",", "")) / 10000 : "0"}
+                                    &nbsp;&le;&nbsp;
+                                    {predictionInfo?.range ? predictionInfo.range[0] : "0"}
                                 </Radio>
                                 <Radio value={1}>
-                                    {predictionInfo?.range ? Number.parseInt(predictionInfo.range[1].replaceAll(",", "")) / 10000 : "0"}
+                                    {predictionInfo?.range ? predictionInfo.range[1] : "0"}
                                     &nbsp;&lt;&nbsp;
-                                    {predictionInfo?.symbol.split("-")[0]}
-                                    &nbsp;&lt;&nbsp;
-                                    {predictionInfo?.range ? Number.parseInt(predictionInfo.range[2].replaceAll(",", "")) / 10000 : "0"}
-                                </Radio>
-                                <Radio value={2}>
                                     {predictionInfo?.symbol.split("-")[0]}
                                     &nbsp;&le;&nbsp;
-                                    {predictionInfo?.range ? Number.parseInt(predictionInfo.range[3].replaceAll(",", "")) / 10000 : "0"}
+                                    {predictionInfo?.range ? predictionInfo.range[2] : "0"}
+                                </Radio>
+                                <Radio value={2}>
+                                    {predictionInfo?.range ? predictionInfo.range[2] : "0"}
+                                    &nbsp;&lt;&nbsp;
+                                    {predictionInfo?.symbol.split("-")[0]}
+                                    &nbsp;&le;&nbsp;
+                                    {predictionInfo?.range ? predictionInfo.range[3] : "0"}
+                                </Radio>
+                                <Radio value={3}>
+                                    {predictionInfo?.symbol.split("-")[0]}
+                                    &nbsp;&gt;&nbsp;
+                                    {predictionInfo?.range ? predictionInfo.range[3] : "0"}
                                 </Radio>
                             </Radio.Group>
                         </div>

@@ -48,6 +48,9 @@ const Admin = () => {
         console.log('createPrediction;', val);
         if (estimatesType === "RANGE") {
             val.range = val.range.split("|");
+            val.range = val.range.map((item: string) => {
+                return new BigNumber(item).shiftedBy(4).toNumber();
+            });
         }
         console.log(val);
         create(val.symbol, val.start, val.end, val.distribute, estimatesType, val.deviation, val.range, val.participatePrice)
