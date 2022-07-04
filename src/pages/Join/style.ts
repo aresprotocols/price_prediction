@@ -5,6 +5,7 @@ export const JoinWrapper = styled.div`
     height: 100%;
     display: flex;
     overflow: hidden;
+    padding-bottom: 100px;
     img {
         width: 450px;
         margin-top: 60px;

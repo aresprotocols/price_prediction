@@ -147,7 +147,7 @@ const CoinCard = (config: CoinCardProps) => {
                             <CoinCardARES>
                                 <img src={timeImg} alt=""/>
                                 {timeDiff.day > 0 ? <p>{timeDiff.day} Day</p> : ""}
-                                {timeDiff.hour > 0 ?  <p>{timeDiff.hour} Hours Left</p> : ""}
+                                {timeDiff.hour > 0 ?  <p>{timeDiff.hour} Hours</p> : ""}
                                 {timeDiff.minute > 0 ?  <p>{timeDiff.minute} Minute Left</p> : ""}
                             </CoinCardARES> : ""
                     }

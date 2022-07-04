@@ -15,7 +15,7 @@ const Join = () => {
                 </p>
                 <Button type="primary" style={{width: "94px"}} onClick={() => {
                     if(localStorage.getItem("isJoined")) {
-                        navigate("/home");
+                        navigate("/ongoing/prediction");
                     } else {
                         navigate("/rules");
                     }

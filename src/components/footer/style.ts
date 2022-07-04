@@ -51,7 +51,9 @@ export const FooterContainer = styled.div`
 
 export const FooterItem = styled.div`
     min-width: 220px;
-
+    .text-white {
+      color: #FFF;
+    }
     h5 {
         font-size: 2.1rem;
         font-weight: 400;

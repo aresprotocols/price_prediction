@@ -61,6 +61,8 @@ const FluctuationsJoin = () => {
                 predictionInfo.range = predictionInfo.range.map(item => {
                     return new BigNumber(item.replaceAll(",", "")).shiftedBy(-4).toString();
                 })
+                predictionInfo.ticketPrice = new BigNumber(predictionInfo.ticketPrice.replaceAll(",", "")).shiftedBy(-12).toString();
+                console.log("price", predictionInfo.ticketPrice, new BigNumber(predictionInfo.ticketPrice.replaceAll(",", "")).shiftedBy(-12).toString())
             }
             setPredictionInfo(predictionInfo);
             console.log(res.toHuman());
@@ -105,15 +107,15 @@ const FluctuationsJoin = () => {
         <Fragment>
             <Button className="btn" onClick={() => {join("Base1")}}>
                 {t("free").toUpperCase()}
-                {Number.parseInt(predictionInfo?.ticketPrice.split(" ")[0] ?? "")}
+                {Number.parseInt(predictionInfo?.ticketPrice ?? "")}
             </Button>
             <Button className="btn" onClick={() => {join("Base2")}}>
                 {t("free").toUpperCase()}
-                {Number.parseInt(predictionInfo?.ticketPrice.split(" ")[0] ?? "") * 2}
+                {Number.parseInt(predictionInfo?.ticketPrice ?? "") * 2}
             </Button>
             <Button className="btn" onClick={() => {join("Base5")}}>
                 {t("free").toUpperCase()}
-                {Number.parseInt(predictionInfo?.ticketPrice.split(" ")[0] ?? "") * 5}
+                {Number.parseInt(predictionInfo?.ticketPrice?? "") * 5}
             </Button>
         </Fragment>
     )
@@ -137,8 +139,8 @@ const FluctuationsJoin = () => {
                             <div>
                                 <img src={"/symbol/" + predictionInfo?.symbol.split("-")[0] + ".svg"} alt=""/>&nbsp;&nbsp;
                                 <span className="cardTitle">
-                            {params.symbol}
-                        </span>
+                                    {params.symbol}
+                                </span>
                             </div>
                             <Price>
                         <span className="CardTitle">

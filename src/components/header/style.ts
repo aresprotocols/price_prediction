@@ -28,12 +28,12 @@ export const HeaderWrapper = styled.div`
         position: relative;
 
         .pcMenu {
-            line-height: 64px;
-            background-color: #1295F0;
-            color: #e3e3e3 !important;
-            border: none;
-            display: block;
-            min-width: 400px;
+          line-height: 64px;
+          background-color: #1295F0;
+          color: #e3e3e3 !important;
+          border: none;
+          display: block;
+          min-width: 400px;
         }
 
         .ant-menu-item-selected, .ant-menu-submenu-selected {
@@ -81,7 +81,25 @@ export const HeaderWrapper = styled.div`
             padding: 0.3rem 1.5rem;
             color: #FFF;
             cursor: pointer;
+            text-align: center;
         }
+        .faucet, .faucetMenu {
+          display: flex;
+          align-items: center;
+          font-size: 14px;
+          line-height: 14px;
+          margin-top: 4px;
+          a {
+            color: #e3e3e3;
+            &:hover {
+              color: #FFF;
+            }
+          }
+        }
+      .subMenuTitle {
+        display: flex;
+        align-items: center;
+      }
     }
     @media only screen and (max-width: 750px) {
         header {
@@ -101,6 +119,9 @@ export const HeaderWrapper = styled.div`
                 left:-99999px;
                 top:-90999px;
             }
+        }
+        .faucet {
+          display: none;
         }
     }
 `;

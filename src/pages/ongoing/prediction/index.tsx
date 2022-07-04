@@ -1,6 +1,6 @@
 import {Fragment, useContext, useEffect, useState} from "react";
 import styled from "styled-components";
-import { LeftOutlined, RightOutlined } from '@ant-design/icons';
+import {LeftOutlined, RightOutlined} from '@ant-design/icons';
 import {Carousel, Spin} from "antd";
 import {useNavigate} from "react-router";
 
@@ -8,6 +8,7 @@ import CoinCard from "components/coin_card";
 import {ApiContext, Prediction} from "App";
 import ContentHeader from "components/content_header";
 import {predictionSort} from "utils/prediction-sort";
+import BigNumber from "bignumber.js";
 
 const GoingPrediction = () => {
     const navigate = useNavigate();
@@ -30,6 +31,7 @@ const GoingPrediction = () => {
             });
             setPredictions(pres.filter(item => item.estimatesType === "DEVIATION"));
             setIsShowSpin(false);
+            getReward(pres.filter(item => item.estimatesType === "DEVIATION"));
         }
     }
 
@@ -37,6 +39,25 @@ const GoingPrediction = () => {
         getPredictions();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [context]);
+
+    const getReward = async (pres: Prediction[]) => {
+        if (context.api && pres) {
+            Promise.all(pres.map(async item => {
+                const res = await context.api!.query.estimates.symbolRewardPool(item.symbol);
+                const result = res.toHuman();
+                if (result) {
+                    item.totalReward =
+                        new BigNumber(result.toString().replaceAll(",", "")).shiftedBy(-12).toString();
+                } else {
+                    item.totalReward = "0";
+                }
+                return item;
+            })).then(res => {
+                setPredictions(res);
+            })
+        }
+    }
+
 
     const onSort = (sortBy: string) => {
         setPredictions(predictionSort(sortBy, predictions?? []));
@@ -110,6 +131,9 @@ const GoingPredictionWrapper = styled.div`
         .slick-dots li {
             background-color: #227ADF;
         }
+    }
+    @media only screen and (max-width: 1400px) {
+      column-gap: 10px;
     }
 `;
 

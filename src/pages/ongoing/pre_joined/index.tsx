@@ -5,10 +5,33 @@ import {CardContent, Content, OngoingContentCard} from "./style";
 import user from "assets/images/user.svg";
 import aresWards from "assets/images/aresrewards.svg";
 import timeIcon from "assets/images/time.svg";
+import {useContext, useEffect, useState} from "react";
+import {ApiContext} from "../../../App";
+import BigNumber from "bignumber.js";
 
 
 const Joined = (props: any) => {
     const {t} = useTranslation(["common"]);
+    const context = useContext(ApiContext);
+    const [totalReward, setTotalReward] = useState("0");
+
+    useEffect(() => {
+        getReward();
+    }, [])
+
+    const getReward = async () => {
+        if (context.api) {
+            const res = await context.api!.query.estimates.symbolRewardPool(props.title);
+            const result = res.toHuman();
+            if (result) {
+                const reward =
+                    new BigNumber(result.toString().replaceAll(",", "")).shiftedBy(-12).toString();
+                setTotalReward(reward);
+            }
+        }
+
+    }
+
     return (
         <Content>
             <Message type={MessageType.SUCCESS}
@@ -42,7 +65,7 @@ const Joined = (props: any) => {
                                 <img src={aresWards} alt="" width={25} height={25}/>
                                 <div>
                                     <div>{t("Total Rewards")}</div>
-                                    <div>{props.rewards} ARES</div>
+                                    <div>{totalReward} ARES</div>
                                 </div>
                             </div>
                             <div className="cardLeftItem">

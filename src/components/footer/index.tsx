@@ -13,7 +13,7 @@ const  Footer = () => {
                     <div className="about">
                         <h5>{t("About Us")}</h5>
                         <p className="text-white">{t("About Us desc")}</p>
-                        <a href="mailto:info@aresprotocol.io">
+                        <a href="mailto:info@aresprotocol.io" className="text-white">
                             <img src="/images/email.png" alt="Email" width={18} height={11}/> &nbsp;
                             info@aresprotocol.io
                         </a>
@@ -27,7 +27,8 @@ const  Footer = () => {
                                 {
                                     navList.quickLinks.items.map(item => {
                                         return (
-                                            <a href={item.link} target="_blank" key={item.link} rel="noreferrer noopener">
+                                            <a href={item.link} target="_blank" key={item.link} className="text-white"
+                                               rel="noreferrer noopener">
                                                 {item.title}
                                             </a>
                                         )
@@ -45,7 +46,8 @@ const  Footer = () => {
                                 {
                                     navList.Resources.items.map(item => {
                                         return (
-                                            <a href={item.link} target="_blank" key={item.title} rel="noreferrer noopener">
+                                            <a href={item.link} target="_blank" key={item.title} className="text-white"
+                                               rel="noreferrer noopener">
                                                 {item.title}
                                             </a>
                                         )
@@ -80,7 +82,7 @@ const  Footer = () => {
                 </FooterItem>
             </FooterContainer>
             <Copyright className="copyright">
-                <p>{t("copyright")}</p>
+                <p className="text-white">{t("copyright")}</p>
             </Copyright>
         </FooterWrapper>
     );

@@ -48,17 +48,17 @@ const OwnerTestCoin = () => {
                    <img src="/images/your_test_coins.png" alt=""/>
                </div>
            </MyTestCoin>
-            <ReceiveTestCoins>
-                <div>
-                    <img src="/images/receive_test_coins.png" alt=""/>
-                </div>
-                <Space direction="vertical">
-                    <div className="title">{t("Receive test coins")}</div>
-                    <a href="https://t.me/AresProtocolBot" target="_blank" rel="noopener noreferrer">
-                        <div className="ares">50 ARES</div>
-                    </a>
-                </Space>
-            </ReceiveTestCoins>
+            {/*<ReceiveTestCoins>*/}
+            {/*    <div>*/}
+            {/*        <img src="/images/receive_test_coins.png" alt=""/>*/}
+            {/*    </div>*/}
+            {/*    <Space direction="vertical">*/}
+            {/*        <div className="title">{t("Receive test coins")}</div>*/}
+            {/*        <a href="https://t.me/AresProtocolBot" target="_blank" rel="noopener noreferrer">*/}
+            {/*            <div className="ares">50 ARES</div>*/}
+            {/*        </a>*/}
+            {/*    </Space>*/}
+            {/*</ReceiveTestCoins>*/}
         </OwnerTestCoinWrapper>
     );
 }

@@ -1,20 +1,22 @@
 import styled from "styled-components";
 import {Button, Form, Input, message, Modal, Select} from "antd";
 import {ApiContext} from "App";
-import {useContext, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import BigNumber from "bignumber.js";
+import {Keyring} from "@polkadot/api";
 
 const Admin = () => {
     const context = useContext(ApiContext);
     const [estimatesType, setEstimatesType] = useState("DEVIATION");
     const [modalVisible, setModalVisible,] = useState(false);
+    const keyring = new Keyring({ type: 'sr25519' });
 
     // eslint-disable-next-line
     const create = async (symbol: string, start: number, end: number, distribute: number, estimatesType: string,
                           deviation: number | undefined, range: number[] | undefined, participatePrice: number) => {
         try {
             if (context.api && context.account) {
-                const unsub = await context.api.tx.estimates.newEstimates(symbol, start, end, distribute, estimatesType, deviation, range, new BigNumber(participatePrice).shiftedBy(12))
+                const unsub = await context.api.tx.estimates.newEstimates(symbol, start, end, distribute, estimatesType, deviation, range, new BigNumber(participatePrice).shiftedBy(12).toString())
                     .signAndSend(context.account.address, {}, ({status, events, dispatchError}) => {
                         if (dispatchError) {
                             if (dispatchError.isModule) {
@@ -43,16 +45,39 @@ const Admin = () => {
         }
     }
 
+    useEffect(() => {
+        addAdmin();
+    }, []);
+
+
+    const addAdmin = async () => {
+        const newMembers = [
+            "4VHdSjRozgny2zE6M5NDmsv7FNwP3KnHw2bXg6jXc52DASKE"
+        ]
+        const lockedEstimates = 10;
+        const minimumTicketPrice = new BigNumber(100).shiftedBy(12);
+        let unsignedMembers = [
+            keyring.addFromUri('//Alice', { name: 'Alice default' }).address
+        ]
+
+        if (context.api && context.account) {
+            // @ts-ignore
+            const tx = await context.api.sudo
+                .sudo(
+                    context.api.tx.estimates.preference(newMembers, unsignedMembers, lockedEstimates, minimumTicketPrice)
+                ).signAndSend(context.account.address)
+            console.log("tran hash ", tx);
+        }
+    }
+
 
     const createPrediction = (val: any) => {
-        console.log('createPrediction;', val);
         if (estimatesType === "RANGE") {
             val.range = val.range.split("|");
             val.range = val.range.map((item: string) => {
                 return new BigNumber(item).shiftedBy(4).toNumber();
             });
         }
-        console.log(val);
         create(val.symbol, val.start, val.end, val.distribute, estimatesType, val.deviation, val.range, val.participatePrice)
     }
 

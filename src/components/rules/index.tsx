@@ -24,26 +24,28 @@ const Rules = () => {
                         </RulesItem>
                     })
                 }
-                <div className="footer">
-                    <Checkbox defaultChecked={true}>
-                    <span>
-                        {t("read rules")}
-                    </span>
-                    </Checkbox>
-                    <Space>
-                        <Button className="submitButton" onClick={() => {
-                            localStorage.setItem("isJoined", "true");
-                            navigate("/home")
-                        }}>
-                            {t("Submit", { ns: 'common' })}
-                        </Button >
-                        <Button className="cancelButton" onClick={() => {
-                            navigate("/")
-                        }}>
-                            {t("Cancel", { ns: 'common' })}
-                        </Button>
-                    </Space>
-                </div>
+                {
+                    !localStorage.getItem("isJoined") && <div className="footer">
+                        <Checkbox defaultChecked={true}>
+                            <span>
+                                {t("read rules")}
+                            </span>
+                        </Checkbox>
+                        <Space>
+                            <Button className="submitButton" onClick={() => {
+                                localStorage.setItem("isJoined", "true");
+                                navigate("/ongoing/prediction")
+                            }}>
+                                {t("Submit", { ns: 'common' })}
+                            </Button >
+                            <Button className="cancelButton" onClick={() => {
+                                navigate("/")
+                            }}>
+                                {t("Cancel", { ns: 'common' })}
+                            </Button>
+                        </Space>
+                    </div>
+                }
             </RulesWrapper>
         </Fragment>
     );

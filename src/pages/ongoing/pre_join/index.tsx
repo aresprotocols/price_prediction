@@ -10,6 +10,7 @@ import {ApiContext, Prediction} from "App";
 import {clacStartTime,timeDiffRes} from "utils/format";
 import {getSymbolPrice} from "utils/symbol-price";
 import ContentHeader from "components/content_header";
+import BigNumber from "bignumber.js";
 
 const PredictionJoin = () => {
     const context = useContext(ApiContext);
@@ -21,11 +22,11 @@ const PredictionJoin = () => {
     const [time, setTime] = useState("");
     const [timeDiff, setTimDiff] = useState<timeDiffRes>({day:0, hour: 0, minute: 0});
     const [guessPrice, setGuessPrice] = useState("");
-    const [rewardAddress, setRewardAddress] = useState<string>();
+    const [rewardAddress, setRewardAddress] = useState<string>("");
     const [hasBeenInvolvedIn, setHasBeenInvolvedIn] = useState(false);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [notSufficient, setNotSufficient] = useState(false);
-    const priceLabel = t("Price") + "(" + t("The deviation rate is") + "1%)";
+    const priceLabel = t("Price") + "(" + t("The deviation rate is");
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
@@ -55,11 +56,18 @@ const PredictionJoin = () => {
     const getPredictionInfo = async () => {
         if (context.api) {
             const res = await context.api.query.estimates.activeEstimates(params.symbol);
-            setPredictionInfo(res.toHuman() as unknown as Prediction);
+            const pre = res.toHuman() as unknown as Prediction;
+            pre.ticketPrice =
+                new BigNumber(pre.ticketPrice.replaceAll(",", "")).shiftedBy(-12).toString();
+            setPredictionInfo(pre);
         }
     }
 
     const join = async (multiplier: string) => {
+        console.log(rewardAddress, guessPrice)
+        if (rewardAddress === '' || guessPrice === '') {
+            return;
+        }
         if (context.api && context.account) {
             const api = context.api;
             setLoading(true);
@@ -130,7 +138,7 @@ const PredictionJoin = () => {
                         </div>
                         <div className="joinForm">
                             <Form layout="vertical" style={{width: "250px"}}>
-                                <Form.Item label={priceLabel}>
+                                <Form.Item label={priceLabel + predictionInfo?.deviation + ")"}>
                                     <Input prefix="$" value={guessPrice} onChange={e => setGuessPrice(e.target.value)}/>
                                 </Form.Item>
                                 <Form.Item label={"BSC " + t("Address")}>
@@ -151,16 +159,19 @@ const PredictionJoin = () => {
                         </div>
                         <div className="joinMoney">
                             <Button className={"btn"} onClick={() => join("Base1")}>
-                                {t("free").toUpperCase()}
-                                {Number.parseInt(predictionInfo?.ticketPrice.split(" ")[0] ?? "")}
+                                {t("Fee")}&nbsp;
+                                {Number.parseInt(predictionInfo?.ticketPrice ?? "")}
+                                &nbsp;coin
                             </Button>
                             <Button className={"btn"} onClick={() => join("Base2")}>
-                                {t("free").toUpperCase()}
-                                {Number.parseInt(predictionInfo?.ticketPrice.split(" ")[0] ?? "") * 2}
+                                {t("Fee")}&nbsp;
+                                {Number.parseInt(predictionInfo?.ticketPrice ?? "") * 2}
+                                &nbsp;coin
                             </Button>
                             <Button className={"btn"} onClick={() => join("Base5")}>
-                                {t("free").toUpperCase()}
-                                {Number.parseInt(predictionInfo?.ticketPrice.split(" ")[0] ?? "") * 5}
+                                {t("Fee")}&nbsp;
+                                {Number.parseInt(predictionInfo?.ticketPrice ?? "") * 5}
+                                &nbsp;coin
                             </Button>
                         </div>
                         <label style={{fontSize: "12px", color:"#F34944"}}>

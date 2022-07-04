@@ -145,6 +145,9 @@ const PredictionWrapper = styled.div`
             background-color: #227ADF;
         }
     }
+    @media only screen and (max-width: 1400px) {
+      column-gap: 30px;
+    }
 `;
 
 export default CompletedPrediction;

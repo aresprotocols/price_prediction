@@ -104,6 +104,9 @@ const FluctuationsWrapper = styled.div`
             background-color: #227ADF;
         }
     }
+    @media only screen and (max-width: 1400px) {
+      column-gap: 10px;
+    }
 `;
 
 export default UpcomingPrediction;

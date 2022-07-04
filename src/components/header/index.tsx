@@ -3,7 +3,7 @@ import {useNavigate} from "react-router";
 import {useTranslation} from "react-i18next";
 import {web3Accounts, web3Enable, web3FromAddress} from "@polkadot/extension-dapp";
 import {Dropdown, Menu, Select} from 'antd';
-import { CaretDownOutlined, MenuOutlined } from '@ant-design/icons';
+import { CaretDownOutlined, MenuOutlined, } from '@ant-design/icons';
 import {InjectedAccountWithMeta} from "@polkadot/extension-inject/types";
 
 import {HeaderWrapper, LanguageMenuWrapper, MenuButton, PhoneMenu} from "./style";
@@ -24,6 +24,9 @@ const Header = (props: any) => {
     const {t, i18n} = useTranslation(["common"]);
     const navigate = useNavigate();
     const context = useContext(ApiContext);
+    const [iconRotate, setGoingIconRotate] = useState(0);
+    const [completedIconRotate, setCompletedIconRotate] = useState(0);
+    const [upcomingIconRotate, setUpcomingIconRotate] = useState(0);
     const [showPhoneMenu, setShowPhoneMenu] = useState(false);
     const [accounts, setAccounts] = useState<InjectedAccountWithMeta[]>([]);
     const [balance, setBalance] = useState("");
@@ -56,6 +59,22 @@ const Header = (props: any) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [context]);
 
+    const handleIconRotate = (type: string, hover: boolean) => {
+        const iconRotate = hover ? 180 : 0;
+        switch (type) {
+            case "ongoing":
+                setGoingIconRotate(iconRotate);
+                break;
+            case "completed":
+                setCompletedIconRotate(iconRotate);
+                break;
+            case "upcoming":
+                setUpcomingIconRotate(iconRotate);
+                break
+        }
+
+
+    };
 
     const languageMenu = (
         <Menu onClick={(info) =>{
@@ -97,35 +116,72 @@ const Header = (props: any) => {
     );
 
     const ongoingMenu = (
-        <SubMenu key="ongoing" title= {t("Ongoing")}>
+        <SubMenu key="ongoing"
+                 onTitleMouseEnter={() => handleIconRotate("ongoing", true)}
+                 onTitleMouseLeave={() => handleIconRotate("ongoing", false)}
+         title={
+            <div className="subMenuTitle">
+                <span>{t("Ongoing")}</span>
+                <CaretDownOutlined style={{
+                    transition: "all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1)",
+                    transform: `rotate(${iconRotate}deg)`
+                }}/>
+            </div>
+        }>
             <Menu.Item key="/ongoing/prediction"
-                       icon={<img src={myPrediction} alt="" width={15} height={15}/>}>
+                       icon={<div className="subIcon"><img src={myPrediction} alt="" width={18} height={18}/></div>}>
                 {t("Price Prediction")}
             </Menu.Item>
             <Menu.Item key="/ongoing/fluctuations"
-                       icon={<img src={fluctuations} alt="" width={15} height={15}/>}>
+                       icon={<div className="subIcon"><img src={fluctuations} alt="" width={18} height={18}/></div>}>
                 {t("Price Fluctuations")}
             </Menu.Item>
         </SubMenu>
     );
 
     const completedMenu = (
-        <SubMenu key="SubMenu" title= {t("Completed")}>
-            <Menu.Item key="/completed/prediction" icon={<img src={myPrediction} alt="" width={15} height={15}/>}>
+        <SubMenu key="SubMenu"
+                 onTitleMouseEnter={() => handleIconRotate("completed",true)}
+                 onTitleMouseLeave={() => handleIconRotate("completed",false)}
+                 title= {
+                    <div className="subMenuTitle">
+                         <span>{t("Completed")}</span>
+                         <CaretDownOutlined style={{
+                             transition: "all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1)",
+                             transform: `rotate(${completedIconRotate}deg)`
+                         }}/>
+                    </div>
+        }>
+            <Menu.Item key="/completed/prediction"
+                       icon={<div className="subIcon"><img src={myPrediction} alt="" width={18} height={18}/></div>}>
                 {t("Price Prediction")}
             </Menu.Item>
-            <Menu.Item key="/completed/fluctuations" icon={<img src={fluctuations} alt="" width={15} height={15}/>}>
+            <Menu.Item key="/completed/fluctuations"
+                       icon={<div className="subIcon"><img src={fluctuations} alt="" width={18} height={18}/></div>}>
                 {t("Price Fluctuations")}
             </Menu.Item>
         </SubMenu>
     );
 
     const upcomingMenu = (
-        <SubMenu key="Upcoming" title= {t("Upcoming")}>
-            <Menu.Item key="/upcoming/prediction" icon={<img src={myPrediction} alt="" width={15} height={15}/>}>
+        <SubMenu key="Upcoming"
+                 onTitleMouseEnter={() => handleIconRotate("upcoming",true)}
+                 onTitleMouseLeave={() => handleIconRotate("upcoming",false)}
+                 title= {
+                     <div className="subMenuTitle">
+                         <span>{t("Upcoming")}</span>
+                         <CaretDownOutlined style={{
+                             transition: "all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1)",
+                             transform: `rotate(${upcomingIconRotate}deg)`
+                         }}/>
+                     </div>
+                 }>
+            <Menu.Item key="/upcoming/prediction"
+                       icon={<div className="subIcon"><img src={myPrediction} alt="" width={18} height={18}/></div>}>
                 {t("Price Prediction")}
             </Menu.Item>
-            <Menu.Item key="/upcoming/fluctuations" icon={<img src={fluctuations} alt="" width={15} height={15}/>}>
+            <Menu.Item key="/upcoming/fluctuations"
+                       icon={<div className="subIcon"><img src={fluctuations} alt="" width={18} height={18}/></div>}>
                 {t("Price Fluctuations")}
             </Menu.Item>
         </SubMenu>
@@ -167,6 +223,9 @@ const Header = (props: any) => {
                         showPhoneMenu ? <div className="menu">
                             <Menu mode="inline" className="pcMenu" onClick={(info) => {
                                 const key = info.key;
+                                if (key === "faucet") {
+                                    return;
+                                }
                                 if (key === "en" || key === "cn") {
                                     let targetLanguage = info.key === 'en' ? 'en' : 'cn';
                                     i18n.changeLanguage(targetLanguage).then(r =>
@@ -189,6 +248,14 @@ const Header = (props: any) => {
                                         <Menu.Item key="cn">{t("CN")}</Menu.Item>
                                     </SubMenu>
                                 }
+                                <Menu.Item key="faucet">
+                                    <div className="faucetMenu">
+                                        <a href="https://t.me/AresProtocolBot" target="_blank"
+                                           rel="noopener noreferrer">
+                                            {t("Faucet")}
+                                        </a>
+                                    </div>
+                                </Menu.Item>
                             </Menu>
                         </div> : ""
                     }
@@ -247,6 +314,12 @@ const Header = (props: any) => {
                             </a>
                         </Dropdown>
                     </LanguageMenuWrapper>
+                    <div className="faucet">
+                        <a href="https://t.me/AresProtocolBot" target="_blank"
+                           rel="noopener noreferrer">
+                            {t("Faucet")}
+                        </a>
+                    </div>
                 </nav>
             </header>
         </HeaderWrapper>

@@ -86,6 +86,7 @@ const MyPrediction = () => {
                 }
             }
         });
+        setIsShowSpin(false);
     }
 
     useEffect(() => {
@@ -199,8 +200,8 @@ const MyPrediction = () => {
                                 return item.symbol.includes(searchName);
                             }
                             return item;
-                        }).map(item => {
-                            return <CoinCard key={item.symbol.concat(item.id.toString())}
+                        }).map((item, index) => {
+                            return <CoinCard key={index}
                                              title={item.symbol} type={`${item.state === "Completed" ? "WINNER" : "JOINED"}`}
                                              total={item.totalReward}
                                              endBlock={Number.parseInt(item.end.replaceAll(",", ""))}
