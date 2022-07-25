@@ -60,6 +60,8 @@ const PredictionJoin = () => {
             pre.ticketPrice =
                 new BigNumber(pre.ticketPrice.replaceAll(",", "")).shiftedBy(-12).toString();
             setPredictionInfo(pre);
+            console.log("pre", pre);
+            console.log("pre", pre.id);
         }
     }
 
@@ -73,6 +75,7 @@ const PredictionJoin = () => {
             setLoading(true);
             // TODO check input value
             const price = Math.floor(Number(guessPrice) * Math.pow(10, 4));
+            console.log("join multiplier", multiplier);
             const unsub = await api.tx.estimates.participateEstimates(params.symbol, price, null, multiplier, rewardAddress)
                 .signAndSend(context.account.address, ({ status, dispatchError }) => {
                     if (dispatchError) {
@@ -114,7 +117,7 @@ const PredictionJoin = () => {
             <ContentHeader title="Price Prediction" onSort={() => {}} onSearch={() => {}}
                            goBackNum={-1} placeholder={"Search Cryptocurrency"}/>
             {
-                joined ? <Joined time={time} title={params.symbol} timeDiff={timeDiff}/> :
+                joined ? <Joined time={time} title={params.symbol} timeDiff={timeDiff} id={predictionInfo!.id}/> :
                 <GoJoinWrapper>
                     <div className="time">
                         {time}
@@ -158,21 +161,15 @@ const PredictionJoin = () => {
                             </div>
                         </div>
                         <div className="joinMoney">
-                            <Button className={"btn"} onClick={() => join("Base1")}>
-                                {t("Fee")}&nbsp;
-                                {Number.parseInt(predictionInfo?.ticketPrice ?? "")}
-                                &nbsp;coin
-                            </Button>
-                            <Button className={"btn"} onClick={() => join("Base2")}>
-                                {t("Fee")}&nbsp;
-                                {Number.parseInt(predictionInfo?.ticketPrice ?? "") * 2}
-                                &nbsp;coin
-                            </Button>
-                            <Button className={"btn"} onClick={() => join("Base5")}>
-                                {t("Fee")}&nbsp;
-                                {Number.parseInt(predictionInfo?.ticketPrice ?? "") * 5}
-                                &nbsp;coin
-                            </Button>
+                            {
+                                predictionInfo && predictionInfo.multiplier?.map((item, index) => {
+                                    return <Button className={"btn"} onClick={() => join(item)} key={index}>
+                                        {t("Fee")}&nbsp;
+                                        {Number.parseInt(predictionInfo?.ticketPrice ?? "") * item["Base"]}
+                                        &nbsp;coin
+                                    </Button>
+                                })
+                            }
                         </div>
                         <label style={{fontSize: "12px", color:"#F34944"}}>
                             { notSufficient ? "* " + t("Sorry, your test coins are insufficient to participate!") : ""}

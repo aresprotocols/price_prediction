@@ -1,4 +1,4 @@
-import {Fragment, useContext, useEffect, useState} from "react";
+import React, {Fragment, useContext, useEffect, useState} from "react";
 import {useParams} from "react-router";
 import {useTranslation} from "react-i18next";
 import {Button, Form, Input, Radio, Spin} from "antd";
@@ -105,18 +105,14 @@ const FluctuationsJoin = () => {
 
     const bottomButton = (
         <Fragment>
-            <Button className="btn" onClick={() => {join("Base1")}}>
-                {t("free").toUpperCase()}
-                {Number.parseInt(predictionInfo?.ticketPrice ?? "")}
-            </Button>
-            <Button className="btn" onClick={() => {join("Base2")}}>
-                {t("free").toUpperCase()}
-                {Number.parseInt(predictionInfo?.ticketPrice ?? "") * 2}
-            </Button>
-            <Button className="btn" onClick={() => {join("Base5")}}>
-                {t("free").toUpperCase()}
-                {Number.parseInt(predictionInfo?.ticketPrice?? "") * 5}
-            </Button>
+            {
+                predictionInfo && predictionInfo.multiplier?.map((item, index) => {
+                    return <Button className={"btn"} onClick={() => join(item)} key={index}>
+                        {t("Fee")}&nbsp;
+                        {Number.parseInt(predictionInfo?.ticketPrice ?? "") * item["Base"]}
+                    </Button>
+                })
+            }
         </Fragment>
     )
 
@@ -129,7 +125,7 @@ const FluctuationsJoin = () => {
             }
             <ContentHeader title="Price Fluctuations" onSort={() => {}} onSearch={() => {}}
                            goBackNum={-1} placeholder={"Search Cryptocurrency"}/>
-            {joined ? <Joined time={time} title={params.symbol} timeDiff={timeDiff}/> :
+            {joined ? <Joined time={time} title={params.symbol} timeDiff={timeDiff} id={0}/> :
                 <GoJoinWrapper>
                     <div className="time">
                         {time}

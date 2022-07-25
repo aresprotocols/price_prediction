@@ -9,6 +9,7 @@ import ResultCard from "../result_card";
 import {ApiContext, Prediction} from "App";
 import {predictionSort} from "utils/prediction-sort";
 import ContentHeader from "components/content_header";
+import {formatHumanNumber} from "../../../utils/format";
 
 
 const CompletedPrediction = () => {
@@ -43,6 +44,7 @@ const CompletedPrediction = () => {
             });
             setCompletedPrediction(pres.filter(item => item.estimatesType === "DEVIATION"));
             setIsShowSpin(false);
+            console.log("completed prediction", pres);
         }
     };
 
@@ -67,7 +69,7 @@ const CompletedPrediction = () => {
         return item;
     }).map(item => {
         return <CoinCard key={item.symbol.concat(item.id.toString())} title={item.symbol}
-                         type="WINNER" price="580" total={item.totalReward}
+                         type="WINNER" price="580" total={formatHumanNumber(item.totalReward)}
                          prediction={item}
                          endBlock={Number.parseInt(item.end.replaceAll(",", ""))}
                          live={true} icon={false} callBack={toResult}/>

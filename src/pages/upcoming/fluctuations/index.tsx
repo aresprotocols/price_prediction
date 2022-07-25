@@ -7,6 +7,7 @@ import CoinCard from "components/coin_card";
 import {ApiContext, Prediction} from "App";
 import ContentHeader from "components/content_header";
 import {predictionSort} from "utils/prediction-sort";
+import {formatHumanNumber} from "../../../utils/format";
 
 
 const UpcomingFluctuations = () => {
@@ -43,7 +44,7 @@ const UpcomingFluctuations = () => {
         return <CoinCard key={item.symbol.concat(item.id.toString())}
                          title={item.symbol} type="COMING" price="5800"
                          endBlock={Number.parseInt(item.start.replaceAll(",", ""))}
-                         total={item.totalReward} live={true} icon={false}/>
+                         total={formatHumanNumber(item.totalReward)} live={true} icon={false}/>
     })
 
     const onSort = (sortBy: string) => {

@@ -8,7 +8,7 @@ import CoinCard from "components/coin_card";
 import {ApiContext, Prediction} from "App";
 import ContentHeader from "components/content_header";
 import {predictionSort} from "utils/prediction-sort";
-import BigNumber from "bignumber.js";
+import {getReward} from "../../../utils/token";
 
 const GoingPrediction = () => {
     const navigate = useNavigate();
@@ -29,34 +29,22 @@ const GoingPrediction = () => {
             res.forEach(([_, value]) => {
                 pres.push(value.toHuman() as unknown as Prediction);
             });
+            console.log("pres", pres);
             setPredictions(pres.filter(item => item.estimatesType === "DEVIATION"));
             setIsShowSpin(false);
-            getReward(pres.filter(item => item.estimatesType === "DEVIATION"));
+            getReward(pres.filter(item => item.estimatesType === "DEVIATION"), context.api).then(res => {
+                setPredictions(res);
+            });
         }
     }
+
+
 
     useEffect(() => {
         getPredictions();
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [context]);
-
-    const getReward = async (pres: Prediction[]) => {
-        if (context.api && pres) {
-            Promise.all(pres.map(async item => {
-                const res = await context.api!.query.estimates.symbolRewardPool(item.symbol);
-                const result = res.toHuman();
-                if (result) {
-                    item.totalReward =
-                        new BigNumber(result.toString().replaceAll(",", "")).shiftedBy(-12).toString();
-                } else {
-                    item.totalReward = "0";
-                }
-                return item;
-            })).then(res => {
-                setPredictions(res);
-            })
-        }
-    }
 
 
     const onSort = (sortBy: string) => {

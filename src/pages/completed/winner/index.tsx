@@ -30,9 +30,9 @@ const Winner = () => {
                 if (index === 0) {
                     label = <img src={firstPlace} alt="ares prediction first place" width={16}/>;
                 } else if (index === 1) {
-                    label = <img src={secondPlace} alt="ares prediction second place"/>;
+                    label = <img src={secondPlace} alt="ares prediction second place" width={16}/>;
                 } else if(index === 2) {
-                    label = <img src={thirdPlace} alt="ares prediction third place"/>;
+                    label = <img src={thirdPlace} alt="ares prediction third place" width={16}/>;
                 } else if (index >= 9) {
                     label = "";
                 } else {
@@ -49,7 +49,7 @@ const Winner = () => {
             key: "estimates",
             render: (text: string, record: any, index: number) => {
                 return <span>
-                    {parseInt(text.replaceAll(",", "")) / 10000}
+                    {text ? parseInt(text.replaceAll(",", "")) / 10000 : "-"}
                 </span>
             }
         },
@@ -63,6 +63,7 @@ const Winner = () => {
     const getWinner = async() => {
         if (context.api) {
             const res = await context.api.query.estimates.winners(params.symbol, params.id);
+            console.log("winner res", res.toHuman());
             setWinners(res.toHuman() as unknown as winner[]);
             setShowWinner(res.toHuman() as unknown as winner[]);
         }

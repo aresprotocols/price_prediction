@@ -7,6 +7,7 @@ import CoinCard from "components/coin_card";
 import {ApiContext, Prediction} from "App";
 import {predictionSort} from "utils/prediction-sort";
 import ContentHeader from "components/content_header";
+import {formatHumanNumber} from "../../../utils/format";
 
 
 const UpcomingPrediction = () => {
@@ -25,6 +26,7 @@ const UpcomingPrediction = () => {
             });
             setUpcoming(pres.filter(item => item.estimatesType === "DEVIATION"));
             setIsShowSpin(false);
+            console.log("pres", pres);
         }
     };
 
@@ -43,7 +45,7 @@ const UpcomingPrediction = () => {
         return <CoinCard key={item.symbol.concat(item.id.toString())}
                              title={item.symbol} type="COMING" price="5800"
                              endBlock={Number.parseInt(item.start.replaceAll(",", ""))}
-                             total={item.totalReward} live={true} icon={false}/>
+                             total={formatHumanNumber(item.totalReward)} live={true} icon={false}/>
         })
 
     const onSort = (sortBy: string) => {

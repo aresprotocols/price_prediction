@@ -49,7 +49,8 @@ export interface Prediction {
   "deviation": string,
   "range": string[] | null,
   "totalReward": string,
-  "state": string
+  "state": string,
+  "multiplier": any[] | null,
 }
 
 export interface Participant {
@@ -70,8 +71,8 @@ function App() {
 
   const init = async () => {
     console.log("api init");
-    const provider = new WsProvider("wss://gladios.aresprotocol.io");
-    // const provider = new WsProvider("ws://116.21.137.61:29944");
+    console.log("defaultAccount", process.env);
+    const provider = new WsProvider("wss://odyssey.aresprotocol.io");
     return await ApiPromise.create({
       provider,
       rpc: {
