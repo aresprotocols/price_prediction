@@ -1,13 +1,16 @@
 import styled from "styled-components";
-import {Button, Form, Input, message, Modal, Select, Tag} from "antd";
+import {Button, Form, Input, InputNumber, message, Modal, Select, Tag} from "antd";
 import {ApiContext} from "App";
 import { PlusOutlined } from '@ant-design/icons';
-import {useContext, useEffect, useRef, useState} from "react";
+import {Fragment, useContext, useEffect, useRef, useState} from "react";
 import BigNumber from "bignumber.js";
 import {Keyring} from "@polkadot/api";
 import {web3FromAddress} from "@polkadot/extension-dapp";
+import {Router, useNavigate} from "react-router";
+import {Outlet} from "react-router-dom";
 
 const Admin = () => {
+    const navigator = useNavigate();
     const context = useContext(ApiContext);
     const [inputVisible, setInputVisible] = useState(false);
     const inputRef = useRef<any>(null);
@@ -19,11 +22,12 @@ const Admin = () => {
 
     // eslint-disable-next-line
     const create = async (symbol: string, start: number, end: number, distribute: number, estimatesType: string,
-                          deviation: number | undefined, range: number[] | undefined, participatePrice: number, mul: any[], initReward: number) => {
+                          deviation: number | undefined, range: number[] | undefined, participatePrice: number,
+                          mul: any[], initReward: number, fraction: number) => {
         try {
             if (context.api && context.account) {
                 const unsub = await context.api.tx.estimates.newEstimates(symbol, start, end, distribute, estimatesType,
-                    deviation, range, mul, new BigNumber(initReward).shiftedBy(12).toString(),
+                    deviation, range, fraction, mul, new BigNumber(initReward).shiftedBy(12).toString(),
                     new BigNumber(participatePrice).shiftedBy(12).toString())
                     .signAndSend(context.account.address, {}, ({status, events, dispatchError}) => {
                         if (dispatchError) {
@@ -110,7 +114,7 @@ const Admin = () => {
         if (estimatesType === "RANGE") {
             val.range = val.range.split("|");
             val.range = val.range.map((item: string) => {
-                return new BigNumber(item).shiftedBy(4).toNumber();
+                return new BigNumber(item).shiftedBy(val.fraction).integerValue(BigNumber.ROUND_FLOOR).toNumber();
             });
         }
         const mul: any[] = [];
@@ -120,7 +124,9 @@ const Admin = () => {
             });
         }
 
-        create(val.symbol, val.start, val.end, val.distribute, estimatesType, val.deviation, val.range, val.participatePrice, mul, val.initReward);
+        console.log("createPrediction", val);
+
+        create(val.symbol, val.start, val.end, val.distribute, estimatesType, val.deviation, val.range, val.participatePrice, mul, val.initReward, val.fraction);
     }
 
     const layout = {
@@ -152,6 +158,8 @@ const Admin = () => {
         <AdminWrapper>
             <div className="addBtn">
                 <Button type="primary" onClick={() => setModalVisible(!modalVisible)}>Add Prediction</Button>
+
+                <Button type="primary" onClick={() => navigator("/admin/unclose")}>UnClose Prediction</Button>
             </div>
 
             <Modal visible={modalVisible} title="Add Price Prediction" footer={null} destroyOnClose={true}
@@ -206,13 +214,24 @@ const Admin = () => {
                                     rules={[{ required: true, message: 'Please input deviation!' }]}
                                 >
                                     <Input/>
-                                </Form.Item> : <Form.Item
-                                    label="Range"
-                                    name="range"
-                                    rules={[{ required: true, message: 'Please input range!' }]}
-                                >
-                                    <Input/>
-                                </Form.Item>
+                                </Form.Item> : <Fragment>
+                                    <Form.Item
+                                        label="Range"
+                                        name="range"
+                                        rules={[{ required: true, message: 'Please input range!' }]}
+                                    >
+                                        <Input/>
+                                    </Form.Item>
+                                    <Form.Item
+                                        label="Fraction"
+                                        name="fraction"
+                                        rules={[
+                                            { type: 'number', message: 'Fraction must be an number!'},
+                                            { required: true, message: 'Please input fraction!' }]}
+                                    >
+                                        <InputNumber min={4} max={12} defaultValue={4}/>
+                                    </Form.Item>
+                                </Fragment>
                         }
                         <Form.Item
                             label="ParticipatePrice"
@@ -276,6 +295,7 @@ const Admin = () => {
                     </Form>
                 </div>
             </Modal>
+            <Outlet/>
         </AdminWrapper>
     );
 }

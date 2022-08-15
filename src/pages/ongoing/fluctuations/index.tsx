@@ -8,9 +8,7 @@ import CoinCard from "components/coin_card";
 import {ApiContext, Prediction} from "App";
 import ContentHeader from "components/content_header";
 import {predictionSort} from "utils/prediction-sort";
-import BigNumber from "bignumber.js";
-import {formatHumanNumber} from "../../../utils/format";
-import {getReward, getSubAccount} from "../../../utils/token";
+import {getReward} from "../../../utils/token";
 
 
 const Fluctuations = () => {

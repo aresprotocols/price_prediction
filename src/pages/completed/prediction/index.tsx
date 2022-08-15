@@ -67,8 +67,8 @@ const CompletedPrediction = () => {
             return item.symbol.includes(searchName);
         }
         return item;
-    }).map(item => {
-        return <CoinCard key={item.symbol.concat(item.id.toString())} title={item.symbol}
+    }).map((item, index) => {
+        return <CoinCard key={item.symbol.concat(item.id.toString()) + index} title={item.symbol}
                          type="WINNER" price="580" total={formatHumanNumber(item.totalReward)}
                          prediction={item}
                          endBlock={Number.parseInt(item.end.replaceAll(",", ""))}

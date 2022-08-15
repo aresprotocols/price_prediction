@@ -1,7 +1,7 @@
 import React, {Fragment, useContext, useEffect, useState} from "react";
 import {useParams} from "react-router";
 import {useTranslation} from "react-i18next";
-import {Button, Form, Input, Spin} from "antd";
+import {Button, Form, Input, message, Spin} from "antd";
 
 import {GoJoinWrapper, JoinContent, Price, Countdown} from "./style";
 import timeLogo from "assets/images/time.svg";
@@ -74,9 +74,14 @@ const PredictionJoin = () => {
             const api = context.api;
             setLoading(true);
             // TODO check input value
-            const price = Math.floor(Number(guessPrice) * Math.pow(10, 4));
-            console.log("join multiplier", multiplier);
-            const unsub = await api.tx.estimates.participateEstimates(params.symbol, price, null, multiplier, rewardAddress)
+            let fraction = 4;
+            if (guessPrice.indexOf(".") !== -1) {
+                fraction = guessPrice.split(".")[1].length;
+            }
+            const price = Math.floor(Number(guessPrice) * Math.pow(10, fraction));
+
+            console.log("join multiplier", multiplier, price, fraction);
+            const unsub = await api.tx.estimates.participateEstimates(params.symbol, price, fraction, null, multiplier, rewardAddress)
                 .signAndSend(context.account.address, ({ status, dispatchError }) => {
                     if (dispatchError) {
                         if (dispatchError.isModule) {
@@ -84,6 +89,7 @@ const PredictionJoin = () => {
                             const decoded = api.registry.findMetaError(dispatchError.asModule);
                             const { docs, name, section } = decoded;
                             console.log(`${section}.${name}: ${docs.join(' ')}`);
+                            message.error(`${name}`);
                             if (name === "AccountEstimatesExist") {
                                 setHasBeenInvolvedIn(true);
                             }
@@ -99,6 +105,7 @@ const PredictionJoin = () => {
                     if (status.isInBlock) {
                         console.log(`participateEstimates Transaction included at blockHash ${status.asInBlock}`);
                     } else if (status.isFinalized) {
+                        message.success("join success");
                         console.log(`participateEstimates Transaction finalized at blockHash ${status.asFinalized}`);
                         setLoading(false);
                         unsub();

@@ -1,7 +1,7 @@
 import React, {Fragment, useContext, useEffect, useState} from "react";
 import {useParams} from "react-router";
 import {useTranslation} from "react-i18next";
-import {Button, Form, Input, Radio, Spin} from "antd";
+import {Button, Form, Input, message, Radio, Spin} from "antd";
 
 import {Countdown, GoJoinWrapper, JoinContent, Price} from "./style";
 import timeLogo from "assets/images/time.svg";
@@ -73,12 +73,13 @@ const FluctuationsJoin = () => {
         if (context.api && context.account) {
             setIsShowSpin(true);
             const api = context.api;
-            const unsub = await api.tx.estimates.participateEstimates(params.symbol, null, selectRangeIndex, multiplier, rewardAddress)
+            const unsub = await api.tx.estimates.participateEstimates(params.symbol, null, null, selectRangeIndex, multiplier, rewardAddress)
                 .signAndSend(context.account.address, ({ status, dispatchError }) => {
                     if (dispatchError) {
                         if (dispatchError.isModule) {
                             const decoded = api.registry.findMetaError(dispatchError.asModule);
                             const { docs, name, section } = decoded;
+                            message.error(`${name}`);
                             console.log(`${section}.${name}: ${docs.join(' ')}`);
                             if (name === "AccountEstimatesExist") {
                                 setHasBeenInvolvedIn(true);
@@ -95,6 +96,7 @@ const FluctuationsJoin = () => {
                     if (status.isInBlock) {
                         console.log(`participateEstimates Transaction included at blockHash ${status.asInBlock}`);
                     } else if (status.isFinalized) {
+                        message.success("join success");
                         console.log(`participateEstimates Transaction finalized at blockHash ${status.asFinalized}`);
                         setIsShowSpin(false);
                         unsub();

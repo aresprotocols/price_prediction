@@ -28,6 +28,7 @@ import Upcoming from "pages/upcoming";
 import def from "config/ares-gladios"
 import Admin from "pages/admin/admin";
 import Login from "pages/admin/login";
+import UnClosePrediction from "./pages/admin/un-close";
 
 
 export interface ContextProps {
@@ -71,8 +72,7 @@ function App() {
 
   const init = async () => {
     console.log("api init");
-    console.log("defaultAccount", process.env);
-    const provider = new WsProvider("wss://odyssey.aresprotocol.io");
+    const provider = new WsProvider("wss://gladios.aresprotocol.io");
     return await ApiPromise.create({
       provider,
       rpc: {
@@ -139,7 +139,9 @@ function App() {
                   <RequireAuth>
                     <Admin />
                   </RequireAuth>
-                }/>
+                }>
+                  <Route path="unclose" element={<UnClosePrediction />}/>
+                </Route>
                 <Route path="/admin/login" element={<Login />}/>
               </Routes>
             </div>
