@@ -1,7 +1,7 @@
 import styled from "styled-components"
 
 export const FooterWrapper = styled.div`
-    background: #1D1F75;
+    background: #041A77;
     border: none;
     color: #FFFFFF;
     font-size: 16px;
@@ -16,13 +16,19 @@ export const FooterWrapper = styled.div`
 `;
 
 export const FooterContainer = styled.div`
-    display: flex;
-    flex-wrap: wrap;
-    max-width: 1920px;
-    justify-content: space-around;
-    margin: 0 auto;
-    column-gap: 60px;
-    row-gap: 30px;
+    
+  
+    display: grid;
+    grid-template-columns: 1.3fr 1fr 1fr 1fr;
+    grid-gap: 20px;
+  
+    @media screen and (max-width: 750px) {
+        grid-template-columns: 1fr;
+    }
+
+    @media screen and (max-width: 1200px) {
+      grid-template-columns: 1.5fr 1fr;
+    }
 
     .about {
         flex: auto;
@@ -35,6 +41,10 @@ export const FooterContainer = styled.div`
         column-gap: 30px;
         row-gap: 10px;
         width: 250px;
+        @media screen and (max-width: 750px) {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+        }
     }
 
     @media screen and (max-width: 750px) {
@@ -56,7 +66,7 @@ export const FooterItem = styled.div`
     }
     h5 {
         font-size: 2.1rem;
-        font-weight: 400;
+        font-weight: bold;
         letter-spacing: -0.04em;
         margin-top: 0;
         color: #FFF !important;
@@ -91,4 +101,7 @@ export const Copyright = styled.div`
     width: 100%;
     margin-top:66px;
     text-align: center;
+    p {
+      color: #FFF;
+    }
 `;

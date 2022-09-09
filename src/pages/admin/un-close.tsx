@@ -16,7 +16,7 @@ const UnClosePrediction = () => {
     useEffect(() => {
         getPredictions();
 
-    }, []);
+    }, [context]);
 
 
     const getPredictions = async () => {

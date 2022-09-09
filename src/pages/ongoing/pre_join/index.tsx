@@ -22,7 +22,7 @@ const PredictionJoin = () => {
     const [time, setTime] = useState("");
     const [timeDiff, setTimDiff] = useState<timeDiffRes>({day:0, hour: 0, minute: 0});
     const [guessPrice, setGuessPrice] = useState("");
-    const [rewardAddress, setRewardAddress] = useState<string>("");
+    const [rewardAddress, setRewardAddress] = useState(null);
     const [hasBeenInvolvedIn, setHasBeenInvolvedIn] = useState(false);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [notSufficient, setNotSufficient] = useState(false);
@@ -67,7 +67,7 @@ const PredictionJoin = () => {
 
     const join = async (multiplier: string) => {
         console.log(rewardAddress, guessPrice)
-        if (rewardAddress === '' || guessPrice === '') {
+        if (guessPrice === '') {
             return;
         }
         if (context.api && context.account) {
@@ -151,9 +151,9 @@ const PredictionJoin = () => {
                                 <Form.Item label={priceLabel + predictionInfo?.deviation + ")"}>
                                     <Input prefix="$" value={guessPrice} onChange={e => setGuessPrice(e.target.value)}/>
                                 </Form.Item>
-                                <Form.Item label={"BSC " + t("Address")}>
-                                    <Input value={rewardAddress} onChange={e => setRewardAddress(e.target.value)}/>
-                                </Form.Item>
+                                {/*<Form.Item label={"BSC " + t("Address")}>*/}
+                                {/*    <Input value={rewardAddress} onChange={e => setRewardAddress(e.target.value)}/>*/}
+                                {/*</Form.Item>*/}
                             </Form>
                             <div>
                                 <Countdown>
@@ -163,6 +163,10 @@ const PredictionJoin = () => {
                                     }
                                     {
                                         timeDiff.hour > 0 ?  <p>{timeDiff.hour} Hours Left</p> : ""
+                                    }
+                                    {
+                                        timeDiff.day === 0 && timeDiff.hour ===0 &&
+                                        timeDiff.minute > 0 ?  <p>{timeDiff.minute} Minute Left</p> : ""
                                     }
                                 </Countdown>
                             </div>

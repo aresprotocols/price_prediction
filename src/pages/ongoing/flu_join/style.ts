@@ -67,7 +67,7 @@ export const JoinContent = styled.div`
         }
     }
     .joinMoney {
-        padding: 20px 0;
+        padding: 50px 0;
         display: flex;
         column-gap: 20px;
         justify-content: center;

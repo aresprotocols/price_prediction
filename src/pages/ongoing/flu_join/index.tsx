@@ -22,7 +22,7 @@ const FluctuationsJoin = () => {
     const [time, setTime] = useState("");
     const [timeDiff, setTimDiff] = useState<timeDiffRes>({day:0, hour: 0, minute: 0});
     const [selectRangeIndex, setSelectRangeIndex] = useState<string | number>();
-    const [rewardAddress, setRewardAddress] = useState<string>();
+    const [rewardAddress, setRewardAddress] = useState(null);
     const [hasBeenInvolvedIn, setHasBeenInvolvedIn] = useState(false);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [notSufficient, setNotSufficient] = useState(false);
@@ -176,11 +176,11 @@ const FluctuationsJoin = () => {
                         </div>
                         <div className="joinForm">
                             <div>
-                                <Form layout="vertical">
-                                    <Form.Item label={"BSC " + t("Address")}>
-                                        <Input value={rewardAddress} onChange={e => setRewardAddress(e.target.value)}/>
-                                    </Form.Item>
-                                </Form>
+                                {/*<Form layout="vertical">*/}
+                                {/*    <Form.Item label={"BSC " + t("Address")}>*/}
+                                {/*        <Input value={rewardAddress} onChange={e => setRewardAddress(e.target.value)}/>*/}
+                                {/*    </Form.Item>*/}
+                                {/*</Form>*/}
                                 <div className="joinMoney">
                                     {bottomButton}
                                 </div>

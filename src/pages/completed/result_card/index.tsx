@@ -46,7 +46,7 @@ const ResultCard = ({type, okCallBack, winnerCallback, prediction}: ResultCardPr
         if (context.api && prediction) {
             const winner = await context.api.query.estimates.winners(prediction.symbol, prediction.id);
             const winners = winner.toHuman() as [];
-            setWinnerNum(winners.length);
+            setWinnerNum(winners ? winners.length : 0);
         }
     }
 

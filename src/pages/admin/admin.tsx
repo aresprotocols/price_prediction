@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import {Button, Form, Input, InputNumber, message, Modal, Select, Tag} from "antd";
-import {ApiContext} from "App";
+import {ApiContext, Prediction} from "App";
 import { PlusOutlined } from '@ant-design/icons';
 import {Fragment, useContext, useEffect, useRef, useState} from "react";
 import BigNumber from "bignumber.js";
@@ -8,6 +8,7 @@ import {Keyring} from "@polkadot/api";
 import {web3FromAddress} from "@polkadot/extension-dapp";
 import {Router, useNavigate} from "react-router";
 import {Outlet} from "react-router-dom";
+import {getReward} from "../../utils/token";
 
 const Admin = () => {
     const navigator = useNavigate();
@@ -18,6 +19,8 @@ const Admin = () => {
     const [multipliers, setMultipliers] = useState<any>([]);
     const [estimatesType, setEstimatesType] = useState("DEVIATION");
     const [modalVisible, setModalVisible,] = useState(false);
+    const [devPredictions, setDevPredictions] = useState<Prediction[]>();
+    const [rangePredictions, setRangePredictions] = useState<Prediction[]>();
     const keyring = new Keyring({ type: 'sr25519' });
 
     // eslint-disable-next-line
@@ -48,6 +51,7 @@ const Admin = () => {
                             console.log(`newEstimates Transaction included at blockHash ${status.asInBlock}`);
                         } else if (status.isFinalized) {
                             console.log(`newEstimates Transaction finalized at blockHash ${status.asFinalized}`);
+                            getOngoingPredictions();
                             unsub();
                         }
                     });
@@ -61,8 +65,22 @@ const Admin = () => {
         setTimeout(() => {
             // addAdmin();
         }, 1000 * 3);
+        getOngoingPredictions();
 
-    }, []);
+    }, [context]);
+
+    const getOngoingPredictions = async () => {
+        if (context.api) {
+            const res = await context.api.query.estimates.activeEstimates.entries();
+            const pres: Prediction[] = [];
+            res.forEach(([_, value]) => {
+                pres.push(value.toHuman() as unknown as Prediction);
+            });
+            console.log("pres", pres);
+            setDevPredictions(pres.filter(item => item.estimatesType === "DEVIATION"));
+            setRangePredictions(pres.filter(item => item.estimatesType === "RANGE"));
+        }
+    }
 
 
     const addAdmin = async () => {
@@ -111,6 +129,11 @@ const Admin = () => {
 
 
     const createPrediction = (val: any) => {
+        const flag = checkSymbolOngoing(val.symbol, estimatesType);
+        if (flag) {
+            message.error("Symbol is ongoing");
+            return;
+        }
         if (estimatesType === "RANGE") {
             val.range = val.range.split("|");
             val.range = val.range.map((item: string) => {
@@ -127,6 +150,22 @@ const Admin = () => {
         console.log("createPrediction", val);
 
         create(val.symbol, val.start, val.end, val.distribute, estimatesType, val.deviation, val.range, val.participatePrice, mul, val.initReward, val.fraction);
+    }
+
+    const checkSymbolOngoing = (symbol: string, type: string) => {
+        if (type === "RANGE") {
+            if (rangePredictions) {
+                return rangePredictions.filter(item => item.symbol === symbol).length > 0;
+            }
+            return false;
+        }
+
+        if (type === "DEVIATION") {
+            if (devPredictions) {
+                return devPredictions.filter(item => item.symbol === symbol).length > 0;
+            }
+            return false;
+        }
     }
 
     const layout = {

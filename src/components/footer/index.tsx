@@ -82,7 +82,7 @@ const  Footer = () => {
                 </FooterItem>
             </FooterContainer>
             <Copyright className="copyright">
-                <p className="text-white">{t("copyright")}</p>
+                <p>{t("copyright")}</p>
             </Copyright>
         </FooterWrapper>
     );

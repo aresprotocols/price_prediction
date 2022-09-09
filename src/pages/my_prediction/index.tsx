@@ -7,6 +7,8 @@ import ContentHeader from "components/content_header";
 import {ApiContext, Participant, Prediction} from "App";
 import CoinCard from "components/coin_card";
 import {predictionSort} from "utils/prediction-sort";
+import {formatHumanNumber} from "../../utils/format";
+import {useNavigate} from "react-router";
 
 
 interface SymbolAndID {
@@ -16,6 +18,7 @@ interface SymbolAndID {
 
 const MyPrediction = () => {
     const context = useContext(ApiContext);
+    const navigate = useNavigate();
     const {t} = useTranslation(["common"]);
     const [participantsSymbolAndID, setParticipantsSymbolAndID] = useState<SymbolAndID[]>();
     const [participantsOngoing, setParticipantsOngoing] = useState<Prediction[]>([]);
@@ -203,10 +206,13 @@ const MyPrediction = () => {
                         }).map((item, index) => {
                             return <CoinCard key={index}
                                              title={item.symbol} type={`${item.state === "Completed" ? "WINNER" : "JOINED"}`}
-                                             total={item.totalReward}
+                                             total={formatHumanNumber(item.totalReward)}
                                              endBlock={Number.parseInt(item.end.replaceAll(",", ""))}
                                              live={true} icon={item.estimatesType === "RANGE"}
-                                             callBack={() => {}} price="0"/>
+                                             prediction={item}
+                                             callBack={(prediction: any) => {
+                                                 navigate("/completed/winner/" + prediction.symbol + "/" + prediction.id);
+                                             }} price="0"/>
                         })
                     }
                 </div>
