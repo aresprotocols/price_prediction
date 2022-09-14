@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import {Button, Form, Input, InputNumber, message, Modal, Select, Tag} from "antd";
-import {ApiContext, Prediction} from "App";
+import {ApiContext, Prediction} from "../../App";
 import { PlusOutlined } from '@ant-design/icons';
 import {Fragment, useContext, useEffect, useRef, useState} from "react";
 import BigNumber from "bignumber.js";

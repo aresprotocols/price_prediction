@@ -1,4 +1,5 @@
-import {Prediction} from "App";
+import {Prediction} from "../App";
+
 
 export const predictionSort = (sortBy: string, predictions: Prediction[]): Prediction[] => {
     const newPre = new Array<Prediction>();

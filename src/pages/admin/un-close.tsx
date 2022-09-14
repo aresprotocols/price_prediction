@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from "react";
-import {ApiContext, Prediction} from "App";
+import {ApiContext, Prediction} from "../../App";
 import {Button, Form, Input, message, Modal, Spin, Table} from "antd";
 import BigNumber from "bignumber.js";
 
@@ -129,7 +129,8 @@ const UnClosePrediction = () => {
 
         const api = context.api;
         if (api && context.account) {
-            const unsub = await api.tx.estimates.forceComplete(currentPrediction?.symbol, price, fraction)
+            const unsub = await api.tx.estimates.forceComplete(currentPrediction?.symbol,
+                currentPrediction?.estimatesType, price, fraction)
                 .signAndSend(context.account.address, ({ status, dispatchError }) => {
                     if (dispatchError) {
                         if (dispatchError.isModule) {

@@ -7,16 +7,16 @@ import { CaretDownOutlined, MenuOutlined, } from '@ant-design/icons';
 import {InjectedAccountWithMeta} from "@polkadot/extension-inject/types";
 
 import {HeaderWrapper, LanguageMenuWrapper, MenuButton, PhoneMenu} from "./style";
-import myPrediction from "assets/images/myprediction.svg"
-import fluctuations from "assets/images/fluctuations.svg"
-import user from "assets/images/user.svg"
-import prediction from "assets/images/prediction.svg"
-import rules from "assets/images/rules.svg"
-import testCoin from "assets/images/testcoin.svg"
-import {ApiContext} from "App";
-import {hideMiddle} from "utils/format";
-import InstallPolkadotGuide from "components/install_polkadot";
+import myPrediction from "../../assets/images/myprediction.svg"
+import fluctuations from "../../assets/images/fluctuations.svg"
+import user from "../../assets/images/user.svg"
+import prediction from "../../assets/images/prediction.svg"
+import rules from "../../assets/images/rules.svg"
+import testCoin from "../../assets/images/testcoin.svg"
 import BigNumber from "bignumber.js";
+import {ApiContext} from "../../App";
+import InstallPolkadotGuide from "../install_polkadot";
+import {hideMiddle} from "../../utils/format";
 
 const { SubMenu } = Menu;
 

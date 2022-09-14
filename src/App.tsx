@@ -4,30 +4,30 @@ import {ApiPromise, WsProvider} from "@polkadot/api";
 import {web3FromAddress} from "@polkadot/extension-dapp";
 import {InjectedAccountWithMeta} from "@polkadot/extension-inject/types";
 
-import "i18n"
+import "./i18n"
 import './App.css';
-import Header from "components/header";
-import Footer from "components/footer";
-import Join from "pages/Join";
-import Home from "pages/home";
-import Ongoing from "pages/ongoing";
-import Completed from "pages/completed";
-import PredictionJoin from "pages/ongoing/pre_join";
-import Winner from "pages/completed/winner";
-import Rules from "components/rules";
-import ReceiveTestCoins from "pages/home/receive_coins";
-import OwnerTestCoin from "pages/home/owner";
-import GoingPrediction from "pages/ongoing/prediction";
-import Fluctuations from "pages/ongoing/fluctuations";
-import FluctuationsJoin from "pages/ongoing/flu_join";
-import CompletedPrediction from "pages/completed/prediction";
-import CompletedFluctuations from "pages/completed/fluctuations";
-import UpcomingPrediction from "pages/upcoming/prediction";
-import UpcomingFluctuations from "pages/upcoming/fluctuations";
-import Upcoming from "pages/upcoming";
-import def from "config/ares-gladios"
-import Admin from "pages/admin/admin";
-import Login from "pages/admin/login";
+import Header from "./components/header";
+import Footer from "./components/footer";
+import Join from "./pages/Join";
+import Home from "./pages/home";
+import Ongoing from "./pages/ongoing";
+import Completed from "./pages/completed";
+import PredictionJoin from "./pages/ongoing/pre_join";
+import Winner from "./pages/completed/winner";
+import Rules from "./components/rules";
+import ReceiveTestCoins from "./pages/home/receive_coins";
+import OwnerTestCoin from "./pages/home/owner";
+import GoingPrediction from "./pages/ongoing/prediction";
+import Fluctuations from "./pages/ongoing/fluctuations";
+import FluctuationsJoin from "./pages/ongoing/flu_join";
+import CompletedPrediction from "./pages/completed/prediction";
+import CompletedFluctuations from "./pages/completed/fluctuations";
+import UpcomingPrediction from "./pages/upcoming/prediction";
+import UpcomingFluctuations from "./pages/upcoming/fluctuations";
+import Upcoming from "./pages/upcoming";
+import def from "./config/ares-gladios"
+import Admin from "./pages/admin/admin";
+import Login from "./pages/admin/login";
 import UnClosePrediction from "./pages/admin/un-close";
 
 
@@ -129,7 +129,7 @@ function App() {
                 <Route path="completed" element={<Completed />}>
                   <Route path="prediction" element={<CompletedPrediction />}/>
                   <Route path="fluctuations" element={<CompletedFluctuations />}/>
-                  <Route path="winner/:symbol/:id" element={<Winner />}/>
+                  <Route path="winner/:symbol/:id/:type" element={<Winner />}/>
                 </Route>
                 <Route path="upcoming" element={<Upcoming />}>
                   <Route path="prediction" element={<UpcomingPrediction />}/>
@@ -154,7 +154,6 @@ function App() {
 }
 
 export default App;
-
 
 
 const RequireAuth = (props: PropsWithChildren<any>) => {

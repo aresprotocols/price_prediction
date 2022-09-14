@@ -1,12 +1,12 @@
 import {CSSProperties, Fragment, ReactNode, useContext, useEffect, useState} from "react";
-import aresWards from "assets/images/aresrewards.svg"
-import timeImg from "assets/images/time.svg"
+import aresWards from "../../assets/images/aresrewards.svg"
+import timeImg from "../../assets/images/time.svg"
 import {Button} from "antd";
 import {CoinCardWrapper, CoinCardContent, CoinCardPrice, CoinCardARES, } from "./style"
 import {useTranslation} from "react-i18next";
-import {ApiContext, Prediction} from "App";
-import {clacStartTime, timeDiffRes} from "utils/format";
-import {getSymbolPrice} from "utils/symbol-price";
+import {ApiContext, Prediction} from "../../App";
+import {clacStartTime, timeDiffRes} from "../../utils/format";
+import {getSymbolPrice} from "../../utils/symbol-price";
 
 
 export enum CoinCardType {

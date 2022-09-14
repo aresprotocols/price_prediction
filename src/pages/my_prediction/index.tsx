@@ -3,12 +3,12 @@ import {useTranslation} from "react-i18next";
 import styled from "styled-components";
 import {Button, Radio, Spin} from "antd";
 
-import ContentHeader from "components/content_header";
-import {ApiContext, Participant, Prediction} from "App";
-import CoinCard from "components/coin_card";
-import {predictionSort} from "utils/prediction-sort";
 import {formatHumanNumber} from "../../utils/format";
 import {useNavigate} from "react-router";
+import {ApiContext, Participant, Prediction} from "../../App";
+import {predictionSort} from "../../utils/prediction-sort";
+import ContentHeader from "../../components/content_header";
+import CoinCard from "../../components/coin_card";
 
 
 interface SymbolAndID {
@@ -211,7 +211,8 @@ const MyPrediction = () => {
                                              live={true} icon={item.estimatesType === "RANGE"}
                                              prediction={item}
                                              callBack={(prediction: any) => {
-                                                 navigate("/completed/winner/" + prediction.symbol + "/" + prediction.id);
+                                                 navigate("/completed/winner/" + prediction.symbol
+                                                     + "/" + prediction.id + "/" + prediction.estimatesType);
                                              }} price="0"/>
                         })
                     }

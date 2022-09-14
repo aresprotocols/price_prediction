@@ -16,9 +16,11 @@ const HeaderSearch = ({onSort, onSearch, placeholder, noSort}: searchProps) => {
         <HeaderSearchWrapper>
             {
                 !noSort ? <Select defaultValue="startTime" style={{ width: 150 }}
-                                  suffixIcon={<div style={{lineHeight: "0"}}>
-                                      <CaretUpOutlined />
-                                      <CaretDownOutlined />
+                                  suffixIcon={<div style={{lineHeight: "0", height: "100%"}}>
+                                      <div>
+                                          <CaretUpOutlined />
+                                      </div>
+                                      <div><CaretDownOutlined /></div>
                                   </div>}
                                   onChange={val => onSort(val)}>
                     <Select.Option value="startTime">{t("START TIME")}</Select.Option>

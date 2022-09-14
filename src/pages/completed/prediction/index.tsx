@@ -4,12 +4,12 @@ import {useNavigate} from "react-router";
 import {LeftOutlined, RightOutlined} from "@ant-design/icons";
 import {Carousel, Spin} from "antd";
 
-import CoinCard from "components/coin_card";
 import ResultCard from "../result_card";
-import {ApiContext, Prediction} from "App";
-import {predictionSort} from "utils/prediction-sort";
-import ContentHeader from "components/content_header";
 import {formatHumanNumber} from "../../../utils/format";
+import {ApiContext, Prediction} from "../../../App";
+import {predictionSort} from "../../../utils/prediction-sort";
+import CoinCard from "../../../components/coin_card";
+import ContentHeader from "../../../components/content_header";
 
 
 const CompletedPrediction = () => {
@@ -31,7 +31,7 @@ const CompletedPrediction = () => {
     }
 
     const toWinner = (symbol: string, id: string) => {
-        navigate("/completed/winner/" + symbol + "/" + id);
+        navigate("/completed/winner/" + symbol + "/" + id + "/DEVIATION");
     }
 
     const getCompletedPredict = async () => {

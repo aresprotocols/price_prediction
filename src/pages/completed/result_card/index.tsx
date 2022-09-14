@@ -2,9 +2,9 @@ import {ResultCardWrapper, ContentCard, Content} from "./style";
 import {Button, Space} from "antd";
 import {useTranslation} from "react-i18next";
 import {Fragment, useContext, useEffect, useState} from "react";
-import {ApiContext, Prediction} from "App";
-import {clacStartTime} from "utils/format";
-import userImg from "assets/images/userB.svg";
+import {ApiContext, Prediction} from "../../../App";
+import {clacStartTime} from "../../../utils/format";
+import userImg from "../../../assets/images/userB.svg";
 
 interface ResultCardProps {
     type: "Prediction" | "Fluctuations"
@@ -44,7 +44,7 @@ const ResultCard = ({type, okCallBack, winnerCallback, prediction}: ResultCardPr
 
     const queryWinner = async () => {
         if (context.api && prediction) {
-            const winner = await context.api.query.estimates.winners(prediction.symbol, prediction.id);
+            const winner = await context.api.query.estimates.winners([prediction.symbol, "RANGE"], prediction.id);
             const winners = winner.toHuman() as [];
             setWinnerNum(winners ? winners.length : 0);
         }

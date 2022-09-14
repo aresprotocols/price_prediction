@@ -1,6 +1,6 @@
 import {useTranslation} from "react-i18next";
 
-import Message, {MessageType} from "components/message";
+import Message, {MessageType} from "../../components/message";
 import { HomeWrapper, HomeContent } from "./style";
 
 

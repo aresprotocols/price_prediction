@@ -2,7 +2,7 @@ import {useState} from "react";
 import styled from "styled-components";
 import {Modal} from "antd";
 
-import polkadotImg from "assets/images/polkadot.png";
+import polkadotImg from "../../assets/images/polkadot.png";
 
 const InstallPolkadotGuide = (props: any) => {
     const [visible, setVisible] = useState(props.isShow);

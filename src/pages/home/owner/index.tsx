@@ -4,7 +4,7 @@ import {useTranslation} from "react-i18next";
 import BigNumber from "bignumber.js";
 import {useNavigate} from "react-router";
 
-import {ApiContext} from "App";
+import {ApiContext} from "../../../App";
 import {useContext, useEffect, useState} from "react";
 
 const OwnerTestCoin = () => {

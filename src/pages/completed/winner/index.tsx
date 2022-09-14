@@ -4,11 +4,11 @@ import styled from "styled-components";
 import {useTranslation} from "react-i18next";
 import { Table } from "antd";
 
-import {ApiContext, Participant} from "App";
-import firstPlace from "assets/images/first_place.png";
-import secondPlace from "assets/images/second_place.png";
-import thirdPlace from "assets/images/third_place.png";
-import ContentHeader from "components/content_header";
+import {ApiContext, Participant} from "../../../App";
+import firstPlace from "../../../assets/images/first_place.png";
+import secondPlace from "../../../assets/images/second_place.png";
+import thirdPlace from "../../../assets/images/third_place.png";
+import ContentHeader from "../../../components/content_header";
 
 
 interface winner extends  Participant{}
@@ -62,7 +62,7 @@ const Winner = () => {
 
     const getWinner = async() => {
         if (context.api) {
-            const res = await context.api.query.estimates.winners(params.symbol, params.id);
+            const res = await context.api.query.estimates.winners([params.symbol, params.type], params.id);
             console.log("winner res", res.toHuman());
             setWinners(res.toHuman() as unknown as winner[]);
             setShowWinner(res.toHuman() as unknown as winner[]);

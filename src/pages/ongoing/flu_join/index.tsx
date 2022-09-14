@@ -4,13 +4,13 @@ import {useTranslation} from "react-i18next";
 import {Button, Form, Input, message, Radio, Spin} from "antd";
 
 import {Countdown, GoJoinWrapper, JoinContent, Price} from "./style";
-import timeLogo from "assets/images/time.svg";
-import {ApiContext, Prediction} from "App";
-import {clacStartTime, timeDiffRes} from "utils/format";
-import {getSymbolPrice} from "utils/symbol-price";
+import timeLogo from "../../../assets/images/time.svg";
 import Joined from "../pre_joined";
-import ContentHeader from "components/content_header";
 import BigNumber from "bignumber.js";
+import {ApiContext, Prediction} from "../../../App";
+import {clacStartTime, timeDiffRes} from "../../../utils/format";
+import {getSymbolPrice} from "../../../utils/symbol-price";
+import ContentHeader from "../../../components/content_header";
 
 const FluctuationsJoin = () => {
     const { t } = useTranslation(['common']);
@@ -54,7 +54,7 @@ const FluctuationsJoin = () => {
 
     const getFluctuationsInfo = async () => {
         if (context.api) {
-            const res = await context.api.query.estimates.activeEstimates(params.symbol);
+            const res = await context.api.query.estimates.activeEstimates([params.symbol, "RANGE"]);
             const predictionInfo = res.toHuman() as unknown as Prediction;
 
             if (predictionInfo.range) {
@@ -73,7 +73,7 @@ const FluctuationsJoin = () => {
         if (context.api && context.account) {
             setIsShowSpin(true);
             const api = context.api;
-            const unsub = await api.tx.estimates.participateEstimates(params.symbol, null, null, selectRangeIndex, multiplier, rewardAddress)
+            const unsub = await api.tx.estimates.participateEstimates(params.symbol, "RANGE", null, null, selectRangeIndex, multiplier, rewardAddress)
                 .signAndSend(context.account.address, ({ status, dispatchError }) => {
                     if (dispatchError) {
                         if (dispatchError.isModule) {
@@ -83,6 +83,9 @@ const FluctuationsJoin = () => {
                             console.log(`${section}.${name}: ${docs.join(' ')}`);
                             if (name === "AccountEstimatesExist") {
                                 setHasBeenInvolvedIn(true);
+                            }
+                            if (name === "FreeBalanceTooLow") {
+                                setNotSufficient(true);
                             }
                         }
                         setIsShowSpin(false);
@@ -108,7 +111,7 @@ const FluctuationsJoin = () => {
     const bottomButton = (
         <Fragment>
             {
-                predictionInfo && predictionInfo.multiplier?.map((item, index) => {
+                predictionInfo && predictionInfo.multiplier?.map((item: any, index: number) => {
                     return <Button className={"btn"} onClick={() => join(item)} key={index}>
                         {t("Fee")}&nbsp;
                         {Number.parseInt(predictionInfo?.ticketPrice ?? "") * item["Base"]}

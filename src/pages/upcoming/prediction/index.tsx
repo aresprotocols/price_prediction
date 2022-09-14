@@ -1,13 +1,13 @@
 import {Fragment, useContext, useEffect, useState} from "react";
-import styled from "styled-components";
 import {LeftOutlined, RightOutlined} from "@ant-design/icons";
 import {Carousel, Spin} from "antd";
 
-import CoinCard from "components/coin_card";
-import {ApiContext, Prediction} from "App";
-import {predictionSort} from "utils/prediction-sort";
-import ContentHeader from "components/content_header";
 import {formatHumanNumber} from "../../../utils/format";
+import {ApiContext, Prediction} from "../../../App";
+import CoinCard from "../../../components/coin_card";
+import {predictionSort} from "../../../utils/prediction-sort";
+import ContentHeader from "../../../components/content_header";
+import styled from "styled-components";
 
 
 const UpcomingPrediction = () => {

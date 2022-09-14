@@ -4,13 +4,13 @@ import {useTranslation} from "react-i18next";
 import {Button, Form, Input, message, Spin} from "antd";
 
 import {GoJoinWrapper, JoinContent, Price, Countdown} from "./style";
-import timeLogo from "assets/images/time.svg";
+import timeLogo from "../../../assets/images/time.svg";
 import Joined from "../pre_joined";
-import {ApiContext, Prediction} from "App";
-import {clacStartTime,timeDiffRes} from "utils/format";
-import {getSymbolPrice} from "utils/symbol-price";
-import ContentHeader from "components/content_header";
 import BigNumber from "bignumber.js";
+import {ApiContext, Prediction} from "../../../App";
+import {clacStartTime, timeDiffRes} from "../../../utils/format";
+import {getSymbolPrice} from "../../../utils/symbol-price";
+import ContentHeader from "../../../components/content_header";
 
 const PredictionJoin = () => {
     const context = useContext(ApiContext);
@@ -31,6 +31,7 @@ const PredictionJoin = () => {
 
     useEffect(() => {
         getPredictionInfo()
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [context]);
 
@@ -55,13 +56,17 @@ const PredictionJoin = () => {
 
     const getPredictionInfo = async () => {
         if (context.api) {
-            const res = await context.api.query.estimates.activeEstimates(params.symbol);
-            const pre = res.toHuman() as unknown as Prediction;
-            pre.ticketPrice =
-                new BigNumber(pre.ticketPrice.replaceAll(",", "")).shiftedBy(-12).toString();
-            setPredictionInfo(pre);
-            console.log("pre", pre);
-            console.log("pre", pre.id);
+            try {
+                const res = await context.api.query.estimates.activeEstimates([params.symbol, "DEVIATION"]);
+                const pre = res.toHuman() as unknown as Prediction;
+                pre.ticketPrice =
+                    new BigNumber(pre.ticketPrice.replaceAll(",", "")).shiftedBy(-12).toString();
+                setPredictionInfo(pre);
+                console.log("pre", pre);
+                console.log("pre", pre.id);
+            } catch (e) {
+                console.log(e);
+            }
         }
     }
 
@@ -81,7 +86,7 @@ const PredictionJoin = () => {
             const price = Math.floor(Number(guessPrice) * Math.pow(10, fraction));
 
             console.log("join multiplier", multiplier, price, fraction);
-            const unsub = await api.tx.estimates.participateEstimates(params.symbol, price, fraction, null, multiplier, rewardAddress)
+            const unsub = await api.tx.estimates.participateEstimates(params.symbol, "DEVIATION", price, fraction, null, multiplier, rewardAddress)
                 .signAndSend(context.account.address, ({ status, dispatchError }) => {
                     if (dispatchError) {
                         if (dispatchError.isModule) {
@@ -92,6 +97,10 @@ const PredictionJoin = () => {
                             message.error(`${name}`);
                             if (name === "AccountEstimatesExist") {
                                 setHasBeenInvolvedIn(true);
+                            }
+
+                            if (name === "FreeBalanceTooLow") {
+                                setNotSufficient(true);
                             }
                         }
                         console.log(`${dispatchError}`);
@@ -173,7 +182,7 @@ const PredictionJoin = () => {
                         </div>
                         <div className="joinMoney">
                             {
-                                predictionInfo && predictionInfo.multiplier?.map((item, index) => {
+                                predictionInfo && predictionInfo.multiplier?.map((item: any, index: number) => {
                                     return <Button className={"btn"} onClick={() => join(item)} key={index}>
                                         {t("Fee")}&nbsp;
                                         {Number.parseInt(predictionInfo?.ticketPrice ?? "") * item["Base"]}

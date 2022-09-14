@@ -1,4 +1,4 @@
-import {OverrideBundleDefinition} from "@polkadot/api-base/node_modules/@polkadot/types/types/registry";
+import {OverrideBundleDefinition} from "@polkadot/types/types";
 
 const definitions: OverrideBundleDefinition = {
     types: [

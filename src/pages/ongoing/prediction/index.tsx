@@ -4,11 +4,11 @@ import {LeftOutlined, RightOutlined} from '@ant-design/icons';
 import {Carousel, Spin} from "antd";
 import {useNavigate} from "react-router";
 
-import CoinCard from "components/coin_card";
-import {ApiContext, Prediction} from "App";
-import ContentHeader from "components/content_header";
-import {predictionSort} from "utils/prediction-sort";
 import {getReward} from "../../../utils/token";
+import {ApiContext, Prediction} from "../../../App";
+import ContentHeader from "../../../components/content_header";
+import CoinCard from "../../../components/coin_card";
+import {predictionSort} from "../../../utils/prediction-sort";
 
 const GoingPrediction = () => {
     const navigate = useNavigate();

@@ -1,18 +1,20 @@
 import styled from "styled-components";
 import {Button, Form, Input} from "antd";
 import {useNavigate} from "react-router";
-const crypto = require('crypto');
+// const crypto = require('crypto');
 
 
 const Login = () => {
     const navigate = useNavigate();
     const login = (values: any) => {
-        crypto.createHash('md5');
-        let hash = crypto.createHash('md5');
-        const pw = hash.update(values.password).digest('base64');
+        // crypto.createHash('md5');
+        // let hash = crypto.createHash('md5');
+        // const pw = hash.update(values.password).digest('base64');
 
-        // PTcMNsZ0M3VCsHoAQ8qtVw== PricePrediction
-        if (values.username === "admin" && pw === "ccxAyCTa1lHi895IeYJ+Mg==") {
+        const pw = window.btoa(values.password);
+
+        // UHJpY2VQcmVkaWN0aW9u PricePrediction
+        if (values.username === "admin" && pw === "UHJpY2VQcmVkaWN0aW9u") {
             localStorage.setItem("isLogin", String(true));
             navigate("/admin");
         }

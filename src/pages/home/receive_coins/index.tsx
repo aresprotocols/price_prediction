@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import {Button, Form, Input } from "antd";
 import {useTranslation} from "react-i18next";
-import Message, {MessageType} from "components/message";
+import Message, {MessageType} from "../../../components/message";
 import {useNavigate} from "react-router";
 
 const ReceiveTestCoins = () => {

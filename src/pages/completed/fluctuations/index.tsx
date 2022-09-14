@@ -4,12 +4,12 @@ import styled from "styled-components";
 import {LeftOutlined, RightOutlined} from "@ant-design/icons";
 import {Carousel, Spin} from "antd";
 
-import CoinCard from "components/coin_card";
 import ResultCard from "../result_card";
-import {ApiContext, Prediction} from "App";
-import ContentHeader from "components/content_header";
-import {predictionSort} from "utils/prediction-sort";
 import {formatHumanNumber} from "../../../utils/format";
+import {ApiContext, Prediction} from "../../../App";
+import {predictionSort} from "../../../utils/prediction-sort";
+import CoinCard from "../../../components/coin_card";
+import ContentHeader from "../../../components/content_header";
 
 
 const CompletedFluctuations = () => {
@@ -31,7 +31,7 @@ const CompletedFluctuations = () => {
     }
 
     const toWinner = (symbol: string, id: string) => {
-        navigate("/completed/winner/" + symbol + "/" + id)
+        navigate("/completed/winner/" + symbol + "/" + id + "/RANGE");
     }
 
     const getCompletedPredict = async () => {
