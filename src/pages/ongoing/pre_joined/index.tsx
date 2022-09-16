@@ -25,7 +25,7 @@ const Joined = (props: any) => {
 
     const getReward = async () => {
         if (context.api) {
-            const address = getSubAccount(props.title);
+            const address = getSubAccount(props.title, 1);
             console.log("get reward for ", address, props.title);
             const result = await context.api.query.system.account(address);
             // @ts-ignore

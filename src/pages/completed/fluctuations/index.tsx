@@ -10,6 +10,7 @@ import {ApiContext, Prediction} from "../../../App";
 import {predictionSort} from "../../../utils/prediction-sort";
 import CoinCard from "../../../components/coin_card";
 import ContentHeader from "../../../components/content_header";
+import {getCompletedReward} from "../../../utils/token";
 
 
 const CompletedFluctuations = () => {
@@ -42,7 +43,9 @@ const CompletedFluctuations = () => {
             res.forEach(([args, value]) => {
                 pres = pres.concat(value.toHuman() as unknown as Prediction);
             });
-            setCompletedPredictions(pres.filter(item => item.estimatesType === "RANGE"));
+            getCompletedReward(context.api, pres.filter(item => item.estimatesType === "RANGE")).then(res => {
+                setCompletedPredictions(res);
+            });
             setIsShowSpin(false);
         }
     };
@@ -68,7 +71,7 @@ const CompletedFluctuations = () => {
         return item;
     }).map((item, index) => {
         return <CoinCard key={item.symbol.concat(item.id.toString()) + index} title={item.symbol}
-                         type="WINNER" price="580" total={formatHumanNumber(item.totalReward)}
+                         type="WINNER" price="580" total={item.totalReward}
                          prediction={item}
                          endBlock={Number.parseInt(item.end.replaceAll(",", ""))}
                          live={true} icon={true} callBack={toResult}/>

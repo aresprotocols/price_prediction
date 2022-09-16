@@ -157,18 +157,18 @@ const FluctuationsJoin = () => {
                                     {predictionInfo?.range ? predictionInfo.range[0] : "0"}
                                 </Radio>
                                 <Radio value={1}>
+                                    {predictionInfo?.range ? predictionInfo.range[0] : "0"}
+                                    &nbsp;&lt;&nbsp;
+                                    {predictionInfo?.symbol.split("-")[0]}
+                                    &nbsp;&le;&nbsp;
+                                    {predictionInfo?.range ? predictionInfo.range[1] : "0"}
+                                </Radio>
+                                <Radio value={2}>
                                     {predictionInfo?.range ? predictionInfo.range[1] : "0"}
                                     &nbsp;&lt;&nbsp;
                                     {predictionInfo?.symbol.split("-")[0]}
                                     &nbsp;&le;&nbsp;
                                     {predictionInfo?.range ? predictionInfo.range[2] : "0"}
-                                </Radio>
-                                <Radio value={2}>
-                                    {predictionInfo?.range ? predictionInfo.range[2] : "0"}
-                                    &nbsp;&lt;&nbsp;
-                                    {predictionInfo?.symbol.split("-")[0]}
-                                    &nbsp;&le;&nbsp;
-                                    {predictionInfo?.range ? predictionInfo.range[3] : "0"}
                                 </Radio>
                                 <Radio value={3}>
                                     {predictionInfo?.symbol.split("-")[0]}

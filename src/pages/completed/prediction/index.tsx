@@ -10,6 +10,7 @@ import {ApiContext, Prediction} from "../../../App";
 import {predictionSort} from "../../../utils/prediction-sort";
 import CoinCard from "../../../components/coin_card";
 import ContentHeader from "../../../components/content_header";
+import {getCompletedReward} from "../../../utils/token";
 
 
 const CompletedPrediction = () => {
@@ -42,7 +43,9 @@ const CompletedPrediction = () => {
             res.forEach(([args, value]) => {
                 pres = pres.concat(value.toHuman() as unknown as Prediction);
             });
-            setCompletedPrediction(pres.filter(item => item.estimatesType === "DEVIATION"));
+            getCompletedReward(context.api, pres.filter(item => item.estimatesType === "DEVIATION")).then(res => {
+                setCompletedPrediction(res);
+            });
             setIsShowSpin(false);
             console.log("completed prediction", pres);
         }
@@ -52,6 +55,7 @@ const CompletedPrediction = () => {
     useEffect(() => {
         getCompletedPredict();
         // eslint-disable-next-line react-hooks/exhaustive-deps
+
     },[context]);
 
     const onSort = (sortBy: string) => {
@@ -69,7 +73,7 @@ const CompletedPrediction = () => {
         return item;
     }).map((item, index) => {
         return <CoinCard key={item.symbol.concat(item.id.toString()) + index} title={item.symbol}
-                         type="WINNER" price="580" total={formatHumanNumber(item.totalReward)}
+                         type="WINNER" price="580" total={item.totalReward}
                          prediction={item}
                          endBlock={Number.parseInt(item.end.replaceAll(",", ""))}
                          live={true} icon={false} callBack={toResult}/>

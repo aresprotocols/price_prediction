@@ -2,9 +2,10 @@ import {encodeAddress} from "@polkadot/util-crypto";
 import {Prediction} from "../App";
 import BigNumber from "bignumber.js";
 import {u8aConcat } from '@polkadot/util';
+import {formatHumanNumber} from "./format";
 
 
-export const getSubAccount = (symbol: string): string => {
+export const getSubAccount = (symbol: string, type: number): string => {
     // why padding space
     // @ts-ignore
     // let prefix = new Uint8Array([...Buffer.from('modl'), ...Buffer.from('py/arest'), ...Buffer.from(' '), ...Buffer.from(symbol)])
@@ -19,6 +20,7 @@ export const getSubAccount = (symbol: string): string => {
         'modl',
         'py/arest',
         symbol,
+        [type],
         EMPTY_U8A_32
     ).subarray(0, 32)
     return encodeAddress(result, 34)
@@ -28,7 +30,7 @@ export const getSubAccount = (symbol: string): string => {
 export const getReward = async (pres: Prediction[], api: any) => {
     if (api && pres) {
         const result = await Promise.all(pres.map(async item => {
-            const address = getSubAccount(item.symbol);
+            const address = getSubAccount(item.symbol, item.estimatesType === "RANGE" ? 1 : 2);
             console.log("get reward for ", address, item.symbol);
             const result = await api.query.system.account(address);
             // @ts-ignore
@@ -42,6 +44,24 @@ export const getReward = async (pres: Prediction[], api: any) => {
         })).then(res => {
             return res;
         });
+        return result;
+    }
+}
+
+export const getCompletedReward = async (api: any, pres: Prediction[]) => {
+    if (api && pres) {
+        const result = await Promise.all(pres.map(async item => {
+            const result = await api.query.estimates.estimatesInitDeposit([item.symbol, item.estimatesType], item.id);
+            const res = formatHumanNumber(result.toHuman());
+            if (res) {
+                item.totalReward = res;
+            } else {
+                item.totalReward = "0";
+            }
+            return item;
+        })).then(res => {
+            return res;
+        })
         return result;
     }
 }
