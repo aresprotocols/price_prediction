@@ -74,7 +74,7 @@ function App() {
 
   const init = async () => {
     console.log("api init");
-    const provider = new WsProvider("wss://gladios.aresprotocol.io");
+    const provider = new WsProvider("wss://odyssey.aresprotocol.io");
     return await ApiPromise.create({
       provider,
       rpc: {
