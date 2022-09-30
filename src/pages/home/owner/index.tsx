@@ -19,7 +19,6 @@ const OwnerTestCoin = () => {
             // @ts-ignore
             let freeBalance = acct.data.free.toString();
             setBalance(new BigNumber(freeBalance).shiftedBy(-12).toFixed(4));
-
         }
     }
 
@@ -41,6 +40,19 @@ const OwnerTestCoin = () => {
                            navigate("/ongoing/prediction")
                        }}>
                            Play Now!
+                       </Button>
+                   </div>
+                   <div className="coin">
+                       <Button onClick={() => {
+                           navigate("/coin/consume")
+                       }}>
+                           coin consume
+                       </Button>
+
+                       <Button onClick={() => {
+                           navigate("/coin/award")
+                       }}>
+                           coin award
                        </Button>
                    </div>
                </Space>
@@ -89,6 +101,15 @@ const OwnerTestCoinWrapper = styled.div`
         border: 1px solid #2E4DD4;
         border-radius: 12px;
         color: #2E4DD4;
+    }
+    .coin {
+      display: flex;
+      column-gap: 10px;
+      button {
+        width: 11rem;
+        color: white;
+        background: #2E4DD4;
+      }
     }
     @media only screen and (max-width: 750px) {
         .title {

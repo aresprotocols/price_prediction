@@ -29,6 +29,8 @@ import def from "./config/ares-gladios"
 import Admin from "./pages/admin/admin";
 import Login from "./pages/admin/login";
 import UnClosePrediction from "./pages/admin/un-close";
+import Consume from "./pages/coin/consume";
+import Award from "./pages/coin/award";
 
 
 export interface ContextProps {
@@ -143,6 +145,8 @@ function App() {
                   <Route path="unclose" element={<UnClosePrediction />}/>
                 </Route>
                 <Route path="/admin/login" element={<Login />}/>
+                <Route path="/coin/consume" element={<Consume />}/>
+                <Route path="/coin/award" element={<Award />}/>
               </Routes>
             </div>
           </BrowserRouter>
