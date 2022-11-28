@@ -9,6 +9,7 @@ import firstPlace from "../../../assets/images/first_place.png";
 import secondPlace from "../../../assets/images/second_place.png";
 import thirdPlace from "../../../assets/images/third_place.png";
 import ContentHeader from "../../../components/content_header";
+import {formatHumanNumber} from "../../../utils/format";
 
 
 interface winner extends  Participant{}
@@ -54,9 +55,12 @@ const Winner = () => {
             }
         },
         {
-            title: t("Address"),
-            dataIndex: "bscAddress",
-            key: "bscAddress",
+            title: t("reward"),
+            dataIndex: "reward",
+            key: "reward",
+            render: (text: string) => {
+                return <span>{formatHumanNumber(text)}</span>
+            }
         }
     ]
 

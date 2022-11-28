@@ -6,7 +6,7 @@ import {Carousel, Spin} from "antd";
 
 import ResultCard from "../result_card";
 import {formatHumanNumber} from "../../../utils/format";
-import {ApiContext, Prediction} from "../../../App";
+import {ApiContext, network, Prediction} from "../../../App";
 import {predictionSort} from "../../../utils/prediction-sort";
 import CoinCard from "../../../components/coin_card";
 import ContentHeader from "../../../components/content_header";
@@ -20,7 +20,10 @@ const CompletedFluctuations = () => {
     const [selectPrediction, setSelectPrediction] = useState<Prediction>();
     const [winner, setWinner] = useState(false);
     const [searchName, setSearchName,] = useState<string>();
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPage, setTotalPage] = useState(1);
     const [isShowSpin, setIsShowSpin] = useState(false);
+    const [isLoadMore, setIsLoadMore] = useState(false);
 
     const toResult = (item: Prediction) => {
         setSelectPrediction(item);
@@ -50,9 +53,46 @@ const CompletedFluctuations = () => {
         }
     };
 
+    const loadMore = async () => {
+        console.log("loadMore");
+        const nextPage = currentPage + 1;
+        if (nextPage <= totalPage) {
+            setIsLoadMore(true);
+            setCurrentPage(nextPage);
+            await getCompletedPredicts(nextPage);
+            setIsLoadMore(false);
+        }
+    }
+
+    const getCompletedPredicts = (pageIndex = 1, pageSize=25) => {
+        fetch(`https://aresscan.aresprotocol.io/${network}/api/v1/estimate/list/range/completed?page[number]=${pageIndex}&page[size]=${pageSize}`)
+            .then(async res => {
+                const data = await res.json();
+                console.log("fetch completed res:", data);
+                if (data) {
+                    setTotalPage(Math.ceil(data.meta.total_count / pageSize));
+                    const pres = data.data.data.map((item: any) => {
+                        item.totalReward = formatHumanNumber(item.total_reward);
+                        item.estimatesType = item.estimates_type;
+                        item.id = item.estimate_id;
+                        item.symbolCompletedPrice = item.symbol_completed_price;
+                        return item;
+                    });
+                    if (pageIndex === 1) {
+                        setCompletedPredictions(pres as unknown as Prediction[]);
+                    } else {
+                        setCompletedPredictions(completedPredictions?.concat(pres) ?? []);
+                    }
+                }
+            }).catch(e => {
+            console.log("fetch completed data error", e);
+        })
+    }
+
 
     useEffect(() => {
-        getCompletedPredict();
+        // getCompletedPredict();
+        getCompletedPredicts();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     },[context]);
 
@@ -73,7 +113,7 @@ const CompletedFluctuations = () => {
         return <CoinCard key={item.symbol.concat(item.id.toString()) + index} title={item.symbol}
                          type="WINNER" price="580" total={item.totalReward}
                          prediction={item}
-                         endBlock={Number.parseInt(item.end.replaceAll(",", ""))}
+                         endBlock={Number.parseInt(item.end)}
                          live={true} icon={true} callBack={toResult}/>
     })
 
@@ -120,6 +160,14 @@ const CompletedFluctuations = () => {
                                 winnerCallback={toWinner}/>
                         </FluctuationsWrapper>
                 }
+                <LoadMore>
+                    {
+                        completedPredictions && !winner && totalPage > 1 &&
+                        (isLoadMore ? <div style={{width: "100%", textAlign: "center"}}>
+                            <Spin delay={100}/>
+                        </div> : (currentPage < totalPage? <span onClick={() => loadMore()}>点击加载下一页</span> : ""))
+                    }
+                </LoadMore>
             </div>
         </Fragment>
     );
@@ -154,5 +202,18 @@ const FluctuationsWrapper = styled.div`
       column-gap: 10px;
     }
 `;
+
+
+const LoadMore = styled.div`
+  width: 100%;
+  color: #818181;
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+  text-align: center;
+  opacity: 0.8;
+  cursor: pointer;
+`;
+
 
 export default CompletedFluctuations;

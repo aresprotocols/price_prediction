@@ -5,12 +5,12 @@ import {LeftOutlined, RightOutlined} from "@ant-design/icons";
 import {Carousel, Spin} from "antd";
 
 import ResultCard from "../result_card";
-import {formatHumanNumber} from "../../../utils/format";
-import {ApiContext, Prediction} from "../../../App";
+import {ApiContext, network, Prediction} from "../../../App";
 import {predictionSort} from "../../../utils/prediction-sort";
 import CoinCard from "../../../components/coin_card";
 import ContentHeader from "../../../components/content_header";
 import {getCompletedReward} from "../../../utils/token";
+import {formatHumanNumber} from "../../../utils/format";
 
 
 const CompletedPrediction = () => {
@@ -20,7 +20,10 @@ const CompletedPrediction = () => {
     const [selectPrediction, setSelectPrediction] = useState<Prediction>();
     const [winner, setWinner] = useState(false);
     const [searchName, setSearchName,] = useState<string>();
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPage, setTotalPage] = useState(1);
     const [isShowSpin, setIsShowSpin] = useState(false);
+    const [isLoadMore, setIsLoadMore] = useState(false);
 
     const toResult = (item: Prediction) => {
         setSelectPrediction(item);
@@ -33,6 +36,17 @@ const CompletedPrediction = () => {
 
     const toWinner = (symbol: string, id: string) => {
         navigate("/completed/winner/" + symbol + "/" + id + "/DEVIATION");
+    }
+
+    const loadMore = async () => {
+        console.log("loadMore");
+        const nextPage = currentPage + 1;
+        if (nextPage <= totalPage) {
+            setIsLoadMore(true);
+            setCurrentPage(nextPage);
+            await getCompletedPredicts(nextPage);
+            setIsLoadMore(false);
+        }
     }
 
     const getCompletedPredict = async () => {
@@ -51,9 +65,35 @@ const CompletedPrediction = () => {
         }
     };
 
+    const getCompletedPredicts = async (pageIndex = 1, pageSize=25) => {
+        await fetch(`https://aresscan.aresprotocol.io/${network}/api/v1/estimate/list/deviation/completed?page[number]=${pageIndex}&page[size]=${pageSize}`)
+            .then(async res => {
+                const data = await res.json();
+                console.log("fetch completed res:", data);
+                if (data) {
+                    setTotalPage(Math.ceil(data.meta.total_count / pageSize));
+                    const pres = data.data.data.map((item: any) => {
+                        item.totalReward = formatHumanNumber(item.total_reward);
+                        item.estimatesType = item.estimates_type;
+                        item.id = item.estimate_id;
+                        item.symbolCompletedPrice = item.symbol_completed_price;
+                        return item;
+                    });
+                    if (pageIndex === 1) {
+                        setCompletedPrediction(pres as unknown as Prediction[]);
+                    } else {
+                        setCompletedPrediction(completedPrediction?.concat(pres) ?? []);
+                    }
+                }
+            }).catch(e => {
+            console.log("fetch completed data error", e);
+        })
+    }
+
 
     useEffect(() => {
-        getCompletedPredict();
+        // getCompletedPredict();
+        getCompletedPredicts();
         // eslint-disable-next-line react-hooks/exhaustive-deps
 
     },[context]);
@@ -72,10 +112,10 @@ const CompletedPrediction = () => {
         }
         return item;
     }).map((item, index) => {
-        return <CoinCard key={item.symbol.concat(item.id.toString()) + index} title={item.symbol}
+        return <CoinCard key={item.symbol.concat(item.id) + index} title={item.symbol}
                          type="WINNER" price="580" total={item.totalReward}
                          prediction={item}
-                         endBlock={Number.parseInt(item.end.replaceAll(",", ""))}
+                         endBlock={Number.parseInt(item.end)}
                          live={true} icon={false} callBack={toResult}/>
     })
 
@@ -121,6 +161,14 @@ const CompletedPrediction = () => {
                                 winnerCallback={toWinner}/>
                         </PredictionWrapper>
                 }
+                <LoadMore>
+                    {
+                        completedPrediction && !winner && totalPage > 1 &&
+                        (isLoadMore ? <div style={{width: "100%", textAlign: "center"}}>
+                            <Spin delay={100}/>
+                        </div> : (currentPage < totalPage? <span onClick={() => loadMore()}>点击加载下一页</span> : ""))
+                    }
+                </LoadMore>
             </div>
         </Fragment>
     );
@@ -154,6 +202,17 @@ const PredictionWrapper = styled.div`
     @media only screen and (max-width: 1400px) {
       column-gap: 30px;
     }
+`;
+
+const LoadMore = styled.div`
+  width: 100%;
+  color: #818181;
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+  text-align: center;
+  opacity: 0.8;
+  cursor: pointer;
 `;
 
 export default CompletedPrediction;

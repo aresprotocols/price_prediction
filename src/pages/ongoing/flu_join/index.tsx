@@ -130,7 +130,7 @@ const FluctuationsJoin = () => {
             }
             <ContentHeader title="Price Fluctuations" onSort={() => {}} onSearch={() => {}}
                            goBackNum={-1} placeholder={"Search Cryptocurrency"}/>
-            {joined ? <Joined time={time} title={params.symbol} timeDiff={timeDiff} id={0}/> :
+            {joined ? <Joined time={time} title={params.symbol} timeDiff={timeDiff} id={0} type={1}/> :
                 <GoJoinWrapper>
                     <div className="time">
                         {time}

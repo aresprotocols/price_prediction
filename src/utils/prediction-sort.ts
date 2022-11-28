@@ -7,8 +7,8 @@ export const predictionSort = (sortBy: string, predictions: Prediction[]): Predi
         console.log("startTime")
         predictions?.sort(
             (pre, next) =>
-                Number.parseInt(pre.start.replaceAll(",", "")) -
-                Number.parseInt(next.start.replaceAll(",", ""))
+                Number.parseInt((pre.start + "").replaceAll(",", "")) -
+                Number.parseInt((next.start + "").replaceAll(",", ""))
         ).forEach(item => {
             newPre.push(item);
         })
@@ -16,8 +16,8 @@ export const predictionSort = (sortBy: string, predictions: Prediction[]): Predi
         console.log("endTime")
         predictions?.sort(
             (pre, next) =>
-                Number.parseInt(next.end.replaceAll(",", "")) -
-                Number.parseInt(pre.end.replaceAll(",", ""))
+                Number.parseInt((next.end + "").replaceAll(",", "")) -
+                Number.parseInt((pre.end + "").replaceAll(",", ""))
         ).forEach(item => {
             newPre.push(item);
         })

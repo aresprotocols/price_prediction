@@ -6,7 +6,7 @@ import user from "../../../assets/images/user.svg";
 import aresWards from "../../../assets/images/aresrewards.svg";
 import timeIcon from "../../../assets/images/time.svg";
 import {useContext, useEffect, useState} from "react";
-import {ApiContext} from "../../../App";
+import {ApiContext, network} from "../../../App";
 import BigNumber from "bignumber.js";
 import {getSubAccount} from "../../../utils/token";
 
@@ -25,9 +25,9 @@ const Joined = (props: any) => {
 
     const getReward = async () => {
         if (context.api) {
-            const address = getSubAccount(props.title, 1);
-            console.log("get reward for ", address, props.title);
+            const address = getSubAccount(props.title, props.type);
             const result = await context.api.query.system.account(address);
+            console.log("get reward for:", address, props.title, result.toHuman());
             // @ts-ignore
             let freeBalance = result.data.free.toString();
             if (result) {
@@ -39,7 +39,7 @@ const Joined = (props: any) => {
     }
 
     const getStaticData = () => {
-        fetch(`https://aresscan.aresprotocol.io/odyssey/api/v1/estimate/statistics/${props.title}/${props.id}`)
+        fetch(`https://aresscan.aresprotocol.io/${network}/api/v1/estimate/statistics/${props.title}/${props.id}`)
             .then(async res => {
                 const result = await res.json();
                 console.log("result", result);

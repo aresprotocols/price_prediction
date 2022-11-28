@@ -1,6 +1,6 @@
 import {useTranslation} from "react-i18next";
 import {Fragment, useContext, useEffect, useState} from "react";
-import {ApiContext} from "../../App";
+import {ApiContext, network} from "../../App";
 import ContentHeader from "../../components/content_header";
 import {Spin, Table} from "antd";
 import styled from "styled-components";
@@ -31,7 +31,7 @@ const Award = () => {
             dataIndex: "block_id",
             key: "block_id",
             render: (text: string) => {
-                return <a href={`https://aresscan.aresprotocol.io/gladios/block/${text}`} target="_blank" rel="noreferrer">{text}</a>
+                return <a href={`https://aresscan.aresprotocol.io/${network}/block/${text}`} target="_blank" rel="noreferrer">{text}</a>
             }
         },
         {
@@ -63,7 +63,7 @@ const Award = () => {
             return;
         }
         setIsShowSpin(true);
-        fetch(`https://aresscan.aresprotocol.io/gladios/api/v1/estimate/winner/${context.account?.address}?page[${pageIndex}]=3&page[size]=25`)
+        fetch(`https://aresscan.aresprotocol.io/${network}/api/v1/estimate/winner/${context.account?.address}?page[${pageIndex}]=3&page[size]=25`)
             .then(async res => {
                 const result = await res.json();
                 console.log("award record:", result);

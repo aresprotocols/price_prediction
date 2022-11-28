@@ -133,7 +133,7 @@ const PredictionJoin = () => {
             <ContentHeader title="Price Prediction" onSort={() => {}} onSearch={() => {}}
                            goBackNum={-1} placeholder={"Search Cryptocurrency"}/>
             {
-                joined ? <Joined time={time} title={params.symbol} timeDiff={timeDiff} id={predictionInfo!.id}/> :
+                joined ? <Joined time={time} title={params.symbol} timeDiff={timeDiff} id={predictionInfo!.id} type={2} /> :
                 <GoJoinWrapper>
                     <div className="time">
                         {time}

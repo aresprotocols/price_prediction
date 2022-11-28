@@ -35,7 +35,7 @@ const ResultCard = ({type, okCallBack, winnerCallback, prediction}: ResultCardPr
 
     const getStartTime = () => {
         if (context.api && prediction) {
-            clacStartTime(context.api, Number.parseInt(prediction.end.replaceAll(",", "")))
+            clacStartTime(context.api, Number.parseInt(prediction.end))
                 .then(res => {
                     setTime(res[1]);
                 })

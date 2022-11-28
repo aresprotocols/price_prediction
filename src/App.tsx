@@ -68,13 +68,15 @@ export interface Participant {
 
 export const ApiContext = React.createContext<ContextProps>({});
 
+export const network = "gladios";
+
 function App() {
   const [defaultAccount, setDefaultAccount] = useState<InjectedAccountWithMeta>();
   const [polkaAPI, setPolkaAPI] = useState<ApiPromise>();
 
   const init = async () => {
     console.log("api init");
-    const provider = new WsProvider("wss://odyssey.aresprotocol.io");
+    const provider = new WsProvider(`wss://${network}.aresprotocol.io`);
     return await ApiPromise.create({
       provider,
       rpc: {
