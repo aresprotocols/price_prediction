@@ -93,10 +93,10 @@ const Header = (props: any) => {
     const HomeMenu = (
         <>
             <Menu.Item key="/ongoing/prediction" onClick={() => navigate("/ongoing/prediction")}>
-                Price Prediction
+                {t("Price Prediction")}
             </Menu.Item>
             <Menu.Item key="/alert/login" onClick={() => navigate("/alert/login")}>
-                Price Alert
+                {t("Price Alert")}
             </Menu.Item>
             <Menu.Item>
                 <a href="https://t.me/AresProtocolBot" target="_blank"

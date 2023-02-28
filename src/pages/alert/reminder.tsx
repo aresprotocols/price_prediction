@@ -7,6 +7,7 @@ import BigNumber from "bignumber.js";
 import {useLocation, useNavigate} from "react-router";
 import {LeftOutlined, QuestionCircleOutlined} from "@ant-design/icons";
 import {serverUrl} from "./index";
+import {useTranslation} from "react-i18next";
 
 
 const Reminder = () => {
@@ -14,6 +15,7 @@ const Reminder = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const context = useContext(ApiContext);
+    const {t} = useTranslation(['alert']);
     const [type, setType] = useState("Add");
     const [tip, setTip] = useState("Price");
     const [pair, setPair] = useState("ETH");
@@ -275,10 +277,10 @@ const Reminder = () => {
                     fontWeight: "600", cursor: "pointer"
                 }} onClick={() => window.history.go(-1)}>
                     <LeftOutlined style={{fontSize: "15px", paddingRight: "10px"}}/>
-                    <span>{type === "Add" ? "Add Reminder" : "Modify Reminder"}</span>
+                    <span>{type === "Add" ? `${t("Add")} Reminder` : `${t("Modify")} Reminder`}</span>
                 </header>
                 <ReminderContent>
-                    <div className="title">{type === "Add" ? "Add Reminder" : "Modify Reminder"}</div>
+                    <div className="title">{type === "Add" ? `${t("Add")} Reminder` : `${t("Modify")} Reminder`}</div>
                     <div className="con">
                         <Form
                             name="basic"
@@ -291,7 +293,7 @@ const Reminder = () => {
                             form={form}
                         >
                             <Form.Item
-                                label="Select a trading pair"
+                                label={t("Select a trading pair")}
                                 name="pair"
                                 rules={[{required: true, message: 'Please select trading pair!'}]}
                             >
@@ -306,13 +308,13 @@ const Reminder = () => {
                                 </div>
                             </Form.Item>
                             <Form.Item
-                                label="Tip price"
+                                label={t("Tip price")}
                                 name="tip"
                                 rules={[{required: true, message: 'Please select tip price!'}]}
                             >
                                 <Radio.Group onChange={tipChange} defaultValue={tip}>
-                                    <Radio value="Price"> Price </Radio>
-                                    <Radio value="Percentage"> Percentage </Radio>
+                                    <Radio value="Price"> {t("Price")} </Radio>
+                                    <Radio value="Percentage"> {t("Percentage")} </Radio>
                                 </Radio.Group>
                                 <div className="current-price">
                                     Current {pair} Price：${selectPairPrice}
@@ -321,13 +323,13 @@ const Reminder = () => {
                             <Form.Item
                                 label={tip === "Percentage" ?
                                     <span style={{display: "flex", alignItems: "center", columnGap: "5px"}}>
-                                        Percentage
+                                        {t("Percentage")}
                                         <Tooltip title="If the percentage is positive, the price increase ratio,
                                                 if the percentage is negative, the price decline ratio" color={"blue"}>
                                             <QuestionCircleOutlined style={{color: "red", cursor: ""}}/>
                                         </Tooltip>
                                     </span>
-                                    : "Set Price"
+                                    : t("Set Price")
                                 }
                                 name="price"
                                 rules={[{required: true, message: 'Please set price!'}]}
@@ -347,7 +349,7 @@ const Reminder = () => {
                                 />
                             </Form.Item>
                             <Form.Item
-                                label="Minimum prompt interval"
+                                label={t("Minimum prompt interval")}
                                 name="interval"
                                 className="interval"
                                 rules={[{required: true, message: 'Please input minimum prompt interval!'}]}
@@ -370,14 +372,14 @@ const Reminder = () => {
                                 </InputNumber>
                             </Form.Item>
                             <Form.Item
-                                label="Prompter labeling"
+                                label={t("Prompter labeling")}
                                 name="label"
                                 rules={[{required: true, message: 'Please input prompter labeling!'}]}
                             >
                                 <Input placeholder={`Example: ${pair} to ${(selectPairPrice + selectPairPrice * 0.1).toFixed(2)}`}/>
                             </Form.Item>
                             <Form.Item
-                                label="Number of reminders"
+                                label={t("Number of reminders")}
                                 name="reminders"
                                 rules={[{required: true, message: 'Please input number of reminders!'}]}
                             >
@@ -396,13 +398,14 @@ const Reminder = () => {
                                     {
                                         reminders > 0 &&
                                             <div>
-                                                Fee Estimate: <span style={{fontWeight: "700"}}>{reminders} Ares</span>
+                                                {t("Fee Estimate")}: <span style={{fontWeight: "700"}}>{reminders} Ares</span>
                                             </div>
                                     }
                                     {
                                         reminders < 0 &&
                                             <div>
-                                                Refund Fee Estimate: <span style={{fontWeight: "700"}}>{Math.abs(reminders)} Ares</span>
+                                                {t("Refund Fee Estimate")}:
+                                                <span style={{fontWeight: "700"}}>{Math.abs(reminders)} Ares</span>
                                             </div>
                                     }
                                 </div>
@@ -412,14 +415,14 @@ const Reminder = () => {
                                     {
                                         type === "Add" ?
                                             <Button type="primary" htmlType="submit" className="submit">
-                                                Add Reminder
+                                                {t("Add")} Reminder
                                             </Button> :
                                             <Button type="primary" htmlType="submit" className="submit">
-                                                Modify Reminder
+                                                {t("Modify")} Reminder
                                             </Button>
                                     }
                                     <Button className="rules" onClick={() => navigate("/alert/rules")}>
-                                        View billing rules
+                                        {t("View billing rules")}
                                     </Button>
                                 </Space>
                             </Form.Item>

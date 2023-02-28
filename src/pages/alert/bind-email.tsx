@@ -4,9 +4,11 @@ import {useContext, useEffect, useState} from "react";
 import {ApiContext} from "../../App";
 import {serverUrl} from "./index";
 import {sign} from "../../utils/sign";
+import {useTranslation} from "react-i18next";
 
 const BindEmail = (props: any) => {
     const [addForm] = Form.useForm();
+    const {t} = useTranslation(['alert']);
     const context = useContext(ApiContext);
 
     useEffect(() => {
@@ -36,7 +38,7 @@ const BindEmail = (props: any) => {
                 console.log(res);
                 const data = await res.json();
                 if (data.status === "success") {
-                    message.success("绑定成功");
+                    message.success("bind success");
                     props.closeEmailModal();
                 }
             });
@@ -46,7 +48,7 @@ const BindEmail = (props: any) => {
 
     return (
         <Modal
-            title="Bind Email"
+            title={t("Bind Email")}
             open={props.showBindEmail}
             width={570}
             destroyOnClose={true}
@@ -58,7 +60,7 @@ const BindEmail = (props: any) => {
                 <div style={{padding: "0 20px"}}>
                     <Form form={addForm} layout={"vertical"} onFinish={onFinish}>
                         <Form.Item
-                            label="Email"
+                            label={t("Email")}
                             name="email"
                             rules={[{ required: true, message: 'Please input email!' }]}
                         >
@@ -66,7 +68,7 @@ const BindEmail = (props: any) => {
                         </Form.Item>
 
                         <Form.Item
-                            label="Address"
+                            label={t("Address")}
                             name="address"
                             rules={[{ required: true, message: 'Please input Address!' }]}
                         >

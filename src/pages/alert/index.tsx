@@ -2,9 +2,12 @@ import {ApiContext, ContentWrap, network} from "../../App";
 import {AlertContent, AlertHead, DeleteModal} from "./style";
 import {Button, Checkbox, message, Modal, Pagination, Space, Spin, Table, Tag} from "antd";
 import React, {useContext, useEffect, useState} from "react";
-import {useLocation, useNavigate} from "react-router";
+import {useNavigate} from "react-router";
 import BindEmail from "./bind-email";
 import {Tags} from "../../utils/symbol";
+import {decodeAddress} from "@polkadot/util-crypto";
+import {u8aToHex} from "@polkadot/util";
+import {useTranslation} from "react-i18next";
 
 
 // export const serverUrl = "http://167.179.73.229:9988";
@@ -12,11 +15,13 @@ export const serverUrl = "/reminder";
 
 const Alert = () => {
     const navigate = useNavigate();
-    const location = useLocation();
     const context = useContext(ApiContext);
+    const {t} = useTranslation(['alert']);
     const [delRecord, setDelRecord] = useState<any>();
     const [loading, setLoading] = useState(false);
+    const [dataLoading, setDataLoading] = useState(false);
     const [totalPage, setTotalPage] = useState(0);
+    const [bindEmail, setBindEmail] = useState("");
     const [delCheck, setDelCheck] = useState(false);
     const [reminders, setReminders] = useState<any []>([]);
     const [deleteModalOpen, setDeleteModalOpen] = useState(false);
@@ -24,6 +29,7 @@ const Alert = () => {
 
     useEffect(() => {
         getReminders(1);
+        checkAccountBindEmail();
 
     }, []);
 
@@ -31,6 +37,7 @@ const Alert = () => {
     const getReminders = (pageIndex: number) => {
         if (context.account) {
             setLoading(true);
+            setDataLoading(true);
             fetch(`https://aresscan.aresprotocol.io/${network}/api/v1/reminder/list/${context.account.address}?page[number]=${pageIndex}&page[size]=10`)
                 .then(async (res) => {
                     const result = await res.json();
@@ -38,6 +45,7 @@ const Alert = () => {
                     setReminders(result.data.data);
                     setTotalPage(result.meta.total_count);
                     setLoading(false);
+                    setDataLoading(false);
                 })
         }
     }
@@ -88,6 +96,31 @@ const Alert = () => {
         }
     }
 
+    const checkAccountBindEmail = async () => {
+        if (!context.account) {
+            return;
+        }
+
+        setLoading(true);
+        const publicKey = decodeAddress(context.account.address);
+        const hexPublicKey = u8aToHex(publicKey);
+        await fetch(`${serverUrl}/has_bound_infos`, {
+            method: "POST",
+            mode: 'cors',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                pubKey: hexPublicKey
+            })
+        }).then(async (res) => {
+            const data = await res.json();
+            setLoading(false);
+            setBindEmail(data.email);
+        });
+    }
+
     const columns = [
         {
             title: "Alert Info",
@@ -117,7 +150,7 @@ const Alert = () => {
                             {record.trigger_condition_price_key.toUpperCase()} |
                             Price to ${record.anchor_price} |
                             Remaining count {record.points} |
-                            Email {location.state.bindEmail} |
+                            {bindEmail && `Email ${bindEmail}`} |
                             Create block {record.block_id}
                         </div>
                     </div>
@@ -143,12 +176,12 @@ const Alert = () => {
                                     type: "Modify",
                                     record: record
                                 }})}>
-                        Modify
+                        {t("Modify")}
                     </Button>
                     <Button className="action" onClick={() => {
                         setDelRecord(record);
                         setDeleteModalOpen(true)
-                    }}>Delete</Button>
+                    }}>{t("Delete")}</Button>
                 </Space>
             }
         }
@@ -165,10 +198,10 @@ const Alert = () => {
                 <Space>
                     <Button type="primary" className="add"
                             onClick={() => navigate("/alert/reminder")}>
-                        Add
+                        {t("Add")}
                     </Button>
                     <Button className="notif" onClick={() => navigate("/alert/notification")}>
-                        Notification records
+                        {t("Notification records")}
                     </Button>
                 </Space>
             </AlertHead>
@@ -224,6 +257,7 @@ const Alert = () => {
                 <Table
                     columns={columns}
                     dataSource={reminders}
+                    loading={dataLoading}
                     pagination={{
                         total: totalPage,
                         pageSize: 10,
@@ -235,7 +269,7 @@ const Alert = () => {
                     }}
                 />
                 <Modal
-                    title="Confirm Reminder"
+                    title={t("Confirm Reminder")}
                     open={deleteModalOpen}
                     width={570}
                     destroyOnClose={true}
@@ -249,11 +283,12 @@ const Alert = () => {
                             {
                                 delRecord &&
                                 <Space className="desc" direction="vertical">
-                                    <div>Whether to determine the deletion of the prompter
-                                        ({delRecord.trigger_condition_price_key} {delRecord.points} off-ramp warning).
+                                    <div>{t("Whether to determine the deletion of the prompter")}
+                                        ({delRecord.trigger_condition_price_key} {delRecord.points} {t("off-ramp warning")}).
                                     </div>
-                                    <div className="descInfo">You will receive the remaining fee security deposit of {delRecord.points}ARES,
-                                        and an excess security deposit of 100ARES.</div>
+                                    <div className="descInfo">{t("You will receive the remaining fee security deposit of")}
+                                        {delRecord.points}ARES,
+                                        {t("and an excess security deposit of")} 100ARES.</div>
                                 </Space>
                             }
                         </div>
@@ -262,6 +297,7 @@ const Alert = () => {
                                 () => {
                                     if (!delCheck) {
                                         message.warn("please confirm del");
+                                        return;
                                     }
                                     delReminder(delRecord.reminder_id);
                                 }

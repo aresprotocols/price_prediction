@@ -6,7 +6,7 @@ import rules from "../../assets/images/rules.svg";
 import React from "react";
 
 const Join = () => {
-    const { t } = useTranslation(['common']);
+    const { t } = useTranslation(['common', 'alert']);
     const navigate = useNavigate();
     return (
         <JoinWrapper>
@@ -53,7 +53,7 @@ const Join = () => {
                             {t("join").toUpperCase()}
                         </Button>
                         <Button type="primary" onClick={() => {navigate("/alert/rules")}}>
-                            Billing Rules
+                            {t("Billing rules")}
                         </Button>
                     </Space>
                 </WebDesc>

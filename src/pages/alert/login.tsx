@@ -11,12 +11,13 @@ import {decodeAddress, encodeAddress} from "@polkadot/util-crypto";
 import {u8aToHex} from "@polkadot/util";
 import {serverUrl} from "./index";
 import {sign} from "../../utils/sign";
+import {useTranslation} from "react-i18next";
 
 
 const AlertLogin = (props: any) => {
     const navigate = useNavigate();
+    const {t} = useTranslation(['alert']);
     const [isBind, setIsBind] = useState(false);
-    const [bindEmail, setBindEmail] = useState("");
     const [loading, setLoading] = useState(false);
     const [account, setAccount] = useState<InjectedAccountWithMeta>();
     const [showBindEmail, setShowBindEmail] = useState(false);
@@ -62,7 +63,6 @@ const AlertLogin = (props: any) => {
             const data = await res.json();
             setLoading(false);
             setIsBind(data.data);
-            setBindEmail(data.email);
         });
     }
 
@@ -89,15 +89,8 @@ const AlertLogin = (props: any) => {
                 const data = await res.json();
                 setLoading(false);
                 if (data.status === "success") {
-                    message.success("登录成功");
-                    await checkAccountBindEmail();
-                    setTimeout(() => {
-                        navigate("/alert", {
-                            state: {
-                                bindEmail: bindEmail
-                            }
-                        });
-                    }, 1000);
+                    message.success("login success");
+                    navigate("/alert");
                 }
             });
         }
@@ -112,7 +105,7 @@ const AlertLogin = (props: any) => {
                 </div>
             }
             <div>
-                <h2 style={{textAlign: "center"}}>Login to Ares-Reminder</h2>
+                <h2 style={{textAlign: "center"}}>{t("Login to")} Ares-Reminder</h2>
                 <AddressDetail>
                     {
                         account && <div className="selectAccount">
@@ -148,17 +141,17 @@ const AlertLogin = (props: any) => {
                             isBind && <Button type="primary" className="add" onClick={() => {
                                 login();
                             }}>
-                                Enter Reminder
+                                {t("Enter Reminder")}
                             </Button>
                         }
                         {
                             isBind && <Button type="primary" className="add" onClick={() => {setShowBindEmail(true)}}>
-                                Update Email
+                                {t("Update Email")}
                             </Button>
                         }
                         {
                             !isBind && <Button type="primary" className="add" onClick={() => {setShowBindEmail(true)}}>
-                                Bind Email
+                                {t("Bind Email")}
                             </Button>
                         }
 

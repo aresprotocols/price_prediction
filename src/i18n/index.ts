@@ -7,6 +7,8 @@ import enFooter from "./en/footer";
 import zhFooter from "./zh_cn/footer";
 import zhRules from "./zh_cn/rules";
 import enRules from "./en/rules";
+import alert from "./zh_cn/alert";
+import enAlert from "./en/alert";
 
 const resources = {
     cn: {
@@ -18,6 +20,9 @@ const resources = {
         },
         footer: {
             ...zhFooter
+        },
+        alert: {
+            ...alert
         }
     },
     en: {
@@ -29,6 +34,9 @@ const resources = {
         },
         footer: {
             ...enFooter
+        },
+        alert: {
+            ...enAlert
         }
     },
 };

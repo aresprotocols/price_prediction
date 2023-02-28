@@ -4,9 +4,11 @@ import {Pagination, Space, Spin, Table, Tag} from "antd";
 import {CheckCircleOutlined, LeftOutlined} from "@ant-design/icons";
 import React, {useContext, useEffect, useState} from "react";
 import {Tags} from "../../utils/symbol";
+import {useTranslation} from "react-i18next";
 
 const Notification = () => {
     const context = useContext(ApiContext);
+    const {t} = useTranslation(['alert']);
     const [totalPage, setTotalPage] = useState(0);
     const [loading, setLoading] = useState(false);
     const [notification, setNotification] = useState<any []>();
@@ -131,7 +133,7 @@ const Notification = () => {
                 display: "flex", alignItems: "center", fontSize: "1.8rem", color: "#2E4765",
                 fontWeight: "600", cursor: "pointer"
             }} onClick={() => window.history.go(-1)}>
-                <LeftOutlined style={{fontSize: "15px", paddingRight: "10px"}}/> <span>Notification Records</span>
+                <LeftOutlined style={{fontSize: "15px", paddingRight: "10px"}}/> <span>{t("Notification records")}</span>
             </header>
             <NotificationContent>
                 {/*{*/}

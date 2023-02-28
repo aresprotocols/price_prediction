@@ -4,7 +4,8 @@ const zhCommon = {
     "Ongoing": "进行中",
     "Completed": "已完成",
     "Upcoming": "预告区",
-    "Price Prediction": "价格估算",
+    "Price Prediction": "价格预测",
+    "Price Alert": "价格监测",
     "Price Fluctuations": "价格涨跌",
     "Test Coins": "测试币金额",
     "My Predictions": "我参与的预测",
@@ -49,6 +50,7 @@ const zhCommon = {
     "winnerName": "账号",
     "winner": "获胜者",
     "Faucet": "水龙头",
+    "Billing rules": "计费规则",
     "Congratulations tips": "恭喜您获得本次竞猜奖励， 奖励为500 ARES！",
     "Sorry, your test coins are insufficient to participate!": " 对不起， 您的测试币不足，无法参与！",
     "You have already participated in this prediction, you cannot participate repeatedly!": "您已经参与了本次竞猜， 不能反复参与！",
@@ -57,6 +59,7 @@ const zhCommon = {
     "Receive test coins tips": "每人每天限领一次，一次可领取50个 ARES。由于测试币的发布仅用于测试网上的操作体验，因此 测试币没有实际的通证价值。",
     "you can get it through the tap below": "参与价格预测，首先你要有足够的测试币。如果你余额不足，可以通过下面的水龙头领取测试币",
     "closed one hour before tips": "为了保证竞猜的公平有效， 每期价格竞猜会在结束时间前1 个小时， 关闭预测窗口 。 请及时参与！",
+    "Ares Protocol's mainnet alert tool keeps you informed of cryptocurrency price increases and decreases in real time.": "Ares Protocol的主网价格监测工具，让您实时了解加密货币价格的上涨和下跌。",
 }
 
 

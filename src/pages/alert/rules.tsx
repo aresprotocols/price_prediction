@@ -7,21 +7,22 @@ import {useTranslation} from "react-i18next";
 
 const AlertRules = () => {
     const navigate = useNavigate();
-    const {t} = useTranslation(['rules', "common"]);
+    const {t} = useTranslation(['alert']);
 
+    // "The overcollateralization is used to maintain network security and is currently at 50% of
+    // the overcollateralization rate, which means that an additional 50% of the \"cost collateral\" is pledged as overcollateralization.",
     const rules = [
-        "The ARES-Reminder collateral system, which consists of a \"fee collateral\" + an \"excess collateral\"",
-        "The fee security deposit is used to pay for notices and is currently deducted by 1ARES per notice.",
-        // "The overcollateralization is used to maintain network security and is currently at 50% of the overcollateralization rate, which means that an additional 50% of the \"cost collateral\" is pledged as overcollateralization.",
-        "The overcollateralization is used to maintain network security, and the overcollateralization is currently fixed at 100 ARES.",
-        "When the \"reminder\" is removed from the chain, the remaining fees, minus the notification fee, are automatically unpledged, and the remaining portion can be transferred in and out freely by the user.",
-        "When the \"reminder\" is removed from the chain, the full cost of the overcollateralization is automatically unpledged and the user is free to transfer it in and out."
+        t("Billing rules 1"),
+        t("Billing rules 2"),
+        t("Billing rules 3"),
+        t("Billing rules 4"),
+        t("Billing rules 5"),
     ]
 
     return (
         <ContentWrap>
             <RuleTitle>
-                Billing rules description
+                {t("Billing rules description")}
             </RuleTitle>
             <RulesWrapper>
                 {

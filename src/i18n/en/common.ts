@@ -57,6 +57,7 @@ const enCommon = {
     "You have already participated in this prediction, you cannot participate repeatedly!": "You have already participated in this prediction, you cannot participate repeatedly!",
     "site desc": "Ares is an on-chain-verified oracle protocol that provides secure and reliable data services for the Polkadot DeFi ecosystem.",
     "closed one hour before tips": "In order to ensure the fairness and effectiveness of the estimate, the prediction  window will be closed one hour before the end of each period of the price estimate. Please participate in time!",
+    "Ares Protocol's mainnet alert tool keeps you informed of cryptocurrency price increases and decreases in real time.": "Ares Protocol's mainnet alert tool keeps you informed of cryptocurrency price increases and decreases in real time.",
 }
 
 
