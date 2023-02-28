@@ -6,7 +6,7 @@ import {Carousel, Spin} from "antd";
 
 import ResultCard from "../result_card";
 import {formatHumanNumber} from "../../../utils/format";
-import {ApiContext, network, Prediction} from "../../../App";
+import {ApiContext, ContentWrap, network, Prediction} from "../../../App";
 import {predictionSort} from "../../../utils/prediction-sort";
 import CoinCard from "../../../components/coin_card";
 import ContentHeader from "../../../components/content_header";
@@ -122,7 +122,7 @@ const CompletedFluctuations = () => {
     }
 
     return (
-        <Fragment>
+        <ContentWrap>
             <ContentHeader title="Price Fluctuations" onSort={onSort} onSearch={onSearch} goBackCallback={goBackCallback}
                            goBackNum={winner ? -1 : 0} placeholder={"Search Cryptocurrency"}/>
             {
@@ -169,7 +169,7 @@ const CompletedFluctuations = () => {
                     }
                 </LoadMore>
             </div>
-        </Fragment>
+        </ContentWrap>
     );
 }
 

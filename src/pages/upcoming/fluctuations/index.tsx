@@ -4,7 +4,7 @@ import {LeftOutlined, RightOutlined} from "@ant-design/icons";
 import {Carousel, Spin} from "antd";
 
 import {formatHumanNumber} from "../../../utils/format";
-import {ApiContext, Prediction} from "../../../App";
+import {ApiContext, ContentWrap, Prediction} from "../../../App";
 import CoinCard from "../../../components/coin_card";
 import {predictionSort} from "../../../utils/prediction-sort";
 import ContentHeader from "../../../components/content_header";
@@ -56,7 +56,7 @@ const UpcomingFluctuations = () => {
     }
 
     return (
-        <Fragment>
+        <ContentWrap>
             <ContentHeader title="Price Fluctuations" onSort={onSort} onSearch={onSearch} placeholder={"Search Cryptocurrency"}/>
             {
                 isShowSpin ? <div style={{width: "100%", textAlign: "center"}}>
@@ -77,7 +77,7 @@ const UpcomingFluctuations = () => {
                     {upcomingItems}
                 </FluctuationsWrapper>
             </div>
-        </Fragment>
+        </ContentWrap>
 
     );
 }

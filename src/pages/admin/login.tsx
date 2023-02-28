@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import {Button, Form, Input} from "antd";
 import {useNavigate} from "react-router";
+import {ContentWrap} from "../../App";
 // const crypto = require('crypto');
 
 
@@ -21,30 +22,32 @@ const Login = () => {
     }
 
     return (
-        <LoginWrapper>
-            <Form layout="vertical" onFinish={login}>
-                <div className="title">Login</div>
-                <Form.Item
-                    label="Username"
-                    name="username"
-                    rules={[{ required: true, message: 'Please input your username!' }]}
-                >
-                    <Input />
-                </Form.Item>
-                <Form.Item
-                    label="Password"
-                    name="password"
-                    rules={[{ required: true, message: 'Please input your password!' }]}
-                >
-                    <Input.Password />
-                </Form.Item>
-                <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-                    <Button type="primary" htmlType="submit">
-                        Login
-                    </Button>
-                </Form.Item>
-            </Form>
-        </LoginWrapper>
+        <ContentWrap>
+            <LoginWrapper>
+                <Form layout="vertical" onFinish={login}>
+                    <div className="title">Login</div>
+                    <Form.Item
+                        label="Username"
+                        name="username"
+                        rules={[{ required: true, message: 'Please input your username!' }]}
+                    >
+                        <Input />
+                    </Form.Item>
+                    <Form.Item
+                        label="Password"
+                        name="password"
+                        rules={[{ required: true, message: 'Please input your password!' }]}
+                    >
+                        <Input.Password />
+                    </Form.Item>
+                    <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+                        <Button type="primary" htmlType="submit">
+                            Login
+                        </Button>
+                    </Form.Item>
+                </Form>
+            </LoginWrapper>
+        </ContentWrap>
     );
 }
 

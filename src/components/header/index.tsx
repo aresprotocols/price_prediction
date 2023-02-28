@@ -33,6 +33,8 @@ const Header = (props: any) => {
     const [selectedKeys, setSelectedKeys] = useState<string[]>();
     const [showInstallPolkadotGuide, setShowInstallPolkadotGuide] = useState(false);
 
+    const pathname = window.location.pathname;
+
     const queryBalance = async () => {
         if(context.api && accounts.length > 0) {
             const acct = await context.api.query.system.account(accounts[0].address);
@@ -87,6 +89,23 @@ const Header = (props: any) => {
             <Menu.Item key="cn">{t("CN")}</Menu.Item>
         </Menu>
     );
+
+    const HomeMenu = (
+        <>
+            <Menu.Item key="/ongoing/prediction" onClick={() => navigate("/ongoing/prediction")}>
+                Price Prediction
+            </Menu.Item>
+            <Menu.Item key="/alert/login" onClick={() => navigate("/alert/login")}>
+                Price Alert
+            </Menu.Item>
+            <Menu.Item>
+                <a href="https://t.me/AresProtocolBot" target="_blank"
+                   rel="noopener noreferrer" style={{color: "inherit"}}>
+                    {t("Faucet")}
+                </a>
+            </Menu.Item>
+        </>
+    )
 
 
     const accountMenu = (
@@ -242,6 +261,9 @@ const Header = (props: any) => {
                                 {ongoingMenu}
                                 {completedMenu}
                                 {upcomingMenu}
+                                <Menu.Item key="/alert" onClick={() => navigate("/alert")}>
+                                    Price Alert
+                                </Menu.Item>
                                 {
                                     <SubMenu key="language" title={t(i18n.language.toUpperCase())}>
                                         <Menu.Item key="en">{t("EN")}</Menu.Item>
@@ -271,9 +293,26 @@ const Header = (props: any) => {
                         <Menu.Item key="/">
                             {t("Home")}
                         </Menu.Item>
-                        {ongoingMenu}
-                        {completedMenu}
-                        {upcomingMenu}
+                        {
+                            (pathname.startsWith("/ongoing") || pathname.startsWith("/completed")
+                                || pathname.startsWith("/upcoming") )
+                            &&  ongoingMenu
+                        }
+                        {
+                            (pathname.startsWith("/ongoing") || pathname.startsWith("/completed")
+                                || pathname.startsWith("/upcoming") )
+                            && completedMenu
+                        }
+                        {
+                            (pathname.startsWith("/ongoing") || pathname.startsWith("/completed")
+                                || pathname.startsWith("/upcoming") )
+                            && upcomingMenu
+                        }
+                        {
+                            (!pathname.startsWith("/ongoing") && !pathname.startsWith("/completed")
+                                && !pathname.startsWith("/upcoming") )
+                            && HomeMenu
+                        }
                     </Menu>
                     {
                         accounts.length > 0 ?<div className="account">
@@ -314,12 +353,6 @@ const Header = (props: any) => {
                             </a>
                         </Dropdown>
                     </LanguageMenuWrapper>
-                    <div className="faucet">
-                        <a href="https://t.me/AresProtocolBot" target="_blank"
-                           rel="noopener noreferrer">
-                            {t("Faucet")}
-                        </a>
-                    </div>
                 </nav>
             </header>
         </HeaderWrapper>

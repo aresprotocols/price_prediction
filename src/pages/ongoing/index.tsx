@@ -3,18 +3,21 @@ import {useLocation} from "react-router";
 
 import { OngoingWrapper } from "./style";
 import MyPrediction from "../my_prediction";
+import {ContentWrap} from "../../App";
 
 const Ongoing = () => {
     const location = useLocation();
 
     return (
-        <OngoingWrapper>
-            {
-                location.pathname === "/ongoing" ?
-                    <MyPrediction/> : ""
-            }
-            <Outlet/>
-        </OngoingWrapper>
+        <ContentWrap>
+            <OngoingWrapper>
+                {
+                    location.pathname === "/ongoing" ?
+                        <MyPrediction/> : ""
+                }
+                <Outlet/>
+            </OngoingWrapper>
+        </ContentWrap>
     );
 }
 

@@ -1,31 +1,41 @@
-import {Button, Checkbox, Space} from "antd";
+import { ContentWrap } from "../../App";
 import styled from "styled-components";
-import {useTranslation} from "react-i18next";
+import {Button, Checkbox, Space} from "antd";
 import {useNavigate} from "react-router";
-import {ContentWrap} from "../../App";
+import {useTranslation} from "react-i18next";
 
 
-const Rules = () => {
-    const {t} = useTranslation(['rules', "common"]);
+const AlertRules = () => {
     const navigate = useNavigate();
+    const {t} = useTranslation(['rules', "common"]);
+
+    const rules = [
+        "The ARES-Reminder collateral system, which consists of a \"fee collateral\" + an \"excess collateral\"",
+        "The fee security deposit is used to pay for notices and is currently deducted by 1ARES per notice.",
+        // "The overcollateralization is used to maintain network security and is currently at 50% of the overcollateralization rate, which means that an additional 50% of the \"cost collateral\" is pledged as overcollateralization.",
+        "The overcollateralization is used to maintain network security, and the overcollateralization is currently fixed at 100 ARES.",
+        "When the \"reminder\" is removed from the chain, the remaining fees, minus the notification fee, are automatically unpledged, and the remaining portion can be transferred in and out freely by the user.",
+        "When the \"reminder\" is removed from the chain, the full cost of the overcollateralization is automatically unpledged and the user is free to transfer it in and out."
+    ]
+
     return (
         <ContentWrap>
             <RuleTitle>
-                {t("Price Prediction Rules", {ns: 'common' })}
+                Billing rules description
             </RuleTitle>
             <RulesWrapper>
                 {
-                    new Array(7).fill(1).map((val, index) => {
+                    rules.map((val, index) => {
                         return <RulesItem key={index}>
                             <div>
                                 <RulesNum>{index + 1}</RulesNum>
                             </div>
-                            <div>{t("rule" + (index + 1))}</div>
+                            <div>{val}</div>
                         </RulesItem>
                     })
                 }
                 {
-                    !localStorage.getItem("isJoined") && <div className="footer">
+                    !localStorage.getItem("isAlert") && <div className="footer">
                         <Checkbox defaultChecked={true}>
                             <span>
                                 {t("read rules")}
@@ -33,8 +43,8 @@ const Rules = () => {
                         </Checkbox>
                         <Space>
                             <Button className="submitButton" onClick={() => {
-                                localStorage.setItem("isJoined", "true");
-                                navigate("/ongoing/prediction")
+                                localStorage.setItem("isAlert", "true");
+                                navigate("/alert/login")
                             }}>
                                 {t("Submit", { ns: 'common' })}
                             </Button >
@@ -112,6 +122,9 @@ const RulesItem = styled.div`
     column-gap: 1rem;
     color: #2E4765;
     margin-bottom: 1rem;
+  div:last-child {
+    margin-top: 10px;
+  }
 `;
 
-export default Rules;
+export default AlertRules

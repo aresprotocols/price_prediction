@@ -31,6 +31,12 @@ import Login from "./pages/admin/login";
 import UnClosePrediction from "./pages/admin/un-close";
 import Consume from "./pages/coin/consume";
 import Award from "./pages/coin/award";
+import styled from "styled-components";
+import Alert from "./pages/alert";
+import Reminder from "./pages/alert/reminder";
+import Notification from "./pages/alert/notification";
+import AlertRules from "./pages/alert/rules";
+import AlertLogin from "./pages/alert/login";
 
 
 export interface ContextProps {
@@ -66,9 +72,21 @@ export interface Participant {
   reward: string
 }
 
+export const ContentWrap = styled.div`
+  padding: 30px 150px;
+  @media screen and (max-width: 1400px) {
+    padding: 30px 80px;
+  }
+  @media screen and (max-width: 750px) {
+    padding: 30px 10px;
+  }
+`;
+
+
 export const ApiContext = React.createContext<ContextProps>({});
 
 export const network = "gladios";
+// export const network = "odyssey";
 
 function App() {
   const [defaultAccount, setDefaultAccount] = useState<InjectedAccountWithMeta>();
@@ -139,6 +157,11 @@ function App() {
                   <Route path="prediction" element={<UpcomingPrediction />}/>
                   <Route path="fluctuations" element={<UpcomingFluctuations />}/>
                 </Route>
+                <Route path="alert" element={<Alert />} />
+                <Route path="alert/login" element={<AlertLogin updateAccount={updateDefaultAccount}/>} />
+                <Route path="alert/reminder" element={<Reminder />}/>
+                <Route path="alert/notification" element={<Notification />}/>
+                <Route path="alert/rules" element={<AlertRules />}/>
                 <Route path="/admin" element={
                   <RequireAuth>
                     <Admin />

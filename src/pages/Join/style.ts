@@ -2,13 +2,25 @@ import styled from "styled-components";
 
 
 export const JoinWrapper = styled.div`
+    //position: absolute;
+    //width: 100%;
+    //height: 100%;
+    //left: 0;
+`;
+
+export const JoinItem = styled.div`
     height: 100%;
     display: flex;
     overflow: hidden;
-    padding-bottom: 100px;
     img {
         width: 450px;
         margin-top: 60px;
+    }
+    Button {
+      border-radius: 4px;
+      border: 1px solid #2E4DD4;
+      background: #2E4DD4;
+      height: 40px;
     }
     @media only screen and (max-width: 750px) {
         flex-direction: column;

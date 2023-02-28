@@ -5,7 +5,7 @@ import {LeftOutlined, RightOutlined} from "@ant-design/icons";
 import {Carousel, Spin} from "antd";
 
 import ResultCard from "../result_card";
-import {ApiContext, network, Prediction} from "../../../App";
+import {ApiContext, ContentWrap, network, Prediction} from "../../../App";
 import {predictionSort} from "../../../utils/prediction-sort";
 import CoinCard from "../../../components/coin_card";
 import ContentHeader from "../../../components/content_header";
@@ -123,7 +123,7 @@ const CompletedPrediction = () => {
         setWinner(false);
     }
     return (
-        <Fragment>
+        <ContentWrap>
             <ContentHeader title="Price Prediction" onSort={onSort} onSearch={onSearch} goBackCallback={goBackCallback}
                            goBackNum={winner ? -1 : 0} placeholder={"Search Cryptocurrency"}/>
             {
@@ -170,7 +170,7 @@ const CompletedPrediction = () => {
                     }
                 </LoadMore>
             </div>
-        </Fragment>
+        </ContentWrap>
     );
 }
 

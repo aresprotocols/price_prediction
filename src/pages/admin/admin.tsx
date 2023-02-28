@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import {Button, Form, Input, InputNumber, message, Modal, Select, Tag} from "antd";
-import {ApiContext, Prediction} from "../../App";
+import {ApiContext, ContentWrap, Prediction} from "../../App";
 import { PlusOutlined } from '@ant-design/icons';
 import {Fragment, useContext, useEffect, useRef, useState} from "react";
 import BigNumber from "bignumber.js";
@@ -194,148 +194,150 @@ const Admin = () => {
     };
 
     return (
-        <AdminWrapper>
-            <div className="addBtn">
-                <Button type="primary" onClick={() => setModalVisible(!modalVisible)}>Add Prediction</Button>
+        <ContentWrap>
+            <AdminWrapper>
+                <div className="addBtn">
+                    <Button type="primary" onClick={() => setModalVisible(!modalVisible)}>Add Prediction</Button>
 
-                <Button type="primary" onClick={() => navigator("/admin/unclose")}>UnClose Prediction</Button>
-            </div>
+                    <Button type="primary" onClick={() => navigator("/admin/unclose")}>UnClose Prediction</Button>
+                </div>
 
-            <Modal visible={modalVisible} title="Add Price Prediction" footer={null} destroyOnClose={true}
-                   onCancel={() => {
-                setModalVisible(!modalVisible);
-            }}>
-                <div className="formContent">
-                    <Form {...layout} onFinish={val => createPrediction(val)} initialValues={{type: estimatesType}}>
-                        <Form.Item
-                            label="Type"
-                            name="type"
-                            rules={[{ required: true, message: 'Please input estimatesType!' }]}
-                        >
-                            <Select value={estimatesType} onChange={val => setEstimatesType(val)}>
-                                <Select.Option value="DEVIATION">DEVIATION</Select.Option>
-                                <Select.Option value="RANGE">RANGE</Select.Option>
-                            </Select>
-                        </Form.Item>
-                        <Form.Item
-                            label="Symbol"
-                            name="symbol"
-                            rules={[{ required: true, message: 'Please input symbol!' }]}
-                        >
-                            <Input />
-                        </Form.Item>
-                        <Form.Item
-                            label="Start"
-                            name="start"
-                            rules={[{ required: true, message: 'Please input start!' }]}
-                        >
-                            <Input/>
-                        </Form.Item>
-                        <Form.Item
-                            label="End"
-                            name="end"
-                            rules={[{ required: true, message: 'Please input End!' }]}
-                        >
-                            <Input/>
-                        </Form.Item>
-                        <Form.Item
-                            label="Distribute"
-                            name="distribute"
-                            rules={[{ required: true, message: 'Please input distribute!' }]}
-                        >
-                            <Input/>
-                        </Form.Item>
-                        {
-                            estimatesType === "DEVIATION" ?
-                                <Form.Item
-                                    label="Deviation"
-                                    name="deviation"
-                                    rules={[{ required: true, message: 'Please input deviation!' }]}
-                                >
-                                    <Input/>
-                                </Form.Item> : <Fragment>
+                <Modal visible={modalVisible} title="Add Price Prediction" footer={null} destroyOnClose={true}
+                       onCancel={() => {
+                           setModalVisible(!modalVisible);
+                       }}>
+                    <div className="formContent">
+                        <Form {...layout} onFinish={val => createPrediction(val)} initialValues={{type: estimatesType}}>
+                            <Form.Item
+                                label="Type"
+                                name="type"
+                                rules={[{ required: true, message: 'Please input estimatesType!' }]}
+                            >
+                                <Select value={estimatesType} onChange={val => setEstimatesType(val)}>
+                                    <Select.Option value="DEVIATION">DEVIATION</Select.Option>
+                                    <Select.Option value="RANGE">RANGE</Select.Option>
+                                </Select>
+                            </Form.Item>
+                            <Form.Item
+                                label="Symbol"
+                                name="symbol"
+                                rules={[{ required: true, message: 'Please input symbol!' }]}
+                            >
+                                <Input />
+                            </Form.Item>
+                            <Form.Item
+                                label="Start"
+                                name="start"
+                                rules={[{ required: true, message: 'Please input start!' }]}
+                            >
+                                <Input/>
+                            </Form.Item>
+                            <Form.Item
+                                label="End"
+                                name="end"
+                                rules={[{ required: true, message: 'Please input End!' }]}
+                            >
+                                <Input/>
+                            </Form.Item>
+                            <Form.Item
+                                label="Distribute"
+                                name="distribute"
+                                rules={[{ required: true, message: 'Please input distribute!' }]}
+                            >
+                                <Input/>
+                            </Form.Item>
+                            {
+                                estimatesType === "DEVIATION" ?
                                     <Form.Item
-                                        label="Range"
-                                        name="range"
-                                        rules={[{ required: true, message: 'Please input range!' }]}
+                                        label="Deviation"
+                                        name="deviation"
+                                        rules={[{ required: true, message: 'Please input deviation!' }]}
                                     >
                                         <Input/>
-                                    </Form.Item>
-                                    <Form.Item
-                                        label="Fraction"
-                                        name="fraction"
-                                        rules={[
-                                            { type: 'number', message: 'Fraction must be an number!'},
-                                            { required: true, message: 'Please input fraction!' }]}
-                                    >
-                                        <InputNumber min={4} max={12} defaultValue={4}/>
-                                    </Form.Item>
-                                </Fragment>
-                        }
-                        <Form.Item
-                            label="ParticipatePrice"
-                            name="participatePrice"
-                            rules={[{ required: true, message: 'Please input participatePrice!' }]}
-                        >
-                            <Input/>
-                        </Form.Item>
-                        <Form.Item
-                            label="InitReward"
-                            name="initReward"
-                            rules={[{ required: true, message: 'Please input initReward!' }]}
-                        >
-                            <Input/>
-                        </Form.Item>
-                        <Form.Item
-                            label="multiplier"
-                            name="multiplier"
-                            rules={[{ required: true, message: 'Please input multiplier!' }]}
-                        >
-                            <Select
-                                mode="multiple"
-                                allowClear
-                                style={{ width: '100%' }}
-                                placeholder="Please select"
-                                value={multipliers}
-                                onChange={handleChange}
+                                    </Form.Item> : <Fragment>
+                                        <Form.Item
+                                            label="Range"
+                                            name="range"
+                                            rules={[{ required: true, message: 'Please input range!' }]}
+                                        >
+                                            <Input/>
+                                        </Form.Item>
+                                        <Form.Item
+                                            label="Fraction"
+                                            name="fraction"
+                                            rules={[
+                                                { type: 'number', message: 'Fraction must be an number!'},
+                                                { required: true, message: 'Please input fraction!' }]}
+                                        >
+                                            <InputNumber min={4} max={12} defaultValue={4}/>
+                                        </Form.Item>
+                                    </Fragment>
+                            }
+                            <Form.Item
+                                label="ParticipatePrice"
+                                name="participatePrice"
+                                rules={[{ required: true, message: 'Please input participatePrice!' }]}
                             >
-                                {
-                                    multipliers.map((item: string) => {
-                                        return <Select.Option key={item} value={item}>{item}</Select.Option>
-                                    })
-                                }
-                            </Select>
-                        </Form.Item>
-                        <div className="multiple" style={{width: "80%", textAlign: "center", margin: "0 auto", marginBottom: "20px"}}>
-                            {inputVisible && (
-                                <Input
-                                    ref={inputRef}
-                                    type="text"
-                                    size="small"
-                                    className="tag-input"
-                                    value={inputValue}
-                                    onChange={handleInputChange}
-                                    onBlur={handleInputConfirm}
-                                    onPressEnter={handleInputConfirm}
-                                />
-                            )}
-                            {!inputVisible && (
-                                <Tag className="site-tag-plus" onClick={showInput}>
-                                    <PlusOutlined /> Add multiplier
-                                </Tag>
-                            )}
-                        </div>
+                                <Input/>
+                            </Form.Item>
+                            <Form.Item
+                                label="InitReward"
+                                name="initReward"
+                                rules={[{ required: true, message: 'Please input initReward!' }]}
+                            >
+                                <Input/>
+                            </Form.Item>
+                            <Form.Item
+                                label="multiplier"
+                                name="multiplier"
+                                rules={[{ required: true, message: 'Please input multiplier!' }]}
+                            >
+                                <Select
+                                    mode="multiple"
+                                    allowClear
+                                    style={{ width: '100%' }}
+                                    placeholder="Please select"
+                                    value={multipliers}
+                                    onChange={handleChange}
+                                >
+                                    {
+                                        multipliers.map((item: string) => {
+                                            return <Select.Option key={item} value={item}>{item}</Select.Option>
+                                        })
+                                    }
+                                </Select>
+                            </Form.Item>
+                            <div className="multiple" style={{width: "80%", textAlign: "center", margin: "0 auto", marginBottom: "20px"}}>
+                                {inputVisible && (
+                                    <Input
+                                        ref={inputRef}
+                                        type="text"
+                                        size="small"
+                                        className="tag-input"
+                                        value={inputValue}
+                                        onChange={handleInputChange}
+                                        onBlur={handleInputConfirm}
+                                        onPressEnter={handleInputConfirm}
+                                    />
+                                )}
+                                {!inputVisible && (
+                                    <Tag className="site-tag-plus" onClick={showInput}>
+                                        <PlusOutlined /> Add multiplier
+                                    </Tag>
+                                )}
+                            </div>
 
-                        <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-                            <Button type="primary" htmlType="submit">
-                                Add
-                            </Button>
-                        </Form.Item>
-                    </Form>
-                </div>
-            </Modal>
-            <Outlet/>
-        </AdminWrapper>
+                            <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+                                <Button type="primary" htmlType="submit">
+                                    Add
+                                </Button>
+                            </Form.Item>
+                        </Form>
+                    </div>
+                </Modal>
+                <Outlet/>
+            </AdminWrapper>
+        </ContentWrap>
     );
 }
 
