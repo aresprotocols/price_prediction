@@ -141,7 +141,7 @@ const Alert = () => {
                     <div>
                         <div className="title">
                             <span className="symbol">{record.trigger_condition_price_key}</span>
-                            &nbsp;&nbsp;<span>#{record.points}</span>
+                            &nbsp;&nbsp;<span>#{record.reminder_id}</span>
                         </div>
                         <div className="desc">
                             <Tag color={Tags[record.trigger_condition_price_key.toUpperCase()] ?? "geekblue"} style={{fontWeight: "600"}}>
@@ -150,7 +150,7 @@ const Alert = () => {
                             {record.trigger_condition_price_key.toUpperCase()} |
                             Price to ${record.anchor_price} |
                             Remaining count {record.points} |
-                            {bindEmail && `Email ${bindEmail}`} |
+                            {bindEmail && ` Email ${bindEmail}`} |
                             Create block {record.block_id}
                         </div>
                     </div>
@@ -284,7 +284,7 @@ const Alert = () => {
                                 delRecord &&
                                 <Space className="desc" direction="vertical">
                                     <div>{t("Whether to determine the deletion of the prompter")}
-                                        ({delRecord.trigger_condition_price_key} {delRecord.points} {t("off-ramp warning")}).
+                                        ({delRecord.trigger_condition_price_key} #{delRecord.reminder_id} {t("off-ramp warning")}).
                                     </div>
                                     <div className="descInfo">{t("You will receive the remaining fee security deposit of")}
                                         {delRecord.points}ARES,
