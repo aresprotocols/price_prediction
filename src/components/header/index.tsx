@@ -95,8 +95,11 @@ const Header = (props: any) => {
             <Menu.Item key="/ongoing/prediction" onClick={() => navigate("/ongoing/prediction")}>
                 {t("Price Prediction")}
             </Menu.Item>
-            <Menu.Item key="/alert/login" onClick={() => navigate("/alert/login")}>
+            <Menu.Item key="/alert">
                 {t("Price Alert")}
+            </Menu.Item>
+            <Menu.Item key="/countdown" onClick={() => navigate("/countdown")}>
+                {t("Countdown")}
             </Menu.Item>
             <Menu.Item>
                 <a href="https://t.me/AresProtocolBot" target="_blank"
@@ -240,7 +243,8 @@ const Header = (props: any) => {
                 <PhoneMenu>
                     {
                         showPhoneMenu ? <div className="menu">
-                            <Menu mode="inline" className="pcMenu" onClick={(info) => {
+                            <Menu mode="inline" className="pcMenu" defaultSelectedKeys={[pathname]}
+                                  onClick={(info) => {
                                 const key = info.key;
                                 if (key === "faucet") {
                                     return;
@@ -261,7 +265,10 @@ const Header = (props: any) => {
                                 {ongoingMenu}
                                 {completedMenu}
                                 {upcomingMenu}
-                                <Menu.Item key="/alert" onClick={() => navigate("/alert")}>
+                                <Menu.Item key="/countdown" onClick={() => navigate("/countdown")}>
+                                    {t("Countdown")}
+                                </Menu.Item>
+                                <Menu.Item key="/alert">
                                     Price Alert
                                 </Menu.Item>
                                 {
@@ -283,7 +290,7 @@ const Header = (props: any) => {
                     }
                 </PhoneMenu>
                 <nav>
-                    <Menu mode="horizontal" className="pcMenu" defaultSelectedKeys={["/"]}
+                    <Menu mode="horizontal" className="pcMenu" defaultSelectedKeys={[pathname]}
                           selectedKeys={selectedKeys}
                           onClick={(info) => {
                               setSelectedKeys([info.key]);

@@ -37,6 +37,7 @@ import Reminder from "./pages/alert/reminder";
 import Notification from "./pages/alert/notification";
 import AlertRules from "./pages/alert/rules";
 import AlertLogin from "./pages/alert/login";
+import Popular from "./pages/countdown/popular";
 
 
 export interface ContextProps {
@@ -162,6 +163,7 @@ function App() {
                 <Route path="alert/reminder" element={<Reminder />}/>
                 <Route path="alert/notification" element={<Notification />}/>
                 <Route path="alert/rules" element={<AlertRules />}/>
+                <Route path="countdown" element={<Popular />}/>
                 <Route path="/admin" element={
                   <RequireAuth>
                     <Admin />

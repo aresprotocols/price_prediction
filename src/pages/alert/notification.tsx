@@ -5,8 +5,10 @@ import {CheckCircleOutlined, LeftOutlined} from "@ant-design/icons";
 import React, {useContext, useEffect, useState} from "react";
 import {Tags} from "../../utils/symbol";
 import {useTranslation} from "react-i18next";
+import {useNavigate} from "react-router";
 
 const Notification = () => {
+    const navigate = useNavigate();
     const context = useContext(ApiContext);
     const {t} = useTranslation(['alert']);
     const [totalPage, setTotalPage] = useState(0);
@@ -21,6 +23,9 @@ const Notification = () => {
     }, [selectLabel]);
 
     useEffect(() => {
+        if(localStorage.getItem("alertLogin") !== "true") {
+            navigate("/alert/login");
+        }
         getReminders(1);
     }, []);
 
@@ -174,7 +179,7 @@ const Notification = () => {
                     }
                 </div>
                 <Table columns={columns} dataSource={notification}
-                       tableLayout={"fixed"}
+                       scroll={{x: "true"}}
                        pagination={{
                            defaultCurrent: 1,
                            total: totalPage,

@@ -1,4 +1,4 @@
-import {DeleteModal} from "./style";
+import {DeleteModal} from "../countdown/style";
 import {Button, Form, Input, message, Modal} from "antd";
 import {useContext, useEffect, useState} from "react";
 import {ApiContext} from "../../App";

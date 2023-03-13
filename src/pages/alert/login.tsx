@@ -90,6 +90,7 @@ const AlertLogin = (props: any) => {
                 setLoading(false);
                 if (data.status === "success") {
                     message.success("login success");
+                    localStorage.setItem("alertLogin", "true");
                     navigate("/alert");
                 }
             });
@@ -176,6 +177,9 @@ const AddressDetail = styled.div`
   box-shadow: 20px 20px 20px 1px rgba(0,0,0,0.08);
   border-radius: 20px;
   padding: 20px 30px;
+  @media (max-width: 800px) {
+    width: 370px;
+  }
   .selectAccount {
     display: flex;
     flex-direction: column;

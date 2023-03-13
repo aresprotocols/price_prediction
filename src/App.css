@@ -73,3 +73,10 @@ html body #root .App {
     display: none;
   }
 }
+
+@media only screen and (max-width: 800px) {
+  .shareModal .ant-modal-body {
+    padding: 2px 24px;
+    height: 360px;
+  }
+}

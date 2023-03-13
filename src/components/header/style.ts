@@ -33,7 +33,7 @@ export const HeaderWrapper = styled.div`
           color: #e3e3e3 !important;
           border: none;
           display: block;
-          min-width: 400px;
+          min-width: 580px;
         }
 
         .ant-menu-item-selected, .ant-menu-submenu-selected {

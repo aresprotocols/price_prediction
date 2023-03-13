@@ -3,12 +3,17 @@ import styled from "styled-components";
 
 export const ReminderContent = styled.div`
   width: 715px;
-  height: 750px;
+  min-height: 750px;
   background: #FFFFFF;
   box-shadow: 20px 20px 20px 1px rgba(0,0,0,0.08);
   border-radius: 10px 10px 10px 10px;
   margin: 0 auto;
   padding: 20px 60px;
+  @media (max-width: 800px) {
+    width: 370px;
+    margin-top: 10px;
+    padding: 20px 40px;
+  }
   .title {
     font-size: 24px;
     text-align: center;

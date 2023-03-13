@@ -1,14 +1,12 @@
 import {ApiContext, ContentWrap, network} from "../../App";
-import {AlertContent, AlertHead, DeleteModal} from "./style";
+import {AlertContent, AlertHead, DeleteModal} from "../countdown/style";
 import {Button, Checkbox, message, Modal, Pagination, Space, Spin, Table, Tag} from "antd";
 import React, {useContext, useEffect, useState} from "react";
 import {useNavigate} from "react-router";
-import BindEmail from "./bind-email";
 import {Tags} from "../../utils/symbol";
 import {decodeAddress} from "@polkadot/util-crypto";
 import {u8aToHex} from "@polkadot/util";
 import {useTranslation} from "react-i18next";
-
 
 // export const serverUrl = "http://167.179.73.229:9988";
 export const serverUrl = "/reminder";
@@ -28,6 +26,11 @@ const Alert = () => {
     const [currentPageIndex, setCurrentPageIndex] = useState(1);
 
     useEffect(() => {
+        if(localStorage.getItem("alertLogin") !== "true") {
+            navigate("/alert/login");
+        }
+
+
         getReminders(1);
         checkAccountBindEmail();
 
@@ -203,6 +206,9 @@ const Alert = () => {
                     <Button className="notif" onClick={() => navigate("/alert/notification")}>
                         {t("Notification records")}
                     </Button>
+                    {/*<Button className="notif" onClick={() => navigate("/alert/popular")}>*/}
+                    {/*    {t("Popular section")}*/}
+                    {/*</Button>*/}
                 </Space>
             </AlertHead>
             <AlertContent>
@@ -258,6 +264,7 @@ const Alert = () => {
                     columns={columns}
                     dataSource={reminders}
                     loading={dataLoading}
+                    scroll={{x: "true"}}
                     pagination={{
                         total: totalPage,
                         pageSize: 10,

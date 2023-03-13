@@ -9,6 +9,8 @@ import zhRules from "./zh_cn/rules";
 import enRules from "./en/rules";
 import alert from "./zh_cn/alert";
 import enAlert from "./en/alert";
+import enPopular from "./en/popular";
+import zhPopular from "./zh_cn/popular";
 
 const resources = {
     cn: {
@@ -23,6 +25,9 @@ const resources = {
         },
         alert: {
             ...alert
+        },
+        popular: {
+            ...zhPopular
         }
     },
     en: {
@@ -37,6 +42,9 @@ const resources = {
         },
         alert: {
             ...enAlert
+        },
+        popular: {
+            ...enPopular
         }
     },
 };

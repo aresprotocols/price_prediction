@@ -35,8 +35,11 @@ const Reminder = () => {
         "VET","WAVES","XEM","XTZ","YFI","ZEC","ZEN","ZIL","ZRX",]
 
     useEffect(() => {
+        if(localStorage.getItem("alertLogin") !== "true") {
+            navigate("/alert/login");
+        }
         const param = location.state;
-        console.log(param);
+
         if (param) {
             setType(param.type);
             const symbol = param.record.trigger_condition_price_key.split("-")[0];
@@ -410,7 +413,7 @@ const Reminder = () => {
                                     }
                                 </div>
                             </Form.Item>
-                            <Form.Item wrapperCol={{offset: 6, span: 16}}>
+                            <Form.Item style={{textAlign: "center", display: "flex", justifyContent: "center"}}>
                                 <Space>
                                     {
                                         type === "Add" ?
