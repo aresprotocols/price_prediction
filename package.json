@@ -66,5 +66,5 @@
   "lint-staged": {
     "*.{js,css,md, ts, tsx}": "prettier --write"
   },
-  "proxy": "http://167.179.73.229:9988"
+  "proxy": "http://158.247.224.166:7180"
 }

@@ -14,6 +14,7 @@ import {ShareCardInfo} from "./style";
 import React, {useState} from "react";
 import html2canvas from "html2canvas";
 import {useTranslation} from "react-i18next";
+import zecIcon from "../../assets/images/zec.svg";
 
 
 const ShareCard = ({shareType, shareSymbol, cancelShare}: any) => {
@@ -131,6 +132,8 @@ const ShareCard = ({shareType, shareSymbol, cancelShare}: any) => {
                 return <img src={etcIcon} alt="" width="68"/>
             case "DASH":
                 return <img src={dashIcon} alt="" width="68"/>
+            case "ZEC":
+                return <img src={zecIcon} alt="" width="68"/>
             default:
                 return <img src={btcIcon} alt="" width="68"/>
         }

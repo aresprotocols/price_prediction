@@ -6,6 +6,7 @@ import bsvIcon from "../../assets/images/bsv.svg";
 import ltcIcon from "../../assets/images/ltc.svg";
 import etcIcon from "../../assets/images/etc.svg";
 import dashIcon from "../../assets/images/dash.svg";
+import zecIcon from "../../assets/images/zec.svg";
 import {ShareAltOutlined} from "@ant-design/icons";
 import twitterIcon from "../../assets/images/twitter.png";
 import telegramIcon from "../../assets/images/telegram.png";
@@ -27,6 +28,11 @@ const PopularCard = ({selectShare, symbolInfo}: any) => {
         let seconds = symbolInfo.halvetime;
         intervalRef.current = setInterval(() => {
             seconds = seconds - 1;
+            if (symbolInfo.symbol === "ETC" || symbolInfo.symbol === "ZEC") {
+                const timestamp = Math.floor(new Date().getTime() / 1000);
+                seconds = symbolInfo.preHalveTime - timestamp;
+            }
+
             const days = Math.floor(seconds / (24 * 60 * 60));
             const hours = String(Math.floor((seconds % (24 * 60 * 60)) / (60 * 60))).padStart(2, '0');
             const minutes = String(Math.floor((seconds % (60 * 60)) / 60)).padStart(2, '0');
@@ -68,12 +74,35 @@ const PopularCard = ({selectShare, symbolInfo}: any) => {
                 return <img src={etcIcon} alt="" width="32"/>
             case "DASH":
                 return <img src={dashIcon} alt="" width="32"/>
+            case "ZEC":
+                return <img src={zecIcon} alt="" width="32"/>
             default:
                 return <img src={btcIcon} alt="" width="32"/>
         }
     }
 
     const showShare = (type: string) => {
+        let untilBlock;
+        let leftBlock;
+
+        if (symbolInfo.symbol === "ETC" || symbolInfo.symbol === "ZEC") {
+            untilBlock = Math.ceil(halveTime / symbolInfo.avgblockinterval).toString()
+                .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+           if (symbolInfo.symbol === "ETC") {
+               leftBlock = Math.floor(58548352)
+                   .toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+           } else {
+                leftBlock = Math.floor(7464803)
+                    .toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+           }
+        } else {
+            untilBlock = Math.ceil(halveTime / symbolInfo.avgblockinterval).toString()
+                .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            leftBlock = Math.floor(symbolInfo.maxsupply - symbolInfo.totalsupply)
+                .toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+
         selectShare(
             {
                 type: type,
@@ -85,10 +114,8 @@ const PopularCard = ({selectShare, symbolInfo}: any) => {
                 currentReward: symbolInfo.avgminereward24h.toFixed(3),
                 afterReward: (symbolInfo.avgminereward24h / 2).toFixed(3),
                 generateTime: (symbolInfo.avgblockinterval / 60).toFixed(3),
-                untilBlock: Math.ceil(halveTime / symbolInfo.avgblockinterval).toString()
-                    .replace(/\B(?=(\d{3})+(?!\d))/g, ","),
-                leftBlock: Math.floor(symbolInfo.maxsupply - symbolInfo.totalsupply)
-                    .toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+                untilBlock: untilBlock,
+                leftBlock: leftBlock,
             }
         )
     }
@@ -147,8 +174,13 @@ const PopularCard = ({selectShare, symbolInfo}: any) => {
                 <div className="item">
                     <span>{t("Remaining blocks until reduction")}:</span>
                     <span>
-                        {Math.ceil(halveTime / symbolInfo.avgblockinterval).toString()
-                        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                        {
+                            (symbolInfo.symbol === "ETC" || symbolInfo.symbol === "ZEC") ?
+                                Math.ceil(halveTime / symbolInfo.avgblockinterval).toString()
+                                    .replace(/\B(?=(\d{3})+(?!\d))/g, ",") :
+                                Math.ceil(halveTime / symbolInfo.avgblockinterval).toString()
+                                    .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                        }
                     </span>
                 </div>
                 <Divider style={{margin: "10px 0"}}/>
@@ -160,8 +192,12 @@ const PopularCard = ({selectShare, symbolInfo}: any) => {
                 <div className="item">
                     <span>{t("Blocks left to mine")}({symbolInfo.symbol}):</span>
                     <span>
-                        {Math.floor(symbolInfo.maxsupply - symbolInfo.totalsupply)
-                        .toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                        {
+                            (symbolInfo.symbol === "ETC" || symbolInfo.symbol === "ZEC") ?
+                                ((symbolInfo.symbol === "ETC") ? "58,548,352" : "7,464,803") :
+                            Math.floor(symbolInfo.maxsupply - symbolInfo.totalsupply)
+                                .toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                        }
                     </span>
                 </div>
             </div>
