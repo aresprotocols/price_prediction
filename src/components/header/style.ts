@@ -30,7 +30,7 @@ export const HeaderWrapper = styled.div`
         .pcMenu {
           line-height: 64px;
           background-color: #1295F0;
-          color: #e3e3e3 !important;
+          color: #FFF !important;
           border: none;
           display: block;
           min-width: 580px;
@@ -46,6 +46,14 @@ export const HeaderWrapper = styled.div`
 
         .ant-menu-submenu-title:hover, .ant-menu-submenu-open {
             color: #FFF !important;
+        }
+
+        .ant-menu-item-selected:after {
+          border-bottom: 4px solid #FFF !important;
+        }
+      
+        .ant-menu-submenu-selected:after {
+          border-bottom: 4px solid #FFF !important;
         }
 
         .account {
@@ -68,6 +76,15 @@ export const HeaderWrapper = styled.div`
         .headerAccountAddress {
             line-height: 1.3rem;
             font-size: 1rem;
+            margin-top: -6px;
+          .ant-select-selector {
+            background-color: inherit;
+            border: none;
+            color: #FFF;
+          }
+          .ant-select-arrow {
+            color: #FFF;
+          }
         }
         
         .connectWallet {

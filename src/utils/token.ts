@@ -31,7 +31,6 @@ export const getReward = async (pres: Prediction[], api: any) => {
     if (api && pres) {
         const result = await Promise.all(pres.map(async item => {
             const address = getSubAccount(item.symbol, item.estimatesType === "RANGE" ? 1 : 2);
-            console.log("get reward for ", address, item.symbol);
             const result = await api.query.system.account(address);
             // @ts-ignore
             let freeBalance = result.data.free.toString();

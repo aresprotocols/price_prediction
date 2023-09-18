@@ -38,6 +38,7 @@ import Notification from "./pages/alert/notification";
 import AlertRules from "./pages/alert/rules";
 import AlertLogin from "./pages/alert/login";
 import Popular from "./pages/countdown/popular";
+import AccountStatistics from "./pages/admin/account-statistics";
 
 
 export interface ContextProps {
@@ -75,7 +76,7 @@ export interface Participant {
 
 export const ContentWrap = styled.div`
   padding: 30px 150px;
-  @media screen and (max-width: 1400px) {
+  @media screen and (max-width: 1470px) {
     padding: 30px 80px;
   }
   @media screen and (max-width: 750px) {
@@ -94,7 +95,6 @@ function App() {
   const [polkaAPI, setPolkaAPI] = useState<ApiPromise>();
 
   const init = async () => {
-    console.log("api init");
     const provider = new WsProvider(`wss://${network}.aresprotocol.io`);
     return await ApiPromise.create({
       provider,
@@ -170,6 +170,7 @@ function App() {
                   </RequireAuth>
                 }>
                   <Route path="unclose" element={<UnClosePrediction />}/>
+                  <Route path="account" element={<AccountStatistics  />}/>
                 </Route>
                 <Route path="/admin/login" element={<Login />}/>
                 <Route path="/coin/consume" element={<Consume />}/>

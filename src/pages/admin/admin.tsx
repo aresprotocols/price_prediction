@@ -1,14 +1,16 @@
 import styled from "styled-components";
-import {Button, Form, Input, InputNumber, message, Modal, Select, Tag} from "antd";
+import { Button, DatePicker, Form, Input, InputNumber, message, Modal, Select, Spin, Tag } from "antd";
 import {ApiContext, ContentWrap, Prediction} from "../../App";
 import { PlusOutlined } from '@ant-design/icons';
-import {Fragment, useContext, useEffect, useRef, useState} from "react";
+import React, {Fragment, useContext, useEffect, useRef, useState} from "react";
 import BigNumber from "bignumber.js";
 import {Keyring} from "@polkadot/api";
 import {web3FromAddress} from "@polkadot/extension-dapp";
 import {Router, useNavigate} from "react-router";
 import {Outlet} from "react-router-dom";
 import {getReward} from "../../utils/token";
+import AdminPredictions from "./prediction";
+import moment from "moment";
 
 const Admin = () => {
     const navigator = useNavigate();
@@ -16,12 +18,15 @@ const Admin = () => {
     const [inputVisible, setInputVisible] = useState(false);
     const inputRef = useRef<any>(null);
     const [inputValue, setInputValue] = useState('');
-    const [multipliers, setMultipliers] = useState<any>([]);
+    const [multipliers, setMultipliers] = useState<any>([1, 3, 5]);
     const [estimatesType, setEstimatesType] = useState("DEVIATION");
     const [modalVisible, setModalVisible,] = useState(false);
     const [devPredictions, setDevPredictions] = useState<Prediction[]>();
     const [rangePredictions, setRangePredictions] = useState<Prediction[]>();
     const keyring = new Keyring({ type: 'sr25519' });
+
+    const [starTime, setStarTime] = useState<any>();
+    const [endTime, setEndTime] = useState<any>();
 
     // eslint-disable-next-line
     const create = async (symbol: string, start: number, end: number, distribute: number, estimatesType: string,
@@ -128,7 +133,7 @@ const Admin = () => {
     }
 
 
-    const createPrediction = (val: any) => {
+    const createPrediction = async (val: any) => {
         const flag = checkSymbolOngoing(val.symbol, estimatesType);
         if (flag) {
             message.error("Symbol is ongoing");
@@ -147,9 +152,21 @@ const Admin = () => {
             });
         }
 
+        if (context.api) {
+            const header = await context.api.rpc.chain.getHeader();
+            const lastBlockNumber = Number.parseInt((header?.number.toHuman()+"").replaceAll(",", ""));
+            console.log("block", lastBlockNumber);
+
+            const now = moment(new Date()).valueOf();
+            val.start = parseInt((val.start.valueOf() - now) / 1000 / 6 + "") + lastBlockNumber;
+            val.end = parseInt((val.end.valueOf() - now) / 1000 / 6 + "") + lastBlockNumber;
+            val.distribute = parseInt((val.distribute.valueOf() - now) / 1000 / 6 + "") + lastBlockNumber;
+        }
+
         console.log("createPrediction", val);
 
-        create(val.symbol, val.start, val.end, val.distribute, estimatesType, val.deviation, val.range, val.participatePrice, mul, val.initReward, val.fraction);
+        create(val.symbol, val.start, val.end, val.distribute, estimatesType, val.deviation,
+            val.range, val.participatePrice, mul, val.initReward, val.fraction);
     }
 
     const checkSymbolOngoing = (symbol: string, type: string) => {
@@ -198,9 +215,14 @@ const Admin = () => {
             <AdminWrapper>
                 <div className="addBtn">
                     <Button type="primary" onClick={() => setModalVisible(!modalVisible)}>Add Prediction</Button>
-
                     <Button type="primary" onClick={() => navigator("/admin/unclose")}>UnClose Prediction</Button>
+                    <Button type="primary" onClick={() => navigator("/admin")}>Predictions</Button>
+                    <Button type="primary" onClick={() => navigator("/admin/account")}>Account Statistics</Button>
                 </div>
+
+                {
+                    window.location.pathname === "/admin" &&  <AdminPredictions />
+                }
 
                 <Modal visible={modalVisible} title="Add Price Prediction" footer={null} destroyOnClose={true}
                        onCancel={() => {
@@ -223,28 +245,34 @@ const Admin = () => {
                                 name="symbol"
                                 rules={[{ required: true, message: 'Please input symbol!' }]}
                             >
-                                <Input />
+                                <Input placeholder="btc-usdt" />
                             </Form.Item>
                             <Form.Item
                                 label="Start"
                                 name="start"
                                 rules={[{ required: true, message: 'Please input start!' }]}
                             >
-                                <Input/>
+                                <DatePicker showTime disabledDate={(currentDate) => {
+                                    return currentDate && currentDate < moment().add(0, 'days');
+                                }} onChange={() => {}} onOk={(res) => {setStarTime(res)}} />
                             </Form.Item>
                             <Form.Item
                                 label="End"
                                 name="end"
                                 rules={[{ required: true, message: 'Please input End!' }]}
                             >
-                                <Input/>
+                                <DatePicker showTime disabledDate={(currentDate) => {
+                                    return currentDate && (currentDate < moment().add(0, 'days') || currentDate < starTime);
+                                }} onChange={() => {}} onOk={(res) => {setEndTime(res)}} />
                             </Form.Item>
                             <Form.Item
                                 label="Distribute"
                                 name="distribute"
                                 rules={[{ required: true, message: 'Please input distribute!' }]}
                             >
-                                <Input/>
+                                <DatePicker showTime disabledDate={(currentDate) => {
+                                    return currentDate && (currentDate < moment().add(0, 'days') || currentDate < endTime);
+                                }} onChange={() => {}} onOk={() => {}} />
                             </Form.Item>
                             {
                                 estimatesType === "DEVIATION" ?
@@ -348,7 +376,8 @@ export default Admin;
 const AdminWrapper = styled.div`
     .addBtn {
         display: flex;
-        justify-content: flex-end;
+        justify-content: flex-start;
         column-gap: 20px;
+        margin-bottom: 20px;
     }
 `;

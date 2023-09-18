@@ -48,7 +48,6 @@ const MyPrediction = () => {
                     }
                 })
             }
-            console.log("symbols", symbols);
             setParticipantsSymbolAndID(symbols);
             setIsShowSpin(false);
         }
@@ -131,8 +130,10 @@ const MyPrediction = () => {
         Promise.all(participantsSymbolAndID!.map(async (item) => {
             if (!getSymbol.includes(item.symbol[0])) {
                 getSymbol.push(item.symbol[0]);
-                console.log("item", getSymbol);
                 const res = await getOnGoingPredictions(item.symbol);
+                if (res) {
+                    res.end = res.end.replaceAll(",", "");
+                }
                 return res;
             }
         })).then((res) => {
@@ -153,7 +154,6 @@ const MyPrediction = () => {
     }
 
     const loadMore = async () => {
-        console.log("loadMore");
         const nextPage = currentPage + 1;
         if (nextPage <= totalPage) {
             setIsLoadMore(true);
@@ -170,10 +170,8 @@ const MyPrediction = () => {
     }, [context]);
 
     useEffect(() => {
-        console.log("participantsSymbolAndID", selectedState);
         if (selectedState === "completed") {
             setCurrentPage(1);
-            console.log("获取数据");
             getCompletes();
         }
 
@@ -333,11 +331,12 @@ const MyPredictionWrapper = styled.div`
     width: 100%;
     flex-direction: column;
     .predictions {
-        display: flex;
-        flex-wrap: wrap;
+        margin-top: 2rem;
         row-gap: 30px;
-        column-gap: 120px;
-        margin-top: 30px;
+        //column-gap: 120px;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(370px, 1fr));
+        column-gap: 20px;
     }
     .btnGroup {
         border: 2px solid #1295F0;

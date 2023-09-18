@@ -29,7 +29,6 @@ const GoingPrediction = () => {
             res.forEach(([_, value]) => {
                 pres.push(value.toHuman() as unknown as Prediction);
             });
-            console.log("pres", pres);
             setPredictions(pres.filter(item => item.estimatesType === "DEVIATION"));
             setIsShowSpin(false);
             getReward(pres.filter(item => item.estimatesType === "DEVIATION"), context.api).then(res => {
@@ -64,6 +63,7 @@ const GoingPrediction = () => {
         return <CoinCard key={item.symbol.concat(item.id.toString())}
                          title={item.symbol} type="JOIN" price="580"
                          total={item.totalReward}
+                         prediction={item}
                          endBlock={Number.parseInt(item.end.replaceAll(",", ""))}
                          live={true} icon={false} callBack={toJoin}/>
     })
@@ -87,8 +87,7 @@ const GoingPrediction = () => {
                 </GoingPredictionWrapper>
             </div>
             <div className="pc">
-                <GoingPredictionWrapper
-                    style={{ justifyContent: predictions && predictions?.length < 4 ? "space-around" : "flex-start"}}>
+                <GoingPredictionWrapper>
                     {content}
                 </GoingPredictionWrapper>
             </div>
@@ -99,11 +98,12 @@ const GoingPrediction = () => {
 
 const GoingPredictionWrapper = styled.div`
     margin-top: 3rem;
-    display: flex;
     width: 100%;
-    flex-wrap: wrap;
     row-gap: 30px;
-    column-gap: 120px;
+    //column-gap: 120px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(370px, 1fr));
+    column-gap: 20px;
     .swiper {
         width: 83vw;
         padding: 10px 0 50px 0;
@@ -113,6 +113,7 @@ const GoingPredictionWrapper = styled.div`
         align-items: center;
         flex-wrap: nowrap;
         column-gap: 0;
+        display: flex;
         .slick-dots li.slick-active button {
             background-color: #2E4DD4;
         }
@@ -120,7 +121,7 @@ const GoingPredictionWrapper = styled.div`
             background-color: #227ADF;
         }
     }
-    @media only screen and (max-width: 1400px) {
+    @media only screen and (max-width: 1470px) {
       column-gap: 10px;
     }
 `;

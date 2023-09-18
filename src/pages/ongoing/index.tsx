@@ -4,6 +4,7 @@ import {useLocation} from "react-router";
 import { OngoingWrapper } from "./style";
 import MyPrediction from "../my_prediction";
 import {ContentWrap} from "../../App";
+import React from "react";
 
 const Ongoing = () => {
     const location = useLocation();

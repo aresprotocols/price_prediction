@@ -5,17 +5,25 @@ import {CardContent, Content, OngoingContentCard} from "./style";
 import user from "../../../assets/images/user.svg";
 import aresWards from "../../../assets/images/aresrewards.svg";
 import timeIcon from "../../../assets/images/time.svg";
-import {useContext, useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {ApiContext, network} from "../../../App";
 import BigNumber from "bignumber.js";
 import {getSubAccount} from "../../../utils/token";
+import PredictionShare from "../prediction-share";
+import { Modal } from "antd";
+import { ShareAltOutlined } from "@ant-design/icons";
+import twitterIcon from "../../../assets/images/twitter.png";
+import telegramIcon from "../../../assets/images/telegram.png";
+import gateioIcon from "../../../assets/images/gateio.png";
 
 
 const Joined = (props: any) => {
-    const {t} = useTranslation(["common"]);
     const context = useContext(ApiContext);
-    const [totalReward, setTotalReward] = useState("0");
+    const {t} = useTranslation(["common"]);
     const [statistics, setStatistics] = useState<any>();
+    const [totalReward, setTotalReward] = useState("0");
+    const [showShare, setShowShare] = useState(false);
+    const [shareType, setShareType] = useState("Twitter");
 
     useEffect(() => {
         getReward();
@@ -27,7 +35,6 @@ const Joined = (props: any) => {
         if (context.api) {
             const address = getSubAccount(props.title, props.type);
             const result = await context.api.query.system.account(address);
-            console.log("get reward for:", address, props.title, result.toHuman());
             // @ts-ignore
             let freeBalance = result.data.free.toString();
             if (result) {
@@ -42,29 +49,41 @@ const Joined = (props: any) => {
         fetch(`https://aresscan.aresprotocol.io/${network}/api/v1/estimate/statistics/${props.title}/${props.id}`)
             .then(async res => {
                 const result = await res.json();
-                console.log("result", result);
                 if (Array.isArray(result.data)) {
                     let total = 0;
                     result.data.forEach((item: any) => {
                         total += item.count;
                     });
-                    const median = result.data.sort((a: any, b: any) => a.count - b.count)[Math.floor(result.data.length / 2)].index;
-                    const avg = total / result.data.length;
-
+                    const median = result.data.sort((a: any, b: any) => b.count - a.count);
+                    console.log("median", median, median[0].index);
+                    let price = "-";
+                    if (median[0].index === 0) {
+                        price = props.title + "<=" + props.range[0];
+                    } else if (median[0].index === 1) {
+                        price = props.range[0] + "<" + props.title + "<=" + props.range[1];
+                    } else if (median[0].index === 2) {
+                        price = props.range[1] + "<" + props.title + "<=" + props.range[2];
+                    } else if (median[0].index === 3) {
+                        price = props.title + ">=" + props.range[3];
+                    }
                     const data = {
                         total: total,
-                        median: median * 10000,
-                        avg: avg * 10000
+                        median: price,
+                        avg: ""
                     }
-                    console.log("median", median, avg, data);
-
                     setStatistics(data);
                 } else {
+                    result.data.median = (parseFloat(result.data.median) / 10000).toFixed(3);
                     setStatistics(result.data);
                 }
             }).catch(e => {
                 console.log("fetch static data error", e);
             })
+    }
+
+    const showShareModal = (type: string) => {
+        setShowShare(true);
+        setShareType(type);
     }
 
     return (
@@ -76,22 +95,28 @@ const Joined = (props: any) => {
                     {props.time}
                 </div>
                 <div className="card">
+                    <div className="shares" style={{position: "absolute", right: "22px", top: "10px"}}>
+                        <div className="shareInfo">
+                            <img src={twitterIcon} alt="" width={15} onClick={() => showShareModal("Twitter")}/>&nbsp;&nbsp;
+                            <img src={telegramIcon} alt="" width={15} onClick={() => showShareModal("Telegram")}/>&nbsp;&nbsp;
+                            <img src={gateioIcon} alt="" width={15} onClick={() => showShareModal("Gate")}/>
+                        </div>
+                    </div>
                     <div className="header">
-                        <img src={"/symbol/" + props.title.split("-")[0] + ".svg"} alt="" width={23} height={23}/>&nbsp;
-                        <span className="title">
-                            {props.title}
-                        </span>
+                        <div>
+                            <img src={"/symbol/" + props.title.split("-")[0] + ".svg"} alt="" width={23} height={23}/>&nbsp;
+                            <span className="title">
+                                {props.title}
+                            </span>
+                        </div>
                     </div>
                     <CardContent>
                         <div className="cardItem">
                             <img src={user} alt="" width={25} height={25}/>
-                            <p>{statistics ? statistics.total : "1"} {t("persons participated")}</p>
+                            <p>{t("Price with the highest number of participants")}</p>
                             <div>
                                 <div>
-                                    {t("Median")}: $ {statistics ? (parseFloat(statistics.median) / 10000).toFixed(3) : "0"}
-                                </div>
-                                <div>
-                                    {t("Average")}: $ {statistics ? (parseFloat(statistics.avg) / 10000).toFixed(3) : "0"}
+                                    ${statistics ? statistics.median : "-"}
                                 </div>
                             </div>
                         </div>
@@ -117,6 +142,21 @@ const Joined = (props: any) => {
                 </div>
             </OngoingContentCard>
             <Message type={MessageType.WARNING} message={t("closed one hour before tips")}/>
+            <Modal wrapClassName="shareModal"
+                   title={null}
+                   footer={null}
+                   open={showShare}
+                   width={700}
+                   onOk={() => setShowShare(false)}
+                   onCancel={() => setShowShare(false)}
+                   destroyOnClose={true}>
+                <PredictionShare prediction={{time: props.time, title: props.title,
+                    statistics: statistics, totalReward: totalReward, timeDiff: {
+                        day: props.timeDiff.day,
+                        hour: props.timeDiff.hour,
+                        minute: props.timeDiff.minute
+                    }}} shareType={shareType} cancelShare={() => setShowShare(false)} />
+            </Modal>
         </Content>
     );
 }

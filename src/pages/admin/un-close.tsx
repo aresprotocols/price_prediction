@@ -12,7 +12,6 @@ const UnClosePrediction = () => {
     const [modalVisible, setModalVisible] = useState(false);
     const [currentPrediction, setCurrentPrediction] = useState<Prediction>();
 
-
     useEffect(() => {
         getPredictions();
 

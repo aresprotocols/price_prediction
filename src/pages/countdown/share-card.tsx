@@ -23,7 +23,6 @@ const ShareCard = ({shareType, shareSymbol, cancelShare}: any) => {
 
     console.log("shareType", i18n.language);
     const shareTwitter = (title: string, url: string) => {
-        console.log("shareTwitter", title, url)
         window.open(
             `https://twitter.com/intent/tweet?text=${title}&url=${url}`,
             '_blank'
@@ -85,7 +84,6 @@ const ShareCard = ({shareType, shareSymbol, cancelShare}: any) => {
     }
 
     const saveImage = () => {
-        console.log("saveImage");
         const body = document.getElementById("root");
         const tmpNode = "<div id='tmpRoot' style='position: absolute; z-index: -1'></div>";
         // @ts-ignore
@@ -214,7 +212,7 @@ const ShareCard = ({shareType, shareSymbol, cancelShare}: any) => {
                                 <div>{t("Join the community")}</div>
                             </div>
                             <div>
-                                <img src={i18n.language === "en" ? qren : qrcn } alt="" width={60}/>
+                                <img src={i18n.language === "en" ? qrcn : qrcn } alt="" width={60}/>
                             </div>
                         </div>
                     </div>

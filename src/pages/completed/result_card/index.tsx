@@ -18,7 +18,7 @@ const ResultCard = ({type, okCallBack, winnerCallback, prediction}: ResultCardPr
     const { t } = useTranslation(['common']);
     const context = useContext(ApiContext);
     const [time, setTime] = useState("");
-    const [winnerNum, setWinnerNum] = useState(0);
+    const [winnerNum, setWinnerNum] = useState("-");
 
     const ok = () => {
         if (okCallBack) {
@@ -44,17 +44,16 @@ const ResultCard = ({type, okCallBack, winnerCallback, prediction}: ResultCardPr
 
     const queryWinner = async () => {
         if (context.api && prediction) {
-            const winner = await context.api.query.estimates.winners([prediction.symbol, "RANGE"], prediction.id);
+            const winner = await context.api.query.estimates.winners(
+              [prediction.symbol, prediction.estimatesType], prediction.id);
             const winners = winner.toHuman() as [];
-            setWinnerNum(winners ? winners.length : 0);
+            setWinnerNum(winners ? winners.length + "" : "-");
         }
     }
 
     useEffect(() => {
         getStartTime();
-        if (type === "Fluctuations") {
-            queryWinner();
-        }
+        queryWinner();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
@@ -78,10 +77,10 @@ const ResultCard = ({type, okCallBack, winnerCallback, prediction}: ResultCardPr
                             type === "Prediction" ?
                                 <Fragment>
                                     <div className="result">
-                                        {t("Result")}: 1000
+                                        {t("Winner")}: {winnerNum}
                                     </div>
                                     <div className="result">
-                                        {t("Result")}:
+                                        {t("Final Price")}: &nbsp;
                                         {prediction &&
                                             parseInt(prediction.symbolCompletedPrice.replaceAll(",", "")) / 10000}
                                     </div>

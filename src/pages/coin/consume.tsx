@@ -3,7 +3,7 @@ import styled from "styled-components";
 import {useTranslation} from "react-i18next";
 import {Fragment, useContext, useEffect, useState} from "react";
 
-import {ApiContext, network} from "../../App";
+import {ApiContext, ContentWrap, network} from "../../App";
 import ContentHeader from "../../components/content_header";
 import {formatHumanNumber} from "../../utils/format";
 
@@ -99,6 +99,7 @@ const Consume = () => {
 
     return (
         <Fragment>
+            <ContentWrap>
             {
                 isShowSpin ? <div style={{width: "100%", textAlign: "center"}}>
                     <Spin delay={100}/>
@@ -112,6 +113,7 @@ const Consume = () => {
                        rowKey={(record) => record.estimate_id + record.estimate_type + record.symbol}
                        scroll={{x: true}}/>
             </ConsumeWrapper>
+            </ContentWrap>
         </Fragment>
     );
 }

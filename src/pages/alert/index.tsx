@@ -9,7 +9,7 @@ import {u8aToHex} from "@polkadot/util";
 import {useTranslation} from "react-i18next";
 
 // export const serverUrl = "http://167.179.73.229:9988";
-export const serverUrl = "/reminder";
+export const serverUrl = "";
 
 const Alert = () => {
     const navigate = useNavigate();

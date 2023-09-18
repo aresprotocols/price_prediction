@@ -65,7 +65,7 @@ export const JoinContent = styled.div`
             background: #2E4DD4;
             border: 1px solid #2E4DD4;
             border-radius: 5px;
-            width: 110px;
+            min-width: 110px;
             height: 40px;
             color: #FFF;
             font-weight: 600;
@@ -84,8 +84,10 @@ export const JoinContent = styled.div`
         padding: 40px 15px;
         .joinMoney {
             padding: 20px 20px;
+            flex-wrap: wrap;
+            gap: 10px;
             .btn {
-                width: 90px;
+                min-width: 90px;
             }
         }
     }

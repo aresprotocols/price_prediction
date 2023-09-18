@@ -1,5 +1,5 @@
 import {Button, Menu, Space} from "antd";
-import {JoinItem, JoinWrapper, WebDesc} from "./style";
+import { JoinAlertItem, JoinItem, JoinWrapper, WebDesc } from "./style";
 import {useTranslation} from "react-i18next";
 import {useNavigate} from "react-router";
 import rules from "../../assets/images/rules.svg";
@@ -11,7 +11,7 @@ const Join = () => {
     return (
         <JoinWrapper>
             <JoinItem>
-                <WebDesc>
+                <WebDesc >
                     <p className="title">{t("Price Prediction")}</p>
                     <p className="desc">
                         {t("site desc")}
@@ -35,7 +35,7 @@ const Join = () => {
                 </WebDesc>
                 <img src="/images/home.png" alt=""/>
             </JoinItem>
-            <JoinItem style={{background: "white", paddingLeft: "6%", paddingTop: "50px"}}>
+            <JoinAlertItem>
                 <img src="/images/home.png" alt=""/>
                 <WebDesc>
                     <p className="title">{t("Price Alert")}</p>
@@ -57,7 +57,7 @@ const Join = () => {
                         </Button>
                     </Space>
                 </WebDesc>
-            </JoinItem>
+            </JoinAlertItem>
         </JoinWrapper>
     );
 }

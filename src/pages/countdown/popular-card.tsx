@@ -28,10 +28,10 @@ const PopularCard = ({selectShare, symbolInfo}: any) => {
         let seconds = symbolInfo.halvetime;
         intervalRef.current = setInterval(() => {
             seconds = seconds - 1;
-            if (symbolInfo.symbol === "ETC" || symbolInfo.symbol === "ZEC") {
+            // if (symbolInfo.symbol === "ETC" || symbolInfo.symbol === "ZEC") {
                 const timestamp = Math.floor(new Date().getTime() / 1000);
                 seconds = symbolInfo.preHalveTime - timestamp;
-            }
+            // }
 
             const days = Math.floor(seconds / (24 * 60 * 60));
             const hours = String(Math.floor((seconds % (24 * 60 * 60)) / (60 * 60))).padStart(2, '0');

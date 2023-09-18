@@ -30,7 +30,7 @@ const PredictionJoin = () => {
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        getPredictionInfo()
+        getPredictionInfo();
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [context]);
@@ -62,8 +62,6 @@ const PredictionJoin = () => {
                 pre.ticketPrice =
                     new BigNumber(pre.ticketPrice.replaceAll(",", "")).shiftedBy(-12).toString();
                 setPredictionInfo(pre);
-                console.log("pre", pre);
-                console.log("pre", pre.id);
             } catch (e) {
                 console.log(e);
             }
@@ -85,7 +83,6 @@ const PredictionJoin = () => {
             }
             const price = Math.floor(Number(guessPrice) * Math.pow(10, fraction));
 
-            console.log("join multiplier", multiplier, price, fraction);
             const unsub = await api.tx.estimates.participateEstimates(params.symbol, "DEVIATION", price, fraction, null, multiplier, rewardAddress)
                 .signAndSend(context.account.address, ({ status, dispatchError }) => {
                     if (dispatchError) {
@@ -190,6 +187,8 @@ const PredictionJoin = () => {
                                     </Button>
                                 })
                             }
+                            <button type="button" className="ant-btn ant-btn-default btn">
+                                <span>Fee&nbsp;18000&nbsp;coin</span></button>
                         </div>
                         <label style={{fontSize: "12px", color:"#F34944"}}>
                             { notSufficient ? "* " + t("Sorry, your test coins are insufficient to participate!") : ""}

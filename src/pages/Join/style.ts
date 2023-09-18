@@ -6,12 +6,16 @@ export const JoinWrapper = styled.div`
     //width: 100%;
     //height: 100%;
     //left: 0;
+  .joinItemAlert {
+    
+  }
 `;
 
 export const JoinItem = styled.div`
     height: 100%;
     display: flex;
     overflow: hidden;
+    padding: 0 75px;
     img {
         width: 450px;
         margin-top: 60px;
@@ -24,11 +28,21 @@ export const JoinItem = styled.div`
     }
     @media only screen and (max-width: 750px) {
         flex-direction: column;
+        padding: inherit;
         img {
             margin: 0 auto;
             width: 90%;
             display: block;
         }
+    }
+`;
+
+export const JoinAlertItem = styled(JoinItem)`
+    background: white;
+    padding: 0 0 40px 160px;
+    @media only screen and (max-width: 750px) {
+      padding: inherit;
+      padding-top: 40px;
     }
 `;
 

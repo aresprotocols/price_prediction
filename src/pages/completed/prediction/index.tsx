@@ -39,7 +39,6 @@ const CompletedPrediction = () => {
     }
 
     const loadMore = async () => {
-        console.log("loadMore");
         const nextPage = currentPage + 1;
         if (nextPage <= totalPage) {
             setIsLoadMore(true);
@@ -69,7 +68,6 @@ const CompletedPrediction = () => {
         await fetch(`https://aresscan.aresprotocol.io/${network}/api/v1/estimate/list/deviation/completed?page[number]=${pageIndex}&page[size]=${pageSize}`)
             .then(async res => {
                 const data = await res.json();
-                console.log("fetch completed res:", data);
                 if (data) {
                     setTotalPage(Math.ceil(data.meta.total_count / pageSize));
                     const pres = data.data.data.map((item: any) => {
@@ -149,8 +147,7 @@ const CompletedPrediction = () => {
             <div className="pc">
                 {
                     !winner ?
-                        <PredictionWrapper
-                            style={{ justifyContent: completedPrediction && completedPrediction?.length < 4 ? "space-between" : "flex-start"}}>
+                        <PredictionWrapper>
                             {completed}
                         </PredictionWrapper> :
                         <PredictionWrapper>
@@ -177,18 +174,23 @@ const CompletedPrediction = () => {
 
 const PredictionWrapper = styled.div`
     width: 100%;
-    display: flex;
-    padding-top: 3rem;
-    justify-content: center;
-    flex-wrap: wrap;
+    //display: flex;
+    //justify-content: center;
+    //flex-wrap: wrap;
     row-gap: 30px;
-    column-gap: 120px;
+    //column-gap: 120px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(370px, 1fr));
+    column-gap: 20px;
+    padding-top: 3rem;
+    
     .swiper {
         width: 83vw;
         padding: 10px 0 50px 0;
     }
     @media only screen and (max-width: 750px) {
         padding: 0 15px;
+        display: flex;
         align-items: center;
         flex-wrap: nowrap;
         column-gap: 0;
@@ -199,8 +201,8 @@ const PredictionWrapper = styled.div`
             background-color: #227ADF;
         }
     }
-    @media only screen and (max-width: 1400px) {
-      column-gap: 30px;
+    @media only screen and (max-width: 1470px) {
+      column-gap: 10px;
     }
 `;
 

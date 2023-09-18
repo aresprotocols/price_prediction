@@ -31,6 +31,7 @@ export const OngoingContentCard = styled.div`
         box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.08);
         border-radius: 15px;
         padding: 20px;
+        position: relative;
     }
     .header {
         display: flex;
@@ -39,6 +40,12 @@ export const OngoingContentCard = styled.div`
         padding-bottom: 10px;
         text-transform: uppercase;
     }
+    .shareInfo {
+      cursor: pointer;
+      img:hover {
+        transform: scale(1.5);
+      }
+    } 
     .title {
         color: #2E4765;
         font-weight: 600;

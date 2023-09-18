@@ -1,9 +1,6 @@
 import styled from "styled-components";
 
 
-
-
-
 export const CoinCardWrapper = styled.div`
     display: flex;
     flex-direction: column;
@@ -54,8 +51,8 @@ export const CoinCardPrice = styled.div`
         font-size: 12px;
         font-weight: 500;
         line-height: 16px;
-        color: #00BF78;
-        padding: 1px;
+        color: #005233;
+        padding: 5px;
     }
 `;
 
@@ -89,11 +86,21 @@ export const CoinCardContent = styled.div`
         color: #FFF !important;
         font-weight: 600;
     }
+    .btn-disabled {
+        background: #b1b1b1 !important;
+    }
     .join_btn {
         background: #2E4DD4;
     }
     .joined_btn {
         background: #2E4DD4 !important;
+    }
+    .tips {
+      font-size: 12px;
+      border-radius: 5px;
+      background-color: #F2E5D2;
+      color: #F8A849;
+      padding: 5px 2px;
     }
     @media only screen and (max-width: 750px) {
         width: 280px;

@@ -1,10 +1,10 @@
-import {Fragment, ReactElement, useContext, useEffect, useState} from "react";
+import React, {Fragment, ReactElement, useContext, useEffect, useState} from "react";
 import {useParams} from "react-router";
 import styled from "styled-components";
 import {useTranslation} from "react-i18next";
 import { Table } from "antd";
 
-import {ApiContext, Participant} from "../../../App";
+import { ApiContext, ContentWrap, Participant } from "../../../App";
 import firstPlace from "../../../assets/images/first_place.png";
 import secondPlace from "../../../assets/images/second_place.png";
 import thirdPlace from "../../../assets/images/third_place.png";
@@ -67,7 +67,6 @@ const Winner = () => {
     const getWinner = async() => {
         if (context.api) {
             const res = await context.api.query.estimates.winners([params.symbol, params.type], params.id);
-            console.log("winner res", res.toHuman());
             setWinners(res.toHuman() as unknown as winner[]);
             setShowWinner(res.toHuman() as unknown as winner[]);
         }
@@ -91,13 +90,13 @@ const Winner = () => {
     }
 
     return (
-        <Fragment>
+        <ContentWrap>
             <ContentHeader title="Price Prediction" onSort={() => {}} onSearch={onSearch}
                            noSort={true} goBackNum={-1} placeholder={"Search Winner"}/>
             <WinnerWrapper>
                 <Table columns={columns} dataSource={showWinner} rowKey={record => {return record.account;}} scroll={{x: true}}/>
             </WinnerWrapper>
-        </Fragment>
+        </ContentWrap>
     );
 }
 

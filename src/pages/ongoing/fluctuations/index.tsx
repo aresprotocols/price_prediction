@@ -83,7 +83,7 @@ const Fluctuations = () => {
                 </FluctuationsWrapper>
             </div>
             <div className="pc">
-                <FluctuationsWrapper style={{ justifyContent: predictions && predictions?.length < 4 ? "space-around" : "flex-start"}}>
+                <FluctuationsWrapper>
                     {pres}
                 </FluctuationsWrapper>
             </div>
@@ -94,12 +94,13 @@ const Fluctuations = () => {
 
 const FluctuationsWrapper = styled.div`
     margin-top: 3rem;
-    display: flex;
-    align-items: center;
     width: 100%;
-    flex-wrap: wrap;
+
     row-gap: 30px;
-    column-gap: 120px;
+    //column-gap: 120px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(370px, 1fr));
+    column-gap: 20px;
     .swiper {
         width: 83vw;
         padding: 10px 0 50px 0;
@@ -109,6 +110,7 @@ const FluctuationsWrapper = styled.div`
         align-items: center;
         flex-wrap: nowrap;
         column-gap: 0;
+        display: flex;
         .slick-dots li.slick-active button {
             background-color: #2E4DD4;
         }
@@ -116,7 +118,7 @@ const FluctuationsWrapper = styled.div`
             background-color: #227ADF;
         }
     }
-    @media only screen and (max-width: 1400px) {
+    @media only screen and (max-width: 1470px) {
       column-gap: 10px;
     }
 `;

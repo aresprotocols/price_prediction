@@ -1,4 +1,4 @@
-import {Fragment, useContext, useEffect, useState} from "react";
+import { useContext, useEffect, useState} from "react";
 import {LeftOutlined, RightOutlined} from "@ant-design/icons";
 import {Carousel, Spin} from "antd";
 
@@ -26,7 +26,6 @@ const UpcomingPrediction = () => {
             });
             setUpcoming(pres.filter(item => item.estimatesType === "DEVIATION"));
             setIsShowSpin(false);
-            console.log("pres", pres);
         }
     };
 
@@ -74,7 +73,7 @@ const UpcomingPrediction = () => {
                 </FluctuationsWrapper>
             </div>
             <div className="pc">
-                <FluctuationsWrapper style={{ justifyContent: upcoming && upcoming?.length < 4 ? "space-around" : "flex-start"}}>
+                <FluctuationsWrapper>
                     {upcomingPredictionItems}
                 </FluctuationsWrapper>
             </div>
@@ -85,11 +84,13 @@ const UpcomingPrediction = () => {
 
 const FluctuationsWrapper = styled.div`
     width: 100%;
-    display: flex;
     margin-top: 3rem;
-    flex-wrap: wrap;
+
     row-gap: 30px;
-    column-gap: 120px;
+    //column-gap: 120px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(370px, 1fr));
+    column-gap: 20px;
     .swiper {
         width: 83vw;
         padding: 10px 0 50px 0;
@@ -99,6 +100,7 @@ const FluctuationsWrapper = styled.div`
         align-items: center;
         flex-wrap: nowrap;
         column-gap: 0;
+        display: flex;
         .slick-dots li.slick-active button {
             background-color: #2E4DD4;
         }

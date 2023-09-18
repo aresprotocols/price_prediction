@@ -79,7 +79,7 @@ const OwnerTestCoinWrapper = styled.div`
     width: 100%;
     overflow: hidden;
     img {
-       width: 15rem; 
+       width: 22rem; 
     }
     .title {
         color: #2E4765;
@@ -105,8 +105,9 @@ const OwnerTestCoinWrapper = styled.div`
     .coin {
       display: flex;
       column-gap: 10px;
+        padding-top: 24px;
       button {
-        width: 11rem;
+        width: 12rem;
         color: white;
         background: #2E4DD4;
       }
@@ -132,8 +133,8 @@ const MyTestCoin = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    column-gap: 10rem;
-    padding: 3rem 0;
+    column-gap: 13rem;
+    padding: 4rem 0;
     @media only screen and (max-width: 750px) {
         column-gap: 3rem;
     }

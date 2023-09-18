@@ -1,10 +1,10 @@
 import {CSSProperties, Fragment, ReactNode, useContext, useEffect, useState} from "react";
 import aresWards from "../../assets/images/aresrewards.svg"
 import timeImg from "../../assets/images/time.svg"
-import {Button} from "antd";
+import { Button, message } from "antd";
 import {CoinCardWrapper, CoinCardContent, CoinCardPrice, CoinCardARES, } from "./style"
 import {useTranslation} from "react-i18next";
-import {ApiContext, Prediction} from "../../App";
+import { ApiContext, Participant, Prediction } from "../../App";
 import {clacStartTime, timeDiffRes} from "../../utils/format";
 import {getSymbolPrice} from "../../utils/symbol-price";
 
@@ -36,10 +36,11 @@ interface CoinCardProps {
 const CoinCard = (config: CoinCardProps) => {
     const context = useContext(ApiContext);
     const { t } = useTranslation(['common']);
-    const [symbolPrice, setSymbolPrice] = useState(0);
     const [time, setTime] = useState("");
-    const [timeDiff, setTimDiff] = useState<timeDiffRes>({day:0, hour: 0, minute: 0});
+    const [isJoined, setIsJoined] = useState(true);
+    const [symbolPrice, setSymbolPrice] = useState(0);
     const [isUnmounted, setIsUnmounted] = useState(false);
+    const [timeDiff, setTimDiff] = useState<timeDiffRes>({day:0, hour: 0, minute: 0});
 
 
     const getStartTime = () => {
@@ -61,6 +62,7 @@ const CoinCard = (config: CoinCardProps) => {
 
     useEffect(() => {
         getStartTime();
+        getJoinAddress();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [context]);
 
@@ -73,14 +75,35 @@ const CoinCard = (config: CoinCardProps) => {
     }, [])
 
 
+    const getJoinAddress = async () => {
+        if (context.api && context.account && config.prediction) {
+            const participants =
+              await context.api.query.estimates.participants([config.prediction.symbol,
+                  config.prediction.estimatesType], config.prediction.id)
+            const pres = participants.toHuman() as unknown as Participant[];
+            const isJoined = pres.some(item => item.account === context.account?.address);
+            setIsJoined(isJoined);
+        }
+    }
+
     const footer = () => {
         switch (config.type) {
             case CoinCardType.JOIN:
                 return (
-                    <Button className="join_btn btn" onClick={ () => {
-                        if (config.callBack) {
-                            config.callBack(config.title);
-                        }
+                    <Button className={`join_btn btn ${timeDiff.day === 0 && timeDiff.hour === 0 || isJoined ? "btn-disabled" : ""}`}
+                            style={{cursor: `${(timeDiff.day === 0 && timeDiff.hour === 0) || isJoined ? "not-allowed" : "pointer"}`}}
+                            onClick={ () => {
+                                if (timeDiff.day === 0 && timeDiff.hour === 0) {
+                                    message.warn(t("To ensure fairness, the deadline is 1 hour in advance"));
+                                    return;
+                                }
+                                if (isJoined) {
+                                    message.warn(t("You have already joined"));
+                                    return;
+                                }
+                                if (config.callBack) {
+                                    config.callBack(config.title);
+                                }
                     }}>
                         {t("join").toUpperCase()}
                     </Button>
@@ -152,6 +175,13 @@ const CoinCard = (config: CoinCardProps) => {
                             </CoinCardARES> : ""
                     }
                 </div>
+                {
+                    config.type === CoinCardType.COMING || config.type === CoinCardType.JOIN ?
+                      <Fragment>
+                          <div className="tips">{t("To ensure fairness, the deadline is 1 hour in advance")}</div>
+                          <div style={{height: "20px"}}></div>
+                      </Fragment> : ""
+                }
                 {footer()}
             </CoinCardContent>
         </CoinCardWrapper>

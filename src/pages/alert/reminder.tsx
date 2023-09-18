@@ -65,9 +65,14 @@ const Reminder = () => {
                 tip: tip,
             });
         }
-        checkBalance();
 
     }, []);
+
+
+    useEffect(() => {
+        checkBalance();
+
+    }, [context]);
 
     const getPairPrice = async (symbol: string) => {
         symbol = symbol.toLowerCase() + "-usdt";
@@ -244,7 +249,6 @@ const Reminder = () => {
 
     const checkBalance = async () => {
         if (context.api && context.account) {
-            console.log("checkBalance");
             const api = context.api;
             const balance = await api.query.system.account(context.account.address);
             const accountBalance: any = balance.toHuman();
@@ -259,11 +263,14 @@ const Reminder = () => {
 
             const availableBalance = free - miscFrozen - reserved;
             if (availableBalance <= 0) {
-                checkBalance();
-                message.error("balance is not enough, please retry");
+                setTimeout(() => {
+                    checkBalance();
+                });
+                message.error("Failed to get balance, please retry");
                 return;
             }
             setBalance(availableBalance);
+            console.log("checkBalance", availableBalance);
         }
     }
 

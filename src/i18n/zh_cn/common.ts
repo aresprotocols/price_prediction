@@ -60,6 +60,7 @@ const zhCommon = {
     "you can get it through the tap below": "参与价格预测，首先你要有足够的测试币。如果你余额不足，可以通过下面的水龙头领取测试币",
     "closed one hour before tips": "为了保证竞猜的公平有效， 每期价格竞猜会在结束时间前1 个小时， 关闭预测窗口 。 请及时参与！",
     "Ares Protocol's mainnet alert tool keeps you informed of cryptocurrency price increases and decreases in real time.": "Ares Protocol的主网价格监测工具，让您实时了解加密货币价格的上涨和下跌。",
+    "To ensure fairness, the deadline is 1 hour in advance": "为保证公平，提前1小时截止竞猜",
 }
 
 

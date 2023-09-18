@@ -36,8 +36,8 @@ const Header = (props: any) => {
     const pathname = window.location.pathname;
 
     const queryBalance = async () => {
-        if(context.api && accounts.length > 0) {
-            const acct = await context.api.query.system.account(accounts[0].address);
+        if(context.api && context.account) {
+            const acct = await context.api.query.system.account(context.account.address);
             // @ts-ignore
             let freeBalance = acct.data.free.toString();
             setBalance(new BigNumber(freeBalance).shiftedBy(-12).toFixed(4));
@@ -117,7 +117,9 @@ const Header = (props: any) => {
             navigate(info.key);
         }}>
             <Menu.Item key="/home/owner"
-                       icon={<img src={testCoin} alt="" width={25} height={25}/>
+                       icon={<div className="header-account-dropdown-menu-item">
+                           <img src={testCoin} alt="" width={25} height={25}/>
+                    </div>
             }>
                 <div className="accountTestCoin">
                     <div>{t("Test Coins")}</div>
@@ -125,12 +127,16 @@ const Header = (props: any) => {
                 </div>
             </Menu.Item>
             <Menu.Item key="ongoing" icon={
-                <img src={prediction} alt="" width={22} height={22}/>
+                <div className="header-account-dropdown-menu-item">
+                    <img src={prediction} alt="" width={22} height={22}/>
+                </div>
             }>
                 <span>{t("My Predictions")}</span>
             </Menu.Item>
             <Menu.Item key="/rules" icon={
-                <img src={rules} alt="" width={22} height={22}/>
+                <div className="header-account-dropdown-menu-item">
+                    <img src={rules} alt="" width={22} height={22}/>
+                </div>
             }>
                 <span>{t("Rules")}</span>
             </Menu.Item>
@@ -143,11 +149,13 @@ const Header = (props: any) => {
                  onTitleMouseLeave={() => handleIconRotate("ongoing", false)}
          title={
             <div className="subMenuTitle">
-                <span>{t("Ongoing")}</span>
-                <CaretDownOutlined style={{
-                    transition: "all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1)",
-                    transform: `rotate(${iconRotate}deg)`
-                }}/>
+                <div>
+                    <span>{t("Ongoing")}</span>
+                    <CaretDownOutlined style={{
+                        transition: "all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1)",
+                        transform: `rotate(${iconRotate}deg)`
+                    }}/>
+                </div>
             </div>
         }>
             <Menu.Item key="/ongoing/prediction"
@@ -327,7 +335,7 @@ const Header = (props: any) => {
                                 <img src={user} alt="ares protocol account"/>
                             </Dropdown>
                             <div>
-                                <div>account</div>
+                                <div style={{padding: "0 11px", fontSize: "16px"}}>Account</div>
                                 <div className="headerAccountAddress">
                                     {
                                         accounts ?
